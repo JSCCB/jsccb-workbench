@@ -71,6 +71,12 @@
     $("login").classList.add("hidden");
     $("app").classList.remove("hidden");
     $("who").textContent = emp.name + "（" + emp.id + "）";
+    // 重置 Tab 到业务页
+    var tabs = document.querySelectorAll(".tab-btn");
+    tabs.forEach(function(t) { t.classList.remove("active"); });
+    tabs[0].classList.add("active");
+    $("tab-business").classList.remove("hidden");
+    $("tab-profile").classList.add("hidden");
     renderModules();
     showHome();
     renderProfile();
@@ -134,8 +140,10 @@
         tabs.forEach(function(t) { t.classList.remove("active"); });
         tab.classList.add("active");
         
-        $("tab-business").classList.toggle("hidden", tabName !== "business");
-        $("tab-profile").classList.toggle("hidden", tabName !== "profile");
+        var businessTab = $("tab-business");
+        var profileTab = $("tab-profile");
+        if (businessTab) businessTab.classList.toggle("hidden", tabName !== "business");
+        if (profileTab) profileTab.classList.toggle("hidden", tabName !== "profile");
         
         if (tabName === "profile") renderProfile();
       });
