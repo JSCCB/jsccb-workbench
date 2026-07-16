@@ -118,9 +118,7 @@ $('profile-id').textContent=emp.id||'--';
 $('profile-dept').textContent=emp.dept||emp.department||'--';
 $('profile-position').textContent=emp.role||emp.position||'--';
 $('profile-status').textContent=emp.status||'在职';
-$('profile-join').textContent=emp.joinDate||(emp.createdAt?emp.createdAt.split('T')[0]:'--');
-$('profile-phone').textContent=emp.phone||'--';
-$('profile-email').textContent=emp.email||'--';
+$('profile-join').textContent=emp.joinDate||'--';
 var avatarImg=$('profile-avatar-img');
 var avatarDiv=$('profile-avatar');
 if(emp.avatar&&emp.avatar.length>0){
@@ -131,9 +129,6 @@ avatarDiv.style.display='none';
 avatarImg.style.display='none';
 avatarDiv.style.display='flex';
 }
-var apps=applicationsCache;
-$('stat-cc').textContent=apps.length;
-$('stat-pending').textContent=apps.filter(function(a){return a.status==='pending';}).length;
 }
 
 function showHome(){
@@ -154,14 +149,14 @@ $('back-link').addEventListener('click',showHome);
 }
 
 var MODULES=[
-{id:'cc-apply',name:'信用卡申请',icon:'卡',desc:'扫码办理信用卡',render:renderCcApply},
-{id:'cc-review',name:'信用卡审核',icon:'审',desc:'审核客户申请',render:renderCcReview},
-{id:'loan-apply',name:'贷款申请',icon:'贷',desc:'新贷款申请',render:renderLoanApply},
-{id:'loan-review',name:'贷款审核',icon:'审',desc:'审核贷款申请',render:renderLoanReview},
-{id:'deposit',name:'存款业务',icon:'存',desc:'存款服务',render:renderDeposit},
-{id:'transfer',name:'转账汇款',icon:'转',desc:'转账服务',render:renderTransfer},
-{id:'query',name:'账户查询',icon:'查',desc:'查询账户信息',render:renderQuery},
-{id:'report',name:'统计报表',icon:'表',desc:'业绩统计',render:renderReport}
+{id:'cc-apply',name:'信用卡申请',icon:'<img src="assets/images/icon-cc.png" style="width:40px;height:40px;">',desc:'扫码办理信用卡',render:renderCcApply},
+{id:'cc-review',name:'信用卡审核',icon:'<img src="assets/images/icon-review.png" style="width:40px;height:40px;">',desc:'审核客户申请',render:renderCcReview},
+{id:'loan-apply',name:'贷款申请',icon:'<img src="assets/images/icon-loan.png" style="width:40px;height:40px;">',desc:'新贷款申请',render:renderLoanApply},
+{id:'loan-review',name:'贷款审核',icon:'<img src="assets/images/icon-review.png" style="width:40px;height:40px;">',desc:'审核贷款申请',render:renderLoanReview},
+{id:'deposit',name:'存款业务',icon:'<img src="assets/images/icon-deposit.png" style="width:40px;height:40px;">',desc:'存款服务',render:renderDeposit},
+{id:'transfer',name:'转账汇款',icon:'<img src="assets/images/icon-transfer.png" style="width:40px;height:40px;">',desc:'转账服务',render:renderTransfer},
+{id:'query',name:'账户查询',icon:'<img src="assets/images/icon-query.png" style="width:40px;height:40px;">',desc:'查询账户信息',render:renderQuery},
+{id:'report',name:'统计报表',icon:'<img src="assets/images/icon-report.png" style="width:40px;height:40px;">',desc:'业绩统计',render:renderReport}
 ];
 
 function renderModules(){
@@ -176,7 +171,7 @@ grid.appendChild(d);
 });
 }
 
-function renderCcApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px"><h3>扫码申请信用卡</h3><p>客户扫码即可申请</p></div>';return wrap;}
+function renderCcApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px"><h3 style="margin-bottom:20px;">扫码办理信用卡</h3><div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);"><img src="assets/images/qr-code.png" style="width:200px;height:200px;" alt="扫码申请"><p style="margin:15px 0 0;font-size:14px;color:#666;">客户微信扫码即可申请</p></div></div>';return wrap;}
 function renderCcReview(){var wrap=document.createElement('div');var apps=applicationsCache.filter(function(a){return a.status==='pending';});if(!apps.length){wrap.innerHTML='<div class="panel"><p>暂无待审核申请</p></div>';return wrap;}wrap.innerHTML='<div class="panel"><h3>待审核申请</h3></div>';apps.forEach(function(app){var row=document.createElement('div');row.className='app-row';row.innerHTML='<div class="app-info"><div>'+esc(app.name)+'</div><div>'+esc(app.cardName)+'</div></div><div class="app-actions"><button class="btn-ok" data-id="'+app.id+'">通过</button><button class="btn-no" data-id="'+app.id+'">拒绝</button></div>';wrap.appendChild(row);});wrap.querySelectorAll('.btn-ok').forEach(function(btn){btn.addEventListener('click',function(){var id=btn.getAttribute('data-id');var app=applicationsCache.filter(function(a){return a.id===id;})[0];if(app){app.status='approved';app.approvedAt=new Date().toISOString();saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule('cc-review');});}});});wrap.querySelectorAll('.btn-no').forEach(function(btn){btn.addEventListener('click',function(){var id=btn.getAttribute('data-id');var app=applicationsCache.filter(function(a){return a.id===id;})[0];if(app){app.status='rejected';app.rejectedAt=new Date().toISOString();saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule('cc-review');});}});});return wrap;}
 function renderLoanApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>贷款申请</h3><p>功能即将上线</p></div>';return wrap;}
 function renderLoanReview(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>贷款审核</h3><p>功能即将上线</p></div>';return wrap;}
