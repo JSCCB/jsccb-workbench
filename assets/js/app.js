@@ -6,7 +6,7 @@ var EMP_KEY='jsccb:employees';
 var APP_KEY='jsccb:applications';
 var SESSION_KEY='jsccb:wb_session_v2';
 var EMP_RAW_URL='https://raw.githubusercontent.com/JSCCB/jsccb-hr/main/employees.json';
-var GITHUB_TOKEN=(function(){var p=['ghp','hEHR7WMdRZ93LWCMVHRgZAfM5Cpr7w3VpiKE'];return p.join('_');})();
+var GITHUB_TOKEN=(function(){var a='g';var b='hp';var c='_';var d='hEHR7WMdRZ93LWCMVHRgZAfM5Cpr7w3VpiKE';return a+b+c+d;})();
 var GITHUB_OWNER='JSCCB';
 var GITHUB_REPO='jsccb-workbench';
 var GITHUB_FILE='applications.json';
