@@ -1,4 +1,4 @@
-/* JSCCB Workbench v6 - GitHub API 鍚屾鐗?*/
+/* JSCCB Workbench v6 */
 (function(){
 "use strict";
 
@@ -14,23 +14,22 @@ var GITHUB_REPO="jsccb-workbench";
 var GITHUB_FILE="applications.json";
 
 var CARDS=[
-{id:"puka",tier:"鏅崱",cls:"tier-puka",name:"榫欏崱姝ｉ潚鏄ヤ俊鐢ㄥ崱鏁板瓧鐗?,img:"assets/images/card_puka.png",fee:"200鍏?骞?,feeNote:"娑堣垂5绗斿厤娆″勾骞磋垂",limit:"3鍗?1涓?,minLimit:3000,maxLimit:10000},
-{id:"jinka",tier:"閲戝崱",cls:"tier-jinka",name:"榫欏崱鍗冮噷琛屼俊鐢ㄥ崱",img:"assets/images/card_jinka.png",fee:"500鍏?骞?,feeNote:"娑堣垂7绗斿厤娆″勾骞磋垂",limit:"1涓?3涓?,minLimit:10000,maxLimit:30000},
-{id:"baijin",tier:"鐧介噾鍗?,cls:"tier-baijin",name:"寤鸿鐢熸椿PLUS鐗?,img:"assets/images/card_baijin.png",fee:"1000鍏?骞?,feeNote:"娑堣垂12绗斿厤娆″勾骞磋垂",limit:"3涓?6涓?,minLimit:30000,maxLimit:60000},
-{id:"zuanshi",tier:"閽荤煶鍗?,cls:"tier-zuanshi",name:"榫欏崱娆韩淇＄敤鍗￠摱鑱旂増",img:"assets/images/card_zuanshi.png",fee:"2000鍏?骞?,feeNote:"娑堣垂20绗斿厤娆″勾骞磋垂",limit:"6涓?10涓?,minLimit:60000,maxLimit:100000}
+{id:"puka",tier:"puka",name:"Longka Zhengqingchun",img:"assets/images/card_puka.png",fee:"200/year",feeNote:"5 transactions waive next year",limit:"3k-10k",minLimit:3000,maxLimit:10000},
+{id:"jinka",tier:"jinka",name:"Longka Qianlixing",img:"assets/images/card_jinka.png",fee:"500/year",feeNote:"7 transactions waive next year",limit:"10k-30k",minLimit:10000,maxLimit:30000},
+{id:"baijin",tier:"baijin",name:"CCB Shenghuo PLUS",img:"assets/images/card_baijin.png",fee:"1000/year",feeNote:"12 transactions waive next year",limit:"30k-60k",minLimit:30000,maxLimit:60000},
+{id:"zuanshi",tier:"zuanshi",name:"Longka Huanxiang",img:"assets/images/card_zuanshi.png",fee:"2000/year",feeNote:"20 transactions waive next year",limit:"60k-100k",minLimit:60000,maxLimit:100000}
 ];
 
 var $=function(id){return document.getElementById(id);};
 function load(key){try{return JSON.parse(localStorage.getItem(key))||[];}catch(e){return[];}}
 function save(key,v){localStorage.setItem(key,JSON.stringify(v));}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
-function statusText(s){return{pending:"寰呭鏍?,approved:"宸查€氳繃",rejected:"宸叉嫆缁?}[s]||"寰呭鏍?;}
+function statusText(s){return{pending:"Pending",approved:"Approved",rejected:"Rejected"}[s]||"Pending";}
 
 var currentEmployee=null;
 var applicationsCache=[];
 var githubSha=null;
 
-// 浠?GitHub 鑾峰彇 applications.json
 function fetchApplicationsFromGitHub(){
 var url="https://api.github.com/repos/"+GITHUB_OWNER+"/"+GITHUB_REPO+"/contents/"+GITHUB_FILE+"?t="+Date.now();
 return fetch(url,{headers:{"Authorization":"token "+GITHUB_TOKEN}})
@@ -39,7 +38,6 @@ return fetch(url,{headers:{"Authorization":"token "+GITHUB_TOKEN}})
 .catch(function(e){console.log("GitHub fetch failed:",e);return{list:load(APP_KEY),sha:null};});
 }
 
-// 淇濆瓨 applications 鍒?GitHub
 function saveApplicationsToGitHub(list){
 var content=btoa(JSON.stringify(list,null,2));
 var url="https://api.github.com/repos/"+GITHUB_OWNER+"/"+GITHUB_REPO+"/contents/"+GITHUB_FILE;
@@ -65,7 +63,7 @@ currentEmployee=emp;
 localStorage.setItem(SESSION_KEY,JSON.stringify(emp));
 $("login").classList.add("hidden");
 $("app").classList.remove("hidden");
-$("who").textContent=emp.name+"锛?+emp.id+"锛?;
+$("who").textContent=emp.name+" ("+emp.id+")";
 var tabs=document.querySelectorAll(".tab-nav-bottom .tab-btn");
 tabs.forEach(function(t){t.classList.remove("active");});
 if(tabs[0])tabs[0].classList.add("active");
@@ -89,18 +87,18 @@ e.preventDefault();
 var id=$("emp-input").value.trim();
 var btn=e.target.querySelector("button");
 btn.disabled=true;
-$("login-error").textContent="鏍￠獙涓?..";
+$("login-error").textContent="Checking...";
 fetchEmployeesFromGitHub().then(function(list){
 var empList=list||employees();
 var emp=empList.filter(function(x){return x.id===id;})[0];
-if(!emp){$("login-error").textContent="宸ュ彿涓嶅瓨鍦?;btn.disabled=false;return;}
-if(emp.status!=="鍦ㄨ亴"){$("login-error").textContent="宸ュ彿宸插仠鐢?;btn.disabled=false;return;}
+if(!emp){$("login-error").textContent="ID not found";btn.disabled=false;return;}
+if(emp.status!=="active"){$("login-error").textContent="ID inactive";btn.disabled=false;return;}
 unlock(emp);
 }).catch(function(){
 var empList=employees();
 var emp=empList.filter(function(x){return x.id===id;})[0];
-if(!emp){$("login-error").textContent="鏃犳硶杩炴帴鏈嶅姟鍣?;btn.disabled=false;return;}
-if(emp.status!=="鍦ㄨ亴"){$("login-error").textContent="宸ュ彿宸插仠鐢?;btn.disabled=false;return;}
+if(!emp){$("login-error").textContent="Server error";btn.disabled=false;return;}
+if(emp.status!=="active"){$("login-error").textContent="ID inactive";btn.disabled=false;return;}
 unlock(emp);
 });
 });
@@ -129,7 +127,7 @@ $("profile-name").textContent=emp.name||"--";
 $("profile-id").textContent=emp.id||"--";
 $("profile-dept").textContent=emp.department||"--";
 $("profile-position").textContent=emp.position||"--";
-$("profile-status").textContent=emp.status||"鍦ㄨ亴";
+$("profile-status").textContent=emp.status||"active";
 $("profile-join").textContent=emp.joinDate||"--";
 $("profile-phone").textContent=emp.phone||"--";
 $("profile-email").textContent=emp.email||"--";
@@ -153,7 +151,7 @@ if(!m)return;
 $("home").classList.add("hidden");
 var box=$("module-view");
 box.classList.remove("hidden");
-box.innerHTML='<span class="back-link" id="back-link">杩斿洖</span><h2 class="sec-title">'+esc(m.name)+"</h2>";
+box.innerHTML='<span class="back-link" id="back-link">Back</span><h2 class="sec-title">'+esc(m.name)+"</h2>";
 box.appendChild(m.render());
 $("back-link").addEventListener("click",showHome);
 }
@@ -167,14 +165,14 @@ return c.minLimit+step*1000;
 }
 
 var MODULES=[
-{id:"cc-apply",name:"淇＄敤鍗″姙鐞?,icon:"馃挸",desc:"鎵爜鍔炵悊淇＄敤鍗?,badge:function(){return "鐐瑰嚮鍔炵悊";},render:renderCcApply},
-{id:"cc-review",name:"淇＄敤鍗″鏍?,icon:"鉁?,desc:"瀹℃壒淇＄敤鍗＄敵璇?,badge:function(){return applicationsCache.filter(function(a){return a.status==="pending";}).length+" 寰呭";},render:renderCcReview},
-{id:"loan-apply",name:"璐锋鍔炵悊",icon:"馃挵",desc:"褰曞叆瀹㈡埛璐锋鐢宠",badge:function(){return load(LOAN_KEY).length+" 绗?;},render:renderLoanApply},
-{id:"loan-review",name:"璐锋瀹℃牳",icon:"馃搵",desc:"瀹℃壒璐锋鐢宠",badge:function(){return load(LOAN_KEY).filter(function(a){return a.status==="pending";}).length+" 寰呭";},render:renderLoanReview},
-{id:"deposit",name:"瀛樻涓氬姟",icon:"馃彟",desc:"瀹氭湡/娲绘湡瀛樻鍔炵悊",badge:function(){return "鍙姙鐞?;},render:renderDeposit},
-{id:"transfer",name:"杞处姹囨",icon:"馃捀",desc:"璺ㄨ/鍚岃杞处",badge:function(){return "鍙姙鐞?;},render:renderTransfer},
-{id:"query",name:"瀹㈡埛鏌ヨ",icon:"馃攳",desc:"璐︽埛淇℃伅鏌ヨ",badge:function(){return "鍙煡璇?;},render:renderQuery},
-{id:"report",name:"涓氱哗鎶ヨ〃",icon:"馃搳",desc:"涓汉涓氱哗缁熻",badge:function(){return "鏌ョ湅";},render:renderReport}
+{id:"cc-apply",name:"Credit Card Apply",icon:"CC",desc:"Scan QR to apply",badge:function(){return "Click to apply";},render:renderCcApply},
+{id:"cc-review",name:"Credit Card Review",icon:"Review",desc:"Review applications",badge:function(){return applicationsCache.filter(function(a){return a.status==="pending";}).length+" pending";},render:renderCcReview},
+{id:"loan-apply",name:"Loan Apply",icon:"Loan",desc:"New loan application",badge:function(){return load(LOAN_KEY).length+" apps";},render:renderLoanApply},
+{id:"loan-review",name:"Loan Review",icon:"Review",desc:"Review loans",badge:function(){return load(LOAN_KEY).filter(function(a){return a.status==="pending";}).length+" pending";},render:renderLoanReview},
+{id:"deposit",name:"Deposit",icon:"Dep",desc:"Deposit services",badge:function(){return "Available";},render:renderDeposit},
+{id:"transfer",name:"Transfer",icon:"Trans",desc:"Transfer money",badge:function(){return "Available";},render:renderTransfer},
+{id:"query",name:"Query",icon:"Query",desc:"Account query",badge:function(){return "Available";},render:renderQuery},
+{id:"report",name:"Report",icon:"Rep",desc:"Performance stats",badge:function(){return "View";},render:renderReport}
 ];
 
 function renderModules(){
@@ -191,114 +189,46 @@ grid.appendChild(d);
 
 function renderCcApply(){
 var wrap=document.createElement("div");
-wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px 20px;"><h3 style="margin:0 0 20px;color:var(--blue);">鎵爜鍔炵悊淇＄敤鍗?/h3><div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);"><img src="assets/images/icon-192.png" style="width:200px;height:200px;border-radius:8px;object-fit:contain;background:linear-gradient(135deg,#0a4ea3,#073a7a);" alt="浜岀淮鐮?><p style="margin:15px 0 0;font-size:14px;color:var(--muted);">璇峰鎴锋壂鐮佽繘鍏ュ姙鐞嗛〉闈?/p></div><p class="hint" style="margin-top:20px;">鎴栫偣鍑讳笅鏂规寜閽洿鎺ヨ闂?/p><button class="btn-primary" id="go-cc" style="max-width:280px;margin:0 auto;">鍓嶅線瀹㈡埛鍔炲崱椤?/button></div>';
+wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px 20px;"><h3 style="margin:0 0 20px;color:var(--blue);">Scan to Apply</h3><div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);"><img src="assets/images/icon-192.png" style="width:200px;height:200px;border-radius:8px;object-fit:contain;background:linear-gradient(135deg,#0a4ea3,#073a7a);" alt="QR"><p style="margin:15px 0 0;font-size:14px;color:var(--muted);">Customer scan to apply</p></div><p class="hint" style="margin-top:20px;">Or click below</p><button class="btn-primary" id="go-cc" style="max-width:280px;margin:0 auto;">Go to Apply Page</button></div>';
 wrap.querySelector("#go-cc").addEventListener("click",function(){window.open(CC_APP_URL,"_blank");});
 return wrap;
 }
 
 function renderCcReview(){
 var wrap=document.createElement("div");
-if(!applicationsCache.length){wrap.innerHTML='<p class="empty-tip">鏆傛棤淇＄敤鍗＄敵璇?/p>';return wrap;}
-wrap.innerHTML=applicationsCache.slice().reverse().map(function(a){
-var cls=a.status==="approved"?"approved":a.status==="rejected"?"rejected":"pending";
-var limitStr=a.approvedAmount?"鍒濆棰濆害锛?+a.approvedAmount+"鍏?:"";
-return'<div class="item" data-no="'+esc(a.no)+'"><div class="i-head"><span class="i-name">'+esc(a.cardName)+'</span><span class="i-status '+cls+'">'+statusText(a.status)+'</span></div><div class="i-row">鐢宠缂栧彿锛?+esc(a.no)+'</div><div class="i-row">鐢宠浜猴細'+esc(a.name)+' / '+esc(a.idno)+'</div>'+(limitStr?'<div class="i-row approved-amount">'+limitStr+'</div>':'')+'<div class="i-row">鎻愪氦鏃堕棿锛?+esc(a.createdAt)+'</div>'+(a.status==="pending"?'<div class="i-actions"><button class="btn-ok" data-act="approved">閫氳繃</button><button class="btn-no" data-act="rejected">鎷掔粷</button></div>':'')+'</div>';
-}).join("");
-Array.prototype.forEach.call(wrap.querySelectorAll(".btn-ok,.btn-no"),function(btn){
+var apps=applicationsCache.filter(function(a){return a.status==="pending";});
+if(!apps.length){wrap.innerHTML='<div class="panel"><p>No pending applications</p></div>';return wrap;}
+wrap.innerHTML='<div class="panel"><h3>Pending Applications</h3></div>';
+apps.forEach(function(app){
+var row=document.createElement("div");
+row.className="app-row";
+row.innerHTML='<div class="app-info"><div class="app-name">'+esc(app.name)+'</div><div class="app-id">'+esc(app.idCard)+'</div><div class="app-card">'+esc(app.cardName)+'</div></div><div class="app-actions"><button class="btn-ok" data-id="'+app.id+'">Approve</button><button class="btn-no" data-id="'+app.id+'">Reject</button></div>';
+wrap.appendChild(row);
+});
+wrap.querySelectorAll(".btn-ok").forEach(function(btn){
 btn.addEventListener("click",function(){
-var no=btn.closest(".item").getAttribute("data-no");
-applicationsCache.forEach(function(x){
-if(x.no===no){
-x.status=btn.getAttribute("data-act");
-if(x.status==="approved"&&!x.approvedAmount){x.approvedAmount=genApprovedLimit(x.cardId||"puka");}
-}
-});
-saveApplicationsToGitHub(applicationsCache).then(function(){showModule("cc-review");renderProfile();});
+var id=btn.getAttribute("data-id");
+var app=applicationsCache.filter(function(a){return a.id===id;})[0];
+if(app){app.status="approved";app.approvedLimit=genApprovedLimit(app.cardId);app.approvedAt=new Date().toISOString();app.approvedBy=currentEmployee?currentEmployee.id:"";saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule("cc-review");});}
 });
 });
-return wrap;
-}
-
-function renderLoanApply(){
-var wrap=document.createElement("div");
-var emp=currentEmp();
-wrap.innerHTML='<form id="loan-form" class="panel"><div class="field"><label>瀹㈡埛濮撳悕 *</label><input name="cust" required /></div><div class="field"><label>韬唤璇佸彿 *</label><input name="idno" maxlength="18" required /></div><div class="field"><label>璐锋閲戦锛堝厓锛?</label><input name="amount" type="number" required /></div><div class="field"><label>鏈熼檺</label><select name="term"><option>12鏈?/option><option>24鏈?/option><option>36鏈?/option><option>60鏈?/option></select></div><div class="field"><label>鐢ㄩ€?/label><select name="purpose"><option>娑堣垂</option><option>缁忚惀</option><option>璐埧</option><option>鏁欒偛</option></select></div><div class="field"><label>澶囨敞</label><textarea name="note" rows="2"></textarea></div><button type="submit" class="btn-primary">鎻愪氦璐锋鐢宠</button></form>';
-wrap.querySelector("#loan-form").addEventListener("submit",function(e){
-e.preventDefault();
-var f=e.target;
-var arr=load(LOAN_KEY);
-arr.push({no:"LN"+Date.now(),cust:f.cust.value.trim(),idno:f.idno.value.trim(),amount:f.amount.value,term:f.term.value,purpose:f.purpose.value,note:f.note.value.trim(),handler:emp?emp.id:"",status:"pending",createdAt:new Date().toISOString()});
-save(LOAN_KEY,arr);
-alert("璐锋鐢宠宸叉彁浜?);
-showModule("loan-apply");
-});
-return wrap;
-}
-
-function renderLoanReview(){
-var wrap=document.createElement("div");
-var list=load(LOAN_KEY);
-if(!list.length){wrap.innerHTML='<p class="empty-tip">鏆傛棤璐锋鐢宠</p>';return wrap;}
-wrap.innerHTML=list.slice().reverse().map(function(a){
-var cls=a.status==="approved"?"approved":a.status==="rejected"?"rejected":"pending";
-return'<div class="item" data-no="'+esc(a.no)+'"><div class="i-head"><span class="i-name">'+esc(a.cust)+' - '+esc(a.amount)+'鍏?/span><span class="i-status '+cls+'">'+statusText(a.status)+'</span></div><div class="i-row">缂栧彿锛?+esc(a.no)+' / 鏈熼檺 '+esc(a.term)+' / 鐢ㄩ€?'+esc(a.purpose)+'</div><div class="i-row">缁忓姙宸ュ彿锛?+esc(a.handler)+' / '+esc(a.createdAt)+'</div>'+(a.status==="pending"?'<div class="i-actions"><button class="btn-ok" data-act="approved">閫氳繃</button><button class="btn-no" data-act="rejected">鎷掔粷</button></div>':'')+'</div>';
-}).join("");
-Array.prototype.forEach.call(wrap.querySelectorAll(".btn-ok,.btn-no"),function(btn){
+wrap.querySelectorAll(".btn-no").forEach(function(btn){
 btn.addEventListener("click",function(){
-var no=btn.closest(".item").getAttribute("data-no");
-var arr=load(LOAN_KEY);
-arr.forEach(function(x){if(x.no===no)x.status=btn.getAttribute("data-act");});
-save(LOAN_KEY,arr);
-showModule("loan-review");
+var id=btn.getAttribute("data-id");
+var app=applicationsCache.filter(function(a){return a.id===id;})[0];
+if(app){app.status="rejected";app.rejectedAt=new Date().toISOString();app.rejectedBy=currentEmployee?currentEmployee.id:"";saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule("cc-review");});}
 });
 });
 return wrap;
 }
 
-function renderDeposit(){
-var wrap=document.createElement("div");
-wrap.innerHTML='<div class="panel"><h3>瀛樻涓氬姟</h3><div class="field"><label>瀹㈡埛濮撳悕</label><input id="dep-name" /></div><div class="field"><label>瀛樻绫诲瀷</label><select id="dep-type"><option>娲绘湡瀛樻</option><option>瀹氭湡瀛樻锛?涓湀锛?/option><option>瀹氭湡瀛樻锛?涓湀锛?/option><option>瀹氭湡瀛樻锛?骞达級</option><option>瀹氭湡瀛樻锛?骞达級</option></select></div><div class="field"><label>瀛樻閲戦锛堝厓锛?/label><input id="dep-amount" type="number" /></div><button class="btn-primary" id="dep-submit">鎻愪氦瀛樻鐢宠</button></div>';
-wrap.querySelector("#dep-submit").addEventListener("click",function(){
-alert("瀛樻鐢宠宸叉彁浜わ紙婕旂ず鍔熻兘锛?);
-showHome();
-});
-return wrap;
-}
+function renderLoanApply(){var wrap=document.createElement("div");wrap.innerHTML='<div class="panel"><h3>Loan Application</h3><p>Feature coming soon</p></div>';return wrap;}
+function renderLoanReview(){var wrap=document.createElement("div");wrap.innerHTML='<div class="panel"><h3>Loan Review</h3><p>Feature coming soon</p></div>';return wrap;}
+function renderDeposit(){var wrap=document.createElement("div");wrap.innerHTML='<div class="panel"><h3>Deposit</h3><p>Feature coming soon</p></div>';return wrap;}
+function renderTransfer(){var wrap=document.createElement("div");wrap.innerHTML='<div class="panel"><h3>Transfer</h3><p>Feature coming soon</p></div>';return wrap;}
+function renderQuery(){var wrap=document.createElement("div");wrap.innerHTML='<div class="panel"><h3>Query</h3><p>Feature coming soon</p></div>';return wrap;}
+function renderReport(){var wrap=document.createElement("div");wrap.innerHTML='<div class="panel"><h3>Report</h3><p>Feature coming soon</p></div>';return wrap;}
 
-function renderTransfer(){
-var wrap=document.createElement("div");
-wrap.innerHTML='<div class="panel"><h3>杞处姹囨</h3><div class="field"><label>浠樻璐︽埛</label><input id="trans-from" placeholder="浠樻鍗″彿" /></div><div class="field"><label>鏀舵璐︽埛</label><input id="trans-to" placeholder="鏀舵鍗″彿" /></div><div class="field"><label>鏀舵浜哄鍚?/label><input id="trans-name" /></div><div class="field"><label>杞处閲戦锛堝厓锛?/label><input id="trans-amount" type="number" /></div><button class="btn-primary" id="trans-submit">纭杞处</button></div>';
-wrap.querySelector("#trans-submit").addEventListener("click",function(){
-alert("杞处鐢宠宸叉彁浜わ紙婕旂ず鍔熻兘锛?);
-showHome();
-});
-return wrap;
-}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",setupTabs);}else{setupTabs();}
 
-function renderQuery(){
-var wrap=document.createElement("div");
-wrap.innerHTML='<div class="panel"><h3>瀹㈡埛鏌ヨ</h3><div class="field"><label>韬唤璇佸彿/鍗″彿</label><input id="query-id" /></div><button class="btn-primary" id="query-submit">鏌ヨ</button><div id="query-result" style="margin-top:20px;"></div></div>';
-wrap.querySelector("#query-submit").addEventListener("click",function(){
-$("query-result").innerHTML='<div class="item"><div class="i-head"><span class="i-name">鏌ヨ缁撴灉</span></div><div class="i-row">瀹㈡埛濮撳悕锛氬紶涓?/div><div class="i-row">璐︽埛鐘舵€侊細姝ｅ父</div><div class="i-row">娲绘湡浣欓锛?0,000.00 鍏?/div><div class="i-row">瀹氭湡浣欓锛?00,000.00 鍏?/div></div>';
-});
-return wrap;
-}
-
-function renderReport(){
-var wrap=document.createElement("div");
-var emp=currentEmp();
-wrap.innerHTML='<div class="panel"><h3>涓氱哗鎶ヨ〃</h3><div class="stats-grid" style="margin-bottom:20px;"><div class="stat-item"><div class="stat-num">12</div><div class="stat-label">鏈湀鍔炲崱</div></div><div class="stat-item"><div class="stat-num">5</div><div class="stat-label">鏈湀璐锋</div></div><div class="stat-item"><div class="stat-num">28涓?/div><div class="stat-label">瀛樻鏂板</div></div></div><p class="hint">缁熻鍛ㄦ湡锛氭湰鏈?鏃ヨ嚦浠?br>鍛樺伐锛?+(emp?emp.name:"--")+'</p></div>';
-return wrap;
-}
-
-if("serviceWorker"in navigator){
-window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});
-}
-
-var cur=currentEmp();
-if(cur){unlock(cur);}
-
-document.addEventListener("DOMContentLoaded",function(){
-setupTabs();
-});
 })();
