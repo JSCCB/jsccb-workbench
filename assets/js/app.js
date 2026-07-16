@@ -87,18 +87,18 @@ e.preventDefault();
 var id=$("emp-input").value.trim();
 var btn=e.target.querySelector("button");
 btn.disabled=true;
-$("login-error").textContent="Checking...";
+$("login-error").textContent="楠岃瘉涓?..";
 fetchEmployeesFromGitHub().then(function(list){
 var empList=list||employees();
 var emp=empList.filter(function(x){return x.id===id;})[0];
-if(!emp){$("login-error").textContent="ID not found";btn.disabled=false;return;}
-if(emp.status!=="active"){$("login-error").textContent="ID inactive";btn.disabled=false;return;}
+if(!emp){$("login-error").textContent="宸ュ彿涓嶅瓨鍦?;btn.disabled=false;return;}
+if(emp.status!=="鍦ㄨ亴"&&emp.status!=="active"){$("login-error").textContent="宸ュ彿宸插仠鐢?;btn.disabled=false;return;}
 unlock(emp);
 }).catch(function(){
 var empList=employees();
 var emp=empList.filter(function(x){return x.id===id;})[0];
-if(!emp){$("login-error").textContent="Server error";btn.disabled=false;return;}
-if(emp.status!=="active"){$("login-error").textContent="ID inactive";btn.disabled=false;return;}
+if(!emp){$("login-error").textContent="鏈嶅姟鍣ㄩ敊璇紝璇烽噸璇?;btn.disabled=false;return;}
+if(emp.status!=="鍦ㄨ亴"&&emp.status!=="active"){$("login-error").textContent="宸ュ彿宸插仠鐢?;btn.disabled=false;return;}
 unlock(emp);
 });
 });
@@ -128,7 +128,7 @@ $("profile-id").textContent=emp.id||"--";
 $("profile-dept").textContent=emp.dept||emp.department||"--";
 $("profile-position").textContent=emp.role||emp.position||"--";
 $("profile-status").textContent=emp.status||"active";
-$("profile-join").textContent=emp.joinDate||emp.createdAt?emp.createdAt.split("T")[0]:"--";
+$("profile-join").textContent=emp.joinDate||(emp.createdAt?emp.createdAt.split("T")[0]:"--");
 $("profile-phone").textContent=emp.phone||"--";
 $("profile-email").textContent=emp.email||"--";
 var avatarImg=$("profile-avatar-img");
