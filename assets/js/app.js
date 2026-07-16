@@ -23,7 +23,7 @@ var CARDS=[
 var $=function(id){return document.getElementById(id);};
 function load(key){try{return JSON.parse(localStorage.getItem(key))||[];}catch(e){return[];}}
 function save(key,v){localStorage.setItem(key,JSON.stringify(v));}
-function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function esc(s){return String(s==null?"":s).replace(/[&<>"'']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
 function statusText(s){return{pending:"Pending",approved:"Approved",rejected:"Rejected"}[s]||"Pending";}
 
 var currentEmployee=null;
@@ -87,18 +87,18 @@ e.preventDefault();
 var id=$("emp-input").value.trim();
 var btn=e.target.querySelector("button");
 btn.disabled=true;
-$("login-error").textContent="楠岃瘉涓?..";
+$("login-error").textContent="验证中...";
 fetchEmployeesFromGitHub().then(function(list){
 var empList=list||employees();
 var emp=empList.filter(function(x){return x.id===id;})[0];
-if(!emp){$("login-error").textContent="宸ュ彿涓嶅瓨鍦?;btn.disabled=false;return;}
-if(emp.status!=="鍦ㄨ亴"&&emp.status!=="active"){$("login-error").textContent="宸ュ彿宸插仠鐢?;btn.disabled=false;return;}
+if(!emp){$("login-error").textContent="工号不存在";btn.disabled=false;return;}
+if(emp.status!=="在职"&&emp.status!=="active"){$("login-error").textContent="工号已停用";btn.disabled=false;return;}
 unlock(emp);
 }).catch(function(){
 var empList=employees();
 var emp=empList.filter(function(x){return x.id===id;})[0];
-if(!emp){$("login-error").textContent="鏈嶅姟鍣ㄩ敊璇紝璇烽噸璇?;btn.disabled=false;return;}
-if(emp.status!=="鍦ㄨ亴"&&emp.status!=="active"){$("login-error").textContent="宸ュ彿宸插仠鐢?;btn.disabled=false;return;}
+if(!emp){$("login-error").textContent="服务器错误，请重试";btn.disabled=false;return;}
+if(emp.status!=="在职"&&emp.status!=="active"){$("login-error").textContent="工号已停用";btn.disabled=false;return;}
 unlock(emp);
 });
 });
