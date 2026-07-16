@@ -1,4 +1,4 @@
-/* JSCCB 员工工作台 (PWA)
+/* JSCCB 员工工作台 (PWA) v2
  * 登录凭证 = HR 创建的工号（localStorage: jsccb:employees）。
  * 信用卡申请来自 jsccb-credit-card（jsccb:applications）。
  * 模块采用注册表模式，新增业务只需往 MODULES 数组追加一项即可扩展。
@@ -9,14 +9,13 @@
   var EMP_KEY = "jsccb:employees";
   var APP_KEY = "jsccb:applications";
   var LOAN_KEY = "jsccb:loans";
-  var SESSION_KEY = "jsccb:wb_session";
-  // 信用卡办理 App 地址（与本站同域 GitHub Pages）
+  var SESSION_KEY = "jsccb:wb_session_v2";
   var CC_APP_URL = "https://jsccb.github.io/jsccb-credit-card/";
 
   var CARDS = [
-    { id: "puka", tier: "A1 · 普卡", cls: "tier-puka", name: "龙卡欢享信用卡银联版" },
+    { id: "puka", tier: "C3 · 普卡", cls: "tier-puka", name: "龙卡欢享信用卡银联版" },
     { id: "jinka", tier: "B2 · 金卡", cls: "tier-jinka", name: "龙卡千里行信用卡" },
-    { id: "baijin", tier: "C3 · 白金卡", cls: "tier-baijin", name: "龙卡正青春信用卡数字版" },
+    { id: "baijin", tier: "A1 · 白金卡", cls: "tier-baijin", name: "龙卡正青春信用卡数字版" },
     { id: "zuanshi", tier: "D4 · 钻石卡", cls: "tier-zuanshi", name: "建行生活卡PLUS版" }
   ];
 
@@ -30,11 +29,12 @@
   }
   function statusText(s) { return { pending: "待审核", approved: "已通过", rejected: "已拒绝" }[s] || "待审核"; }
 
-  /* ---------- 登录 ---------- */
+  /* ---------- 登录（后端校验：必须存在于HR系统） ---------- */
   function employees() { return load(EMP_KEY); }
   function currentEmp() {
     try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch (e) { return null; }
   }
+  
   function unlock(emp) {
     localStorage.setItem(SESSION_KEY, JSON.stringify(emp));
     $("login").classList.add("hidden");
@@ -43,6 +43,7 @@
     renderModules();
     showHome();
   }
+  
   function lock() {
     localStorage.removeItem(SESSION_KEY);
     $("app").classList.add("hidden");
@@ -50,14 +51,26 @@
     $("emp-input").value = "";
     $("login-error").textContent = "";
   }
+  
   $("login-form").addEventListener("submit", function (e) {
     e.preventDefault();
     var id = $("emp-input").value.trim();
-    var emp = employees().filter(function (x) { return x.id === id; })[0];
-    if (!emp) { $("login-error").textContent = "工号不存在，请先由 HR 创建。"; return; }
-    if (emp.status !== "在职") { $("login-error").textContent = "该工号已停用，请联系 HR。"; return; }
+    var empList = employees();
+    var emp = empList.filter(function (x) { return x.id === id; })[0];
+    
+    console.log("Login attempt:", id, "Found:", emp, "HR list:", empList);
+    
+    if (!emp) { 
+      $("login-error").textContent = "工号不存在，请先由 HR 创建。"; 
+      return; 
+    }
+    if (emp.status !== "在职") { 
+      $("login-error").textContent = "该工号已停用，请联系 HR。"; 
+      return; 
+    }
     unlock(emp);
   });
+  
   $("logout-btn").addEventListener("click", lock);
 
   /* ---------- 视图 ---------- */
@@ -66,6 +79,7 @@
     $("home").classList.remove("hidden");
     renderModules();
   }
+  
   function showModule(id) {
     var m = MODULES.filter(function (x) { return x.id === id; })[0];
     if (!m) return;
@@ -111,7 +125,7 @@
     });
   }
 
-  /* 信用卡办理：展示卡种 + 跳转客户申请 */
+  /* 信用卡办理 */
   function renderCcApply() {
     var wrap = document.createElement("div");
     var cards = CARDS.map(function (c) {
@@ -164,7 +178,7 @@
       '<form id="loan-form" class="panel">' +
       '<div class="field"><label>客户姓名 *</label><input name="cust" required /></div>' +
       '<div class="field"><label>身份证号 *</label><input name="idno" maxlength="18" required /></div>' +
-      '<div class="field"><label>贷款金额（元）*</</label><input name="amount" type="number" required /></div>' +
+      '<div class="field"><label>贷款金额（元）*</label><input name="amount" type="number" required /></div>' +
       '<div class="field"><label>期限</label><select name="term"><option>12期</option><option>24期</option><option>36期</option><option>60期</option></select></div>' +
       '<div class="field"><label>用途</label><select name="purpose"><option>消费</option><option>经营</option><option>购房</option><option>教育</option></select></div>' +
       '<div class="field"><label>备注</label><textarea name="note" rows="2"></textarea></div>' +
@@ -222,7 +236,7 @@
     return wrap;
   }
 
-  /* 更多：扩展说明 */
+  /* 更多 */
   function renderMore() {
     var wrap = document.createElement("div");
     wrap.innerHTML =
@@ -238,5 +252,7 @@
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
   }
 
-  if (currentEmp()) unlock(currentEmp());
+  // 启动
+  var cur = currentEmp();
+  if (cur) unlock(cur);
 })();
