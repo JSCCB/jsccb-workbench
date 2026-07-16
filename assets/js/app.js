@@ -48,55 +48,8 @@ return fetch(EMP_RAW_URL+'?t='+Date.now())
 function employees(){return load(EMP_KEY);}
 function currentEmp(){try{return JSON.parse(localStorage.getItem(SESSION_KEY));}catch(e){return null;}}
 
-function unlock(emp){
-currentEmployee=emp;
-localStorage.setItem(SESSION_KEY,JSON.stringify(emp));
-$('login').classList.add('hidden');
-$('app').classList.remove('hidden');
-$('who').textContent=emp.name+' ('+emp.id+')';
-var tabs=document.querySelectorAll('.tab-nav-bottom .tab-btn');
-tabs.forEach(function(t){t.classList.remove('active');});
-if(tabs[0])tabs[0].classList.add('active');
-var tb=$('tab-business'),tp=$('tab-profile');
-if(tb)tb.classList.remove('hidden');
-if(tp)tp.classList.add('hidden');
-fetchApplicationsFromGitHub().then(function(){renderModules();showHome();renderProfile();});
-}
-
-function lock(){
-currentEmployee=null;
-localStorage.removeItem(SESSION_KEY);
-$('app').classList.add('hidden');
-$('login').classList.remove('hidden');
-$('emp-input').value='';
-$('login-error').textContent='';
-}
-
-$('login-form').addEventListener('submit',function(e){
-e.preventDefault();
-var id=$('emp-input').value.trim();
-var btn=e.target.querySelector('button');
-btn.disabled=true;
-$('login-error').textContent='验证中...';
-fetchEmployeesFromGitHub().then(function(list){
-var empList=list||employees();
-var emp=empList.filter(function(x){return x.id===id;})[0];
-if(!emp){$('login-error').textContent='工号不存在';btn.disabled=false;return;}
-if(emp.status!=='在职'&&emp.status!=='active'){$('login-error').textContent='工号已停用';btn.disabled=false;return;}
-unlock(emp);
-}).catch(function(){
-var empList=employees();
-var emp=empList.filter(function(x){return x.id===id;})[0];
-if(!emp){$('login-error').textContent='服务器错误，请重试';btn.disabled=false;return;}
-if(emp.status!=='在职'&&emp.status!=='active'){$('login-error').textContent='工号已停用';btn.disabled=false;return;}
-unlock(emp);
-});
-});
-
-$('logout-btn').addEventListener('click',lock);
-
 function setupTabs(){
-var tabs=document.querySelectorAll('.tab-nav-bottom .tab-btn');
+var tabs=document.querySelectorAll('.tab');
 tabs.forEach(function(tab){
 tab.addEventListener('click',function(){
 var tabName=tab.getAttribute('data-tab');
@@ -149,14 +102,14 @@ $('back-link').addEventListener('click',showHome);
 }
 
 var MODULES=[
-{id:'cc-apply',name:'信用卡申请',icon:'<img src="assets/images/icon-cc.png" style="width:40px;height:40px;">',desc:'扫码办理信用卡',render:renderCcApply},
-{id:'cc-review',name:'信用卡审核',icon:'<img src="assets/images/icon-review.png" style="width:40px;height:40px;">',desc:'审核客户申请',render:renderCcReview},
-{id:'loan-apply',name:'贷款申请',icon:'<img src="assets/images/icon-loan.png" style="width:40px;height:40px;">',desc:'新贷款申请',render:renderLoanApply},
-{id:'loan-review',name:'贷款审核',icon:'<img src="assets/images/icon-review.png" style="width:40px;height:40px;">',desc:'审核贷款申请',render:renderLoanReview},
-{id:'deposit',name:'存款业务',icon:'<img src="assets/images/icon-deposit.png" style="width:40px;height:40px;">',desc:'存款服务',render:renderDeposit},
-{id:'transfer',name:'转账汇款',icon:'<img src="assets/images/icon-transfer.png" style="width:40px;height:40px;">',desc:'转账服务',render:renderTransfer},
-{id:'query',name:'账户查询',icon:'<img src="assets/images/icon-query.png" style="width:40px;height:40px;">',desc:'查询账户信息',render:renderQuery},
-{id:'report',name:'统计报表',icon:'<img src="assets/images/icon-report.png" style="width:40px;height:40px;">',desc:'业绩统计',render:renderReport}
+{id:'cc-apply',name:'信用卡申请',icon:'💳',desc:'扫码办理信用卡',render:renderCcApply},
+{id:'cc-review',name:'信用卡审核',icon:'✅',desc:'审核客户申请',render:renderCcReview},
+{id:'loan-apply',name:'贷款申请',icon:'💰',desc:'新贷款申请',render:renderLoanApply},
+{id:'loan-review',name:'贷款审核',icon:'📋',desc:'审核贷款申请',render:renderLoanReview},
+{id:'deposit',name:'存款业务',icon:'🏦',desc:'存款服务',render:renderDeposit},
+{id:'transfer',name:'转账汇款',icon:'💸',desc:'转账服务',render:renderTransfer},
+{id:'query',name:'账户查询',icon:'🔍',desc:'查询账户信息',render:renderQuery},
+{id:'report',name:'统计报表',icon:'📊',desc:'业绩统计',render:renderReport}
 ];
 
 function renderModules(){
