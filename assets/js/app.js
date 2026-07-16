@@ -1,4 +1,4 @@
-/* JSCCB 员工工作台 (PWA) v3
+/* JSCCB 员工工作台 (PWA) v4
  * 登录凭证 = HR 创建的工号（localStorage: jsccb:employees）。
  * 信用卡申请来自 jsccb-credit-card（jsccb:applications）。
  * 模块采用注册表模式，新增业务只需往 MODULES 数组追加一项即可扩展。
@@ -23,7 +23,7 @@
       img: "assets/images/card_jinka.png",
       fee: "500元/年", feeNote: "消费7笔免次年年费", limit: "1万-3万",
       minLimit: 10000, maxLimit: 30000 },
-    { id: "baijin", tier: "白金卡", cls: "tier-baijin", name: "建行生活卡银联版",
+    { id: "baijin", tier: "白金卡", cls: "tier-baijin", name: "建行生活PLUS版",
       img: "assets/images/card_baijin.png",
       fee: "1000元/年", feeNote: "消费12笔免次年年费", limit: "3万-6万",
       minLimit: 30000, maxLimit: 60000 },
@@ -42,6 +42,8 @@
     });
   }
   function statusText(s) { return { pending: "待审核", approved: "已通过", rejected: "已拒绝" }[s] || "待审核"; }
+
+  var currentEmployee = null;
 
   /* ---------- 从 GitHub 拉取最新员工列表（多设备同步） ---------- */
   function fetchEmployeesFromGitHub() {
@@ -64,15 +66,18 @@
   }
   
   function unlock(emp) {
+    currentEmployee = emp;
     localStorage.setItem(SESSION_KEY, JSON.stringify(emp));
     $("login").classList.add("hidden");
     $("app").classList.remove("hidden");
     $("who").textContent = emp.name + "（" + emp.id + "）";
     renderModules();
     showHome();
+    renderProfile();
   }
   
   function lock() {
+    currentEmployee = null;
     localStorage.removeItem(SESSION_KEY);
     $("app").classList.add("hidden");
     $("login").classList.remove("hidden");
@@ -87,7 +92,6 @@
     btn.disabled = true;
     $("login-error").textContent = "校验中…";
     
-    // 先尝试从 GitHub 拉取最新数据
     fetchEmployeesFromGitHub().then(function (list) {
       var empList = list || employees();
       var emp = empList.filter(function (x) { return x.id === id; })[0];
@@ -103,7 +107,6 @@
       }
       unlock(emp);
     }).catch(function () {
-      // GitHub 不可用，回退本地缓存
       var empList = employees();
       var emp = empList.filter(function (x) { return x.id === id; })[0];
       if (!emp) { 
@@ -121,6 +124,48 @@
   });
   
   $("logout-btn").addEventListener("click", lock);
+
+  /* ---------- Tab 切换 ---------- */
+  function setupTabs() {
+    var tabs = document.querySelectorAll(".tab-btn");
+    tabs.forEach(function(tab) {
+      tab.addEventListener("click", function() {
+        var tabName = tab.getAttribute("data-tab");
+        tabs.forEach(function(t) { t.classList.remove("active"); });
+        tab.classList.add("active");
+        
+        $("tab-business").classList.toggle("hidden", tabName !== "business");
+        $("tab-profile").classList.toggle("hidden", tabName !== "profile");
+        
+        if (tabName === "profile") renderProfile();
+      });
+    });
+  }
+
+  /* ---------- 个人资料页 ---------- */
+  function renderProfile() {
+    var emp = currentEmployee || currentEmp();
+    if (!emp) return;
+    
+    $("profile-name").textContent = emp.name || "--";
+    $("profile-id").textContent = emp.id || "--";
+    $("profile-dept").textContent = emp.department || "--";
+    $("profile-position").textContent = emp.position || "--";
+    $("profile-status").textContent = emp.status || "在职";
+    $("profile-join").textContent = emp.joinDate || "--";
+    $("profile-phone").textContent = emp.phone || "--";
+    $("profile-email").textContent = emp.email || "--";
+    
+    // 统计
+    var apps = load(APP_KEY);
+    var loans = load(LOAN_KEY);
+    var pendingCC = apps.filter(function(a) { return a.status === "pending"; }).length;
+    var pendingLoan = loans.filter(function(a) { return a.status === "pending"; }).length;
+    
+    $("stat-cc").textContent = apps.length;
+    $("stat-loan").textContent = loans.length;
+    $("stat-pending").textContent = pendingCC + pendingLoan;
+  }
 
   /* ---------- 视图 ---------- */
   function showHome() {
@@ -192,7 +237,6 @@
     }).join("");
     wrap.innerHTML =
       '<div class="mini-cards">' + cards + "</div>" +
-      // 卡种年费提示
       '<div class="fee-table">' + CARDS.map(function (c) {
         return '<div class="fee-row"><span class="f-tier">' + esc(c.tier) + '</span><span class="f-name">' + esc(c.name) + '</span><span class="f-fee">' + esc(c.fee) + '</span><span class="f-note">' + esc(c.feeNote) + '</span></div>';
       }).join("") + '</div>' +
@@ -286,7 +330,7 @@
     wrap.innerHTML = list.slice().reverse().map(function (a) {
       var cls = a.status === "approved" ? "approved" : a.status === "rejected" ? "rejected" : "pending";
       return '<div class="item" data-no="' + esc(a.no) + '">' +
-        '<div class="i-head"><span class="i-name">' + esc(a.cust) + " · " + esc(a.amount) + "元</span>" +
+        '<div class="i-head"><span class="i-name">' + esc(a.cust) + " · " + esc(a.amount) + "元</span>' +
         '<span class="i-status ' + cls + '">' + statusText(a.status) + "</span></div>" +
         '<div class="i-row">编号：' + esc(a.no) + " / 期限 " + esc(a.term) + " / 用途 " + esc(a.purpose) + "</div>" +
         '<div class="i-row">经办工号：' + esc(a.handler) + " / " + esc(a.createdAt) + "</div>" +
@@ -323,6 +367,9 @@
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
   }
 
+  // 初始化
+  setupTabs();
+  
   // 启动
   var cur = currentEmp();
   if (cur) unlock(cur);
