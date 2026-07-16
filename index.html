@@ -10,22 +10,22 @@
   <link rel="stylesheet" href="assets/css/style.css?v=8" />
 </head>
 <body>
-  <!-- 鐧诲綍 -->
+  <!-- 登录 -->
   <div id="login" class="lock-screen">
     <div class="lock-card">
       <div class="brand"><span class="logo">JSCCB</span></div>
-      <h1>鍛樺伐鐧诲綍</h1>
-      <p class="lock-tip">璇疯緭鍏?HR 鍒嗛厤鐨勫伐鍙?/p>
+      <h1>员工登录</h1>
+      <p class="lock-tip">请输入 HR 分配的工号</p>
       <form id="login-form" autocomplete="off">
-        <input id="emp-input" type="text" placeholder="宸ュ彿锛屽 JSCCB0001" />
-        <button type="submit" class="btn-primary">鐧?褰?/button>
+        <input id="emp-input" type="text" placeholder="工号，如 JSCCB0001" />
+        <button type="submit" class="btn-primary">登 录</button>
       </form>
       <p id="login-error" class="error-text"></p>
-      <p class="hint" style="margin-top:12px;font-size:11px;color:#888;">宸ュ彿闇€鍏堝湪HR绯荤粺鍒涘缓锛屽璁惧鑷姩鍚屾</p>
+      <p class="hint" style="margin-top:12px;font-size:11px;color:#888;">工号需先在HR系统创建，多设备自动同步</p>
     </div>
   </div>
 
-  <!-- 涓讳綋 -->
+  <!-- 主体 -->
   <div id="app" class="app hidden">
     <header class="topbar">
       <div class="topbar-left">
@@ -33,70 +33,71 @@
       </div>
       <div class="topbar-right">
         <span id="who" class="who"></span>
-        <button id="logout-btn" class="btn-ghost">閫€鍑?/button>
+        <button id="logout-btn" class="btn-ghost">退出</button>
       </div>
     </header>
 
     <main class="container">
-      <!-- 涓氬姟 Tab -->
+      <!-- 业务 Tab -->
       <section id="tab-business" class="tab-content">
         <section id="home" class="view">
-          <h2 class="sec-title">涓氬姟妯″潡</h2>
+          <h2 class="sec-title">业务模块</h2>
           <div id="module-grid" class="module-grid"></div>
         </section>
         <section id="module-view" class="view hidden"></section>
       </section>
 
-      <!-- 鎴戠殑 Tab -->
+      <!-- 我的 Tab -->
       <section id="tab-profile" class="tab-content hidden">
         <div class="profile-header">
           <div class="profile-avatar">
-            <div class="avatar-circle" id="profile-avatar">馃懁</div>
+            <img class="avatar-circle" id="profile-avatar-img" src="" alt="avatar" style="display:none;width:80px;height:80px;border-radius:50%;object-fit:cover;">
+            <div class="avatar-circle" id="profile-avatar" style="display:flex;">👤</div>
           </div>
           <div class="profile-info">
             <h2 class="profile-name" id="profile-name">--</h2>
-            <p class="profile-id">宸ュ彿锛?span id="profile-id">--</span></p>
+            <p class="profile-id">工号：<span id="profile-id">--</span></p>
             <div class="profile-tags">
               <span class="tag" id="profile-dept">--</span>
               <span class="tag" id="profile-position">--</span>
-              <span class="tag tag-status" id="profile-status">鍦ㄨ亴</span>
+              <span class="tag tag-status" id="profile-status">在职</span>
             </div>
           </div>
         </div>
         
         <div class="profile-section">
-          <h3 class="section-title">鍩烘湰淇℃伅</h3>
+          <h3 class="section-title">基本信息</h3>
           <div class="info-list">
-            <div class="info-item"><span class="info-label">鍏ヨ亴鏃ユ湡</span><span class="info-value" id="profile-join">--</span></div>
-            <div class="info-item"><span class="info-label">鑱旂郴鏂瑰紡</span><span class="info-value" id="profile-phone">--</span></div>
-            <div class="info-item"><span class="info-label">閭</span><span class="info-value" id="profile-email">--</span></div>
+            <div class="info-item"><span class="info-label">入职日期</span><span class="info-value" id="profile-join">--</span></div>
+            <div class="info-item"><span class="info-label">联系方式</span><span class="info-value" id="profile-phone">--</span></div>
+            <div class="info-item"><span class="info-label">邮箱</span><span class="info-value" id="profile-email">--</span></div>
           </div>
         </div>
 
         <div class="profile-section">
-          <h3 class="section-title">宸ヤ綔缁熻</h3>
+          <h3 class="section-title">工作统计</h3>
           <div class="stats-grid">
-            <div class="stat-item"><div class="stat-num" id="stat-cc">0</div><div class="stat-label">淇＄敤鍗″鏍?/div></div>
-            <div class="stat-item"><div class="stat-num" id="stat-loan">0</div><div class="stat-label">璐锋瀹℃牳</div></div>
-            <div class="stat-item"><div class="stat-num" id="stat-pending">0</div><div class="stat-label">寰呭浠诲姟</div></div>
+            <div class="stat-item"><div class="stat-num" id="stat-cc">0</div><div class="stat-label">信用卡审核</div></div>
+            <div class="stat-item"><div class="stat-num" id="stat-loan">0</div><div class="stat-label">贷款审核</div></div>
+            <div class="stat-item"><div class="stat-num" id="stat-pending">0</div><div class="stat-label">待审任务</div></div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- 搴曢儴 Tab 瀵艰埅 -->
+    <!-- 底部 Tab 导航 -->
     <nav class="tab-nav-bottom">
       <button class="tab-btn active" data-tab="business">
-        <span class="tab-icon">馃搵</span>
-        <span class="tab-label">涓氬姟</span>
+        <span class="tab-icon">📋</span>
+        <span class="tab-label">业务</span>
       </button>
       <button class="tab-btn" data-tab="profile">
-        <span class="tab-icon">馃懁</span>
-        <span class="tab-label">鎴戠殑</span>
+        <span class="tab-icon">👤</span>
+        <span class="tab-label">我的</span>
       </button>
     </nav>
   </div>
 
-  <script src="assets/js/app.js?v=8"></script>
+  <script src="assets/js/app.js?v=9"></script>
 </body>
 </html>
