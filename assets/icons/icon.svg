@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0a4ea3"/>
+  <rect x="86" y="150" width="340" height="70" rx="12" fill="#ffffff"/>
+  <rect x="86" y="250" width="160" height="70" rx="12" fill="#c8102e"/>
+  <rect x="266" y="250" width="160" height="70" rx="12" fill="#ffffff" opacity="0.85"/>
+  <text x="96" y="196" font-family="Arial, sans-serif" font-size="34" fill="#0a4ea3" font-weight="bold">JSCCB</text>
+  <text x="96" y="296" font-family="Arial, sans-serif" font-size="26" fill="#ffffff" font-weight="bold">工作台</text>
+</svg>
