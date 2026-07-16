@@ -1,1 +1,14 @@
-ewogICJuYW1lIjogIkpTQ0NCIOWRmOW3peW3peS9nOWPsCIsCiAgInNob3J0X25hbWUiOiAiSlNDQ0Llt6XkvZzlj7AiLAogICJkZXNjcmlwdGlvbiI6ICLpk7booYzlkZjlt6Xlt6XkvZzlj7DvvJrkv6HnlKjljaEv6LS35qy+5Yqe55CG5LiO5a6h5qC477yIUFdB77yJIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmNGY2ZmEiLAogICJ0aGVtZV9jb2xvciI6ICIjMGE0ZWEzIiwKICAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLAogICJpY29ucyI6IFsKICAgIHsgInNyYyI6ICJhc3NldHMvaWNvbnMvaWNvbi5zdmciLCAic2l6ZXMiOiAiYW55IiwgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsICJwdXJwb3NlIjogImFueSIgfSwKICAgIHsgInNyYyI6ICJhc3NldHMvaWNvbnMvaWNvbi5zdmciLCAic2l6ZXMiOiAiYW55IiwgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsICJwdXJwb3NlIjogIm1hc2thYmxlIiB9CiAgXQp9Cg==
+{
+  "name": "JSCCB 员工工作台",
+  "short_name": "JSCCB工作台",
+  "description": "银行员工工作台：信用卡/贷款办理与审核（PWA）",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f4f6fa",
+  "theme_color": "#0a4ea3",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "assets/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "assets/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

@@ -1,1 +1,329 @@
-LyogSlNDQ0Ig5ZGY5bel5bel5L2c5Y+wIChQV0EpIHYzCiAqIOeZu+W9leWHreivgSA9IEhSIOWIm+W7uueahOW3peWPt++8iGxvY2FsU3RvcmFnZToganNjY2I6ZW1wbG95ZWVz77yJ44CCCiAqIOS/oeeUqOWNoeeUs+ivt+adpeiHqiBqc2NjYi1jcmVkaXQtY2FyZO+8iGpzY2NiOmFwcGxpY2F0aW9uc++8ieOAggogKiDmqKHlnZfph4fnlKjms6jlhozooajmqKHlvI/vvIzmlrDlop7kuJrliqHlj6rpnIDlvoAgTU9EVUxFUyDmlbDnu4Tov73liqDkuIDpobnljbPlj6/mianlsZXjgIIKICovCihmdW5jdGlvbiAoKSB7CiAgInVzZSBzdHJpY3QiOwoKICB2YXIgRU1QX0tFWSA9ICJqc2NjYjplbXBsb3llZXMiOwogIHZhciBBUFBfS0VZID0gImpzY2NiOmFwcGxpY2F0aW9ucyI7CiAgdmFyIExPQU5fS0VZID0gImpzY2NiOmxvYW5zIjsKICB2YXIgU0VTU0lPTl9LRVkgPSAianNjY2I6d2Jfc2Vzc2lvbl92MiI7CiAgdmFyIENDX0FQUF9VUkwgPSAiaHR0cHM6Ly9qc2NjYi5naXRodWIuaW8vanNjY2ItY3JlZGl0LWNhcmQvIjsKICB2YXIgRU1QX1JBV19VUkwgPSAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0pTQ0NCL2pzY2NiLWhyL21haW4vZW1wbG95ZWVzLmpzb24iOwoKICAvLyDkuI7kv6HnlKjljaFBUFDkv53mjIHkuIDoh7TnmoTljaHnp43mmKDlsITvvIjluKblm77niYfvvIkKICB2YXIgQ0FSRFMgPSBbCiAgICB7IGlkOiAicHVrYSIsIHRpZXI6ICLmma7ljaEiLCBjbHM6ICJ0aWVyLXB1a2EiLCBuYW1lOiAi6b6Z5Y2h5q2j6Z2S5pil5L+h55So5Y2h5pWw5a2X54mIIiwKICAgICAgaW1nOiAiYXNzZXRzL2ltYWdlcy9jYXJkX3B1a2EucG5nIiwKICAgICAgZmVlOiAiMjAw5YWDL+W5tCIsIGZlZU5vdGU6ICLmtojotLk156yU5YWN5qyh5bm05bm06LS5IiwgbGltaXQ6ICIz5Y2DLTHkuIciLAogICAgICBtaW5MaW1pdDogMzAwMCwgbWF4TGltaXQ6IDEwMDAwIH0sCiAgICB7IGlkOiAiamlua2EiLCB0aWVyOiAi6YeR5Y2hIiwgY2xzOiAidGllci1qaW5rYSIsIG5hbWU6ICLpvpnljaHljYPph4zooYzkv6HnlKjljaEiLAogICAgICBpbWc6ICJhc3NldHMvaW1hZ2VzL2NhcmRfamlua2EucG5nIiwKICAgICAgZmVlOiAiNTAw5YWDL+W5tCIsIGZlZU5vdGU6ICLmtojotLk356yU5YWN5qyh5bm05bm06LS5IiwgbGltaXQ6ICIx5LiHLTPkuIciLAogICAgICBtaW5MaW1pdDogMTAwMDAsIG1heExpbWl0OiAzMDAwMCB9LAogICAgeyBpZDogImJhaWppbiIsIHRpZXI6ICLnmb3ph5HljaEiLCBjbHM6ICJ0aWVyLWJhaWppbiIsIG5hbWU6ICLlu7rooYznlJ/mtLvljaHpk7bogZTniYgiLAogICAgICBpbWc6ICJhc3NldHMvaW1hZ2VzL2NhcmRfYmFpamluLnBuZyIsCiAgICAgIGZlZTogIjEwMDDlhYMv5bm0IiwgZmVlTm90ZTogIua2iOi0uTEy56yU5YWN5qyh5bm05bm06LS5IiwgbGltaXQ6ICIz5LiHLTbkuIciLAogICAgICBtaW5MaW1pdDogMzAwMDAsIG1heExpbWl0OiA2MDAwMCB9LAogICAgeyBpZDogInp1YW5zaGkiLCB0aWVyOiAi6ZK755+z5Y2hIiwgY2xzOiAidGllci16dWFuc2hpIiwgbmFtZTogIum+meWNoeasouS6q+S/oeeUqOWNoemTtuiBlOeJiCIsCiAgICAgIGltZzogImFzc2V0cy9pbWFnZXMvY2FyZF96dWFuc2hpLnBuZyIsCiAgICAgIGZlZTogIjIwMDDlhYMv5bm0IiwgZmVlTm90ZTogIua2iOi0uTIw56yU5YWN5qyh5bm05bm06LS5IiwgbGltaXQ6ICI25LiHLTEw5LiHIiwKICAgICAgbWluTGltaXQ6IDYwMDAwLCBtYXhMaW1pdDogMTAwMDAwIH0KICBdOwoKICB2YXIgJCA9IGZ1bmN0aW9uIChpZCkgeyByZXR1cm4gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoaWQpOyB9OwogIGZ1bmN0aW9uIGxvYWQoa2V5KSB7IHRyeSB7IHJldHVybiBKU09OLnBhcnNlKGxvY2FsU3RvcmFnZS5nZXRJdGVtKGtleSkpIHx8IFtdOyB9IGNhdGNoIChlKSB7IHJldHVybiBbXTsgfSB9CiAgZnVuY3Rpb24gc2F2ZShrZXksIHYpIHsgbG9jYWxTdG9yYWdlLnNldEl0ZW0oa2V5LCBKU09OLnN0cmluZ2lmeSh2KSk7IH0KICBmdW5jdGlvbiBlc2MocykgewogICAgcmV0dXJuIFN0cmluZyhzID09IG51bGwgPyAiIiA6IHMpLnJlcGxhY2UoL1smPD4iJ10vZywgZnVuY3Rpb24gKGMpIHsKICAgICAgcmV0dXJuIHsgIiYiOiAiJmFtcDsiLCAiPCI6ICImbHQ7IiwgIj4iOiAiJmd0OyIsICciJzogIiZxdW90OyIsICInIjogIiYjMzk7IiB9W2NdOwogICAgfSk7CiAgfQogIGZ1bmN0aW9uIHN0YXR1c1RleHQocykgeyByZXR1cm4geyBwZW5kaW5nOiAi5b6F5a6h5qC4IiwgYXBwcm92ZWQ6ICLlt7LpgJrov4ciLCByZWplY3RlZDogIuW3suaLkue7nSIgfVtzXSB8fCAi5b6F5a6h5qC4IjsgfQoKICAvKiAtLS0tLS0tLS0tIOS7jiBHaXRIdWIg5ouJ5Y+W5pyA5paw5ZGY5bel5YiX6KGo77yI5aSa6K6+5aSH5ZCM5q2l77yJIC0tLS0tLS0tLS0gKi8KICBmdW5jdGlvbiBmZXRjaEVtcGxveWVlc0Zyb21HaXRIdWIoKSB7CiAgICByZXR1cm4gZmV0Y2goRU1QX1JBV19VUkwgKyAiP3Q9IiArIERhdGUubm93KCkpCiAgICAgIC50aGVuKGZ1bmN0aW9uIChyKSB7IGlmICghci5vaykgdGhyb3cgbmV3IEVycm9yKCJIVFRQICIgKyByLnN0YXR1cyk7IHJldHVybiByLmpzb24oKTsgfSkKICAgICAgLnRoZW4oZnVuY3Rpb24gKGxpc3QpIHsKICAgICAgICBpZiAoQXJyYXkuaXNBcnJheShsaXN0KSAmJiBsaXN0Lmxlbmd0aCkgewogICAgICAgICAgc2F2ZShFTVBfS0VZLCBsaXN0KTsKICAgICAgICAgIHJldHVybiBsaXN0OwogICAgICAgIH0KICAgICAgICB0aHJvdyBuZXcgRXJyb3IoIuepuuaVsOaNriIpOwogICAgICB9KQogICAgICAuY2F0Y2goZnVuY3Rpb24gKCkgeyByZXR1cm4gbnVsbDsgfSk7CiAgfQoKICAvKiDojrflj5blkZjlt6XliJfooajvvJrkvJjlhYggR2l0SHVi77yM5Zue6YCA5pys5Zyw57yT5a2YICovCiAgZnVuY3Rpb24gZW1wbG95ZWVzKCkgeyByZXR1cm4gbG9hZChFTVBfS0VZKTsgfQogIGZ1bmN0aW9uIGN1cnJlbnRFbXAoKSB7CiAgICB0cnkgeyByZXR1cm4gSlNPTi5wYXJzZShsb2NhbFN0b3JhZ2UuZ2V0SXRlbShTRVNTSU9OX0tFWSkpOyB9IGNhdGNoIChlKSB7IHJldHVybiBudWxsOyB9CiAgfQogIAogIGZ1bmN0aW9uIHVubG9jayhlbXApIHsKICAgIGxvY2FsU3RvcmFnZS5zZXRJdGVtKFNFU1NJT05fS0VZLCBKU09OLnN0cmluZ2lmeShlbXApKTsKICAgICQoImxvZ2luIikuY2xhc3NMaXN0LmFkZCgiaGlkZGVuIik7CiAgICAkKCJhcHAiKS5jbGFzc0xpc3QucmVtb3ZlKCJoaWRkZW4iKTsKICAgICQoIndobyIpLnRleHRDb250ZW50ID0gZW1wLm5hbWUgKyAi77yIIiArIGVtcC5pZCArICLvvIkiOwogICAgcmVuZGVyTW9kdWxlcygpOwogICAgc2hvd0hvbWUoKTsKICB9CiAgCiAgZnVuY3Rpb24gbG9jaygpIHsKICAgIGxvY2FsU3RvcmFnZS5yZW1vdmVJdGVtKFNFU1NJT05fS0VZKTsKICAgICQoImFwcCIpLmNsYXNzTGlzdC5hZGQoImhpZGRlbiIpOwogICAgJCgibG9naW4iKS5jbGFzc0xpc3QucmVtb3ZlKCJoaWRkZW4iKTsKICAgICQoImVtcC1pbnB1dCIpLnZhbHVlID0gIiI7CiAgICAkKCJsb2dpbi1lcnJvciIpLnRleHRDb250ZW50ID0gIiI7CiAgfQogIAogICQoImxvZ2luLWZvcm0iKS5hZGRFdmVudExpc3RlbmVyKCJzdWJtaXQiLCBmdW5jdGlvbiAoZSkgewogICAgZS5wcmV2ZW50RGVmYXVsdCgpOwogICAgdmFyIGlkID0gJCgiZW1wLWlucHV0IikudmFsdWUudHJpbSgpOwogICAgdmFyIGJ0biA9IGUudGFyZ2V0LnF1ZXJ5U2VsZWN0b3IoImJ1dHRvbiIpOwogICAgYnRuLmRpc2FibGVkID0gdHJ1ZTsKICAgICQoImxvZ2luLWVycm9yIikudGV4dENvbnRlbnQgPSAi5qCh6aqM5Lit4oCmIjsKICAgIAogICAgLy8g5YWI5bCd6K+V5LuOIEdpdEh1YiDmi4nlj5bmnIDmlrDmlbDmja4KICAgIGZldGNoRW1wbG95ZWVzRnJvbUdpdEh1YigpLnRoZW4oZnVuY3Rpb24gKGxpc3QpIHsKICAgICAgdmFyIGVtcExpc3QgPSBsaXN0IHx8IGVtcGxveWVlcygpOwogICAgICB2YXIgZW1wID0gZW1wTGlzdC5maWx0ZXIoZnVuY3Rpb24gKHgpIHsgcmV0dXJuIHguaWQgPT09IGlkOyB9KVswXTsKICAgICAgaWYgKCFlbXApIHsgCiAgICAgICAgJCgibG9naW4tZXJyb3IiKS50ZXh0Q29udGVudCA9ICLlt6Xlj7fkuI3lrZjlnKjvvIzor7flhYjnlLEgSFIg5Yib5bu644CCIjsgCiAgICAgICAgYnRuLmRpc2FibGVkID0gZmFsc2U7CiAgICAgICAgcmV0dXJuOyAKICAgICAgfQogICAgICBpZiAoZW1wLnN0YXR1cyAhPT0gIuWcqOiBjCIpIHsgCiAgICAgICAgJCgibG9naW4tZXJyb3IiKS50ZXh0Q29udGVudCA9ICLor6Xlt6Xlj7flt7LlgZznlKjvvIzor7fogZTns7sgSFLjgIIiOyAKICAgICAgICBidG4uZGlzYWJsZWQgPSBmYWxzZTsKICAgICAgICByZXR1cm47IAogICAgICB9CiAgICAgIHVubG9jayhlbXApOwogICAgfSkuY2F0Y2goZnVuY3Rpb24gKCkgewogICAgICAvLyBHaXRIdWIg5LiN5Y+v55So77yM5Zue6YCA5pys5Zyw57yT5a2YCiAgICAgIHZhciBlbXBMaXN0ID0gZW1wbG95ZWVzKCk7CiAgICAgIHZhciBlbXAgPSBlbXBMaXN0LmZpbHRlcihmdW5jdGlvbiAoeCkgeyByZXR1cm4geC5pZCA9PT0gaWQ7IH0pWzBdOwogICAgICBpZiAoIWVtcCkgeyAKICAgICAgICAkKCJsb2dpbi1lcnJvciIpLnRleHRDb250ZW50ID0gIuaXoOazlei/nuaOpeacjeWKoeWZqO+8jOW3peWPt+S/oeaBr+S4jeWPr+eUqOOAgiI7IAogICAgICAgIGJ0bi5kaXNhYmxlZCA9IGZhbHNlOwogICAgICAgIHJldHVybjsgCiAgICAgIH0KICAgICAgaWYgKGVtcC5zdGF0dXMgIT09ICLlnKjogYwiKSB7IAogICAgICAgICQoImxvZ2luLWVycm9yIikudGV4dENvbnRlbnQgPSAi6K+l5bel5Y+35bey5YGc55So77yM6K+36IGU57O7IEhS44CCIjsgCiAgICAgICAgYnRuLmRpc2FibGVkID0gZmFsc2U7CiAgICAgICAgcmV0dXJuOyAKICAgICAgfQogICAgICB1bmxvY2soZW1wKTsKICAgIH0pOwogIH0pOwogIAogICQoImxvZ291dC1idG4iKS5hZGRFdmVudExpc3RlbmVyKCJjbGljayIsIGxvY2spOwoKICAvKiAtLS0tLS0tLS0tIOinhuWbviAtLS0tLS0tLS0tICovCiAgZnVuY3Rpb24gc2hvd0hvbWUoKSB7CiAgICAkKCJtb2R1bGUtdmlldyIpLmNsYXNzTGlzdC5hZGQoImhpZGRlbiIpOwogICAgJCgiaG9tZSIpLmNsYXNzTGlzdC5yZW1vdmUoImhpZGRlbiIpOwogICAgcmVuZGVyTW9kdWxlcygpOwogIH0KICAKICBmdW5jdGlvbiBzaG93TW9kdWxlKGlkKSB7CiAgICB2YXIgbSA9IE1PRFVMRVMuZmlsdGVyKGZ1bmN0aW9uICh4KSB7IHJldHVybiB4LmlkID09PSBpZDsgfSlbMF07CiAgICBpZiAoIW0pIHJldHVybjsKICAgICQoImhvbWUiKS5jbGFzc0xpc3QuYWRkKCJoaWRkZW4iKTsKICAgIHZhciBib3ggPSAkKCJtb2R1bGUtdmlldyIpOwogICAgYm94LmNsYXNzTGlzdC5yZW1vdmUoImhpZGRlbiIpOwogICAgYm94LmlubmVySFRNTCA9ICc8c3BhbiBjbGFzcz0iYmFjay1saW5rIiBpZD0iYmFjay1saW5rIj7ihpAg6L+U5ZuePC9zcGFuPjxoMiBjbGFzcz0ic2VjLXRpdGxlIj4nICsgZXNjKG0ubmFtZSkgKyAiPC9oMj4iOwogICAgYm94LmFwcGVuZENoaWxkKG0ucmVuZGVyKCkpOwogICAgJCgiYmFjay1saW5rIikuYWRkRXZlbnRMaXN0ZW5lcigiY2xpY2siLCBzaG93SG9tZSk7CiAgfQoKICAvKiDnlJ/miJDliJ3lrqHpop3luqbvvJrljYPkvY3lkI7nmb7ljYHkuKrliIbkvY3kuLowICovCiAgZnVuY3Rpb24gZ2VuQXBwcm92ZWRMaW1pdChjYXJkSWQpIHsKICAgIHZhciBjID0gQ0FSRFMuZmlsdGVyKGZ1bmN0aW9uICh4KSB7IHJldHVybiB4LmlkID09PSBjYXJkSWQ7IH0pWzBdOwogICAgaWYgKCFjKSByZXR1cm4gMDsKICAgIHZhciByYW5nZXMgPSBNYXRoLmZsb29yKChjLm1heExpbWl0IC0gYy5taW5MaW1pdCkgLyAxMDAwKTsKICAgIHZhciBzdGVwID0gTWF0aC5mbG9vcihNYXRoLnJhbmRvbSgpICogKHJhbmdlcyArIDEpKTsKICAgIHJldHVybiBjLm1pbkxpbWl0ICsgc3RlcCAqIDEwMDA7CiAgfQoKICAvKiAtLS0tLS0tLS0tIOaooeWdl+azqOWGjOihqO+8iOWPr+aJqeWxle+8iSAtLS0tLS0tLS0tICovCiAgdmFyIE1PRFVMRVMgPSBbCiAgICB7IGlkOiAiY2MtYXBwbHkiLCBuYW1lOiAi5L+h55So5Y2h5Yqe55CGIiwgaWNvbjogIvCfkrMiLCBkZXNjOiAi5Li65a6i5oi35o+Q5Lqk5L+h55So5Y2h55Sz6K+3IiwKICAgICAgYmFkZ2U6IGZ1bmN0aW9uICgpIHsgcmV0dXJuIGxvYWQoQVBQX0tFWSkubGVuZ3RoICsgIiDnrJTnlLPor7ciOyB9LAogICAgICByZW5kZXI6IHJlbmRlckNjQXBwbHkgfSwKICAgIHsgaWQ6ICJjYy1yZXZpZXciLCBuYW1lOiAi5L+h55So5Y2h5a6h5qC4IiwgaWNvbjogIuKchSIsIGRlc2M6ICLlrqHmibnkv6HnlKjljaHnlLPor7fljZUiLAogICAgICBiYWRnZTogZnVuY3Rpb24gKCkgeyByZXR1cm4gbG9hZChBUFBfS0VZKS5maWx0ZXIoZnVuY3Rpb24gKGEpIHsgcmV0dXJuIGEuc3RhdHVzID09PSAicGVuZGluZyI7IH0pLmxlbmd0aCArICIg5b6F5a6hIjsgfSwKICAgICAgcmVuZGVyOiByZW5kZXJDY1JldmlldyB9LAogICAgeyBpZDogImxvYW4tYXBwbHkiLCBuYW1lOiAi6LS35qy+5Yqe55CGIiwgaWNvbjogIvCfkrAiLCBkZXNjOiAi5b2V5YWl5a6i5oi36LS35qy+55Sz6K+3IiwKICAgICAgYmFkZ2U6IGZ1bmN0aW9uICgpIHsgcmV0dXJuIGxvYWQoTE9BTl9LRVkpLmxlbmd0aCArICIg56yUIjsgfSwKICAgICAgcmVuZGVyOiByZW5kZXJMb2FuQXBwbHkgfSwKICAgIHsgaWQ6ICJsb2FuLXJldmlldyIsIG5hbWU6ICLotLfmrL7lrqHmoLgiLCBpY29uOiAi8J+TiyIsIGRlc2M6ICLlrqHmibnotLfmrL7nlLPor7ciLAogICAgICBiYWRnZTogZnVuY3Rpb24gKCkgeyByZXR1cm4gbG9hZChMT0FOX0tFWSkuZmlsdGVyKGZ1bmN0aW9uIChhKSB7IHJldHVybiBhLnN0YXR1cyA9PT0gInBlbmRpbmciOyB9KS5sZW5ndGggKyAiIOW+heWuoSI7IH0sCiAgICAgIHJlbmRlcjogcmVuZGVyTG9hblJldmlldyB9LAogICAgeyBpZDogIm1vcmUiLCBuYW1lOiAi5pu05aSa5qih5Z2XIiwgaWNvbjogIuKelSIsIGRlc2M6ICLmianlsZXkuJrliqHvvIjnpLrkvovvvIkiLAogICAgICBiYWRnZTogZnVuY3Rpb24gKCkgeyByZXR1cm4gIuWPr+aJqeWxlSI7IH0sCiAgICAgIHJlbmRlcjogcmVuZGVyTW9yZSB9CiAgXTsKCiAgZnVuY3Rpb24gcmVuZGVyTW9kdWxlcygpIHsKICAgIHZhciBncmlkID0gJCgibW9kdWxlLWdyaWQiKTsKICAgIGdyaWQuaW5uZXJIVE1MID0gIiI7CiAgICBNT0RVTEVTLmZvckVhY2goZnVuY3Rpb24gKG0pIHsKICAgICAgdmFyIGQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICAgICAgZC5jbGFzc05hbWUgPSAibW9kdWxlLWNhcmQiOwogICAgICBkLmlubmVySFRNTCA9ICc8ZGl2IGNsYXNzPSJtLWljb24iPicgKyBtLmljb24gKyAnPC9kaXY+JyArCiAgICAgICAgJzxkaXYgY2xhc3M9Im0tbmFtZSI+JyArIGVzYyhtLm5hbWUpICsgIjwvZGl2PiIgKwogICAgICAgICc8ZGl2IGNsYXNzPSJtLWRlc2MiPicgKyBlc2MobS5kZXNjKSArICI8L2Rpdj4iICsKICAgICAgICAnPHNwYW4gY2xhc3M9Im0tYmFkZ2UiPicgKyBlc2MobS5iYWRnZSgpKSArICI8L3NwYW4+IjsKICAgICAgZC5hZGRFdmVudExpc3RlbmVyKCJjbGljayIsIGZ1bmN0aW9uICgpIHsgc2hvd01vZHVsZShtLmlkKTsgfSk7CiAgICAgIGdyaWQuYXBwZW5kQ2hpbGQoZCk7CiAgICB9KTsKICB9CgogIC8qIOS/oeeUqOWNoeWKnueQhiAqLwogIGZ1bmN0aW9uIHJlbmRlckNjQXBwbHkoKSB7CiAgICB2YXIgd3JhcCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoImRpdiIpOwogICAgdmFyIGNhcmRzID0gQ0FSRFMubWFwKGZ1bmN0aW9uIChjKSB7CiAgICAgIHJldHVybiAnPGRpdiBjbGFzcz0ibWluaS1jYXJkICcgKyBjLmNscyArICciPjxkaXY+PGRpdiBjbGFzcz0ibWMtdGllciI+JyArIGVzYyhjLnRpZXIpICsKICAgICAgICAnPC9kaXY+PGRpdiBjbGFzcz0ibWMtbmFtZSI+JyArIGVzYyhjLm5hbWUpICsgIjwvZGl2PjwvZGl2PjxzcGFuPuKAujwvc3Bhbj48L2Rpdj4iOwogICAgfSkuam9pbigiIik7CiAgICB3cmFwLmlubmVySFRNTCA9CiAgICAgICc8ZGl2IGNsYXNzPSJtaW5pLWNhcmRzIj4nICsgY2FyZHMgKyAiPC9kaXY+IiArCiAgICAgIC8vIOWNoeenjeW5tOi0ueaPkOekugogICAgICAnPGRpdiBjbGFzcz0iZmVlLXRhYmxlIj4nICsgQ0FSRFMubWFwKGZ1bmN0aW9uIChjKSB7CiAgICAgICAgcmV0dXJuICc8ZGl2IGNsYXNzPSJmZWUtcm93Ij48c3BhbiBjbGFzcz0iZi10aWVyIj4nICsgZXNjKGMudGllcikgKyAnPC9zcGFuPjxzcGFuIGNsYXNzPSJmLW5hbWUiPicgKyBlc2MoYy5uYW1lKSArICc8L3NwYW4+PHNwYW4gY2xhc3M9ImYtZmVlIj4nICsgZXNjKGMuZmVlKSArICc8L3NwYW4+PHNwYW4gY2xhc3M9ImYtbm90ZSI+JyArIGVzYyhjLmZlZU5vdGUpICsgJzwvc3Bhbj48L2Rpdj4nOwogICAgICB9KS5qb2luKCIiKSArICc8L2Rpdj4nICsKICAgICAgJzxwIGNsYXNzPSJoaW50Ij7lrqLmiLfnlLPor7for7fkvb/nlKjkuJPnlKjlip7ljaHpobXvvIjlkKvlrozmlbTouqvku73kuI7otYTmlpnph4fpm4bvvInjgII8L3A+JyArCiAgICAgICc8YnV0dG9uIGNsYXNzPSJidG4tcHJpbWFyeSIgaWQ9ImdvLWNjIj7liY3lvoDlrqLmiLflip7ljaHpobU8L2J1dHRvbj4nOwogICAgd3JhcC5xdWVyeVNlbGVjdG9yKCIjZ28tY2MiKS5hZGRFdmVudExpc3RlbmVyKCJjbGljayIsIGZ1bmN0aW9uICgpIHsgd2luZG93Lm9wZW4oQ0NfQVBQX1VSTCwgIl9ibGFuayIpOyB9KTsKICAgIHJldHVybiB3cmFwOwogIH0KCiAgLyog5L+h55So5Y2h5a6h5qC477yI5ZCr5Yid5a6h6aKd5bqm55Sf5oiQ77yJICovCiAgZnVuY3Rpb24gcmVuZGVyQ2NSZXZpZXcoKSB7CiAgICB2YXIgd3JhcCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoImRpdiIpOwogICAgdmFyIGxpc3QgPSBsb2FkKEFQUF9LRVkpOwogICAgaWYgKCFsaXN0Lmxlbmd0aCkgeyB3cmFwLmlubmVySFRNTCA9ICc8cCBjbGFzcz0iZW1wdHktdGlwIj7mmoLml6Dkv6HnlKjljaHnlLPor7c8L3A+JzsgcmV0dXJuIHdyYXA7IH0KICAgIHdyYXAuaW5uZXJIVE1MID0gbGlzdC5zbGljZSgpLnJldmVyc2UoKS5tYXAoZnVuY3Rpb24gKGEpIHsKICAgICAgdmFyIGNscyA9IGEuc3RhdHVzID09PSAiYXBwcm92ZWQiID8gImFwcHJvdmVkIiA6IGEuc3RhdHVzID09PSAicmVqZWN0ZWQiID8gInJlamVjdGVkIiA6ICJwZW5kaW5nIjsKICAgICAgdmFyIGxpbWl0U3RyID0gYS5hcHByb3ZlZEFtb3VudCA/ICLliJ3lrqHpop3luqbvvJoiICsgYS5hcHByb3ZlZEFtb3VudCArICLlhYMiIDogIiI7CiAgICAgIHJldHVybiAnPGRpdiBjbGFzcz0iaXRlbSIgZGF0YS1ubz0iJyArIGVzYyhhLm5vKSArICciPicgKwogICAgICAgICc8ZGl2IGNsYXNzPSJpLWhlYWQiPjxzcGFuIGNsYXNzPSJpLW5hbWUiPicgKyBlc2MoYS5jYXJkTmFtZSkgKyAnPC9zcGFuPicgKwogICAgICAgICc8c3BhbiBjbGFzcz0iaS1zdGF0dXMgJyArIGNscyArICciPicgKyBzdGF0dXNUZXh0KGEuc3RhdHVzKSArICI8L3NwYW4+PC9kaXY+IiArCiAgICAgICAgJzxkaXYgY2xhc3M9Imktcm93Ij7nlLPor7fnvJblj7fvvJonICsgZXNjKGEubm8pICsgIjwvZGl2PiIgKwogICAgICAgICc8ZGl2IGNsYXNzPSJpLXJvdyI+55Sz6K+35Lq677yaJyArIGVzYyhhLm5hbWUpICsgIiAvICIgKyBlc2MoYS5pZG5vKSArICI8L2Rpdj4iICsKICAgICAgICAobGltaXRTdHIgPyAnPGRpdiBjbGFzcz0iaS1yb3cgYXBwcm92ZWQtYW1vdW50Ij4nICsgbGltaXRTdHIgKyAiPC9kaXY+IiA6ICIiKSArCiAgICAgICAgJzxkaXYgY2xhc3M9Imktcm93Ij7mj5DkuqTml7bpl7TvvJonICsgZXNjKGEuY3JlYXRlZEF0KSArICI8L2Rpdj4iICsKICAgICAgICAoYS5zdGF0dXMgPT09ICJwZW5kaW5nIgogICAgICAgICAgPyAnPGRpdiBjbGFzcz0iaS1hY3Rpb25zIj48YnV0dG9uIGNsYXNzPSJidG4tb2siIGRhdGEtYWN0PSJhcHByb3ZlZCI+6YCa6L+HPC9idXR0b24+PGJ1dHRvbiBjbGFzcz0iYnRuLW5vIiBkYXRhLWFjdD0icmVqZWN0ZWQiPuaLkue7nTwvYnV0dG9uPjwvZGl2PicKICAgICAgICAgIDogIiIpICsKICAgICAgICAiPC9kaXY+IjsKICAgIH0pLmpvaW4oIiIpOwogICAgQXJyYXkucHJvdG90eXBlLmZvckVhY2guY2FsbCh3cmFwLnF1ZXJ5U2VsZWN0b3JBbGwoIi5idG4tb2ssIC5idG4tbm8iKSwgZnVuY3Rpb24gKGJ0bikgewogICAgICBidG4uYWRkRXZlbnRMaXN0ZW5lcigiY2xpY2siLCBmdW5jdGlvbiAoKSB7CiAgICAgICAgdmFyIG5vID0gYnRuLmNsb3Nlc3QoIi5pdGVtIikuZ2V0QXR0cmlidXRlKCJkYXRhLW5vIik7CiAgICAgICAgdmFyIGFyciA9IGxvYWQoQVBQX0tFWSk7CiAgICAgICAgYXJyLmZvckVhY2goZnVuY3Rpb24gKHgpIHsKICAgICAgICAgIGlmICh4Lm5vID09PSBubykgewogICAgICAgICAgICB4LnN0YXR1cyA9IGJ0bi5nZXRBdHRyaWJ1dGUoImRhdGEtYWN0Iik7CiAgICAgICAgICAgIGlmICh4LnN0YXR1cyA9PT0gImFwcHJvdmVkIiAmJiAheC5hcHByb3ZlZEFtb3VudCkgewogICAgICAgICAgICAgIHguYXBwcm92ZWRBbW91bnQgPSBnZW5BcHByb3ZlZExpbWl0KHguY2FyZElkIHx8ICJwdWthIik7CiAgICAgICAgICAgIH0KICAgICAgICAgIH0KICAgICAgICB9KTsKICAgICAgICBzYXZlKEFQUF9LRVksIGFycik7CiAgICAgICAgc2hvd01vZHVsZSgiY2MtcmV2aWV3Iik7CiAgICAgIH0pOwogICAgfSk7CiAgICByZXR1cm4gd3JhcDsKICB9CgogIC8qIOi0t+asvuWKnueQhiAqLwogIGZ1bmN0aW9uIHJlbmRlckxvYW5BcHBseSgpIHsKICAgIHZhciB3cmFwID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgiZGl2Iik7CiAgICB2YXIgZW1wID0gY3VycmVudEVtcCgpOwogICAgd3JhcC5pbm5lckhUTUwgPQogICAgICAnPGZvcm0gaWQ9ImxvYW4tZm9ybSIgY2xhc3M9InBhbmVsIj4nICsKICAgICAgJzxkaXYgY2xhc3M9ImZpZWxkIj48bGFiZWw+5a6i5oi35aeT5ZCNICo8L2xhYmVsPjxpbnB1dCBuYW1lPSJjdXN0IiByZXF1aXJlZCAvPjwvZGl2PicgKwogICAgICAnPGRpdiBjbGFzcz0iZmllbGQiPjxsYWJlbD7ouqvku73or4Hlj7cgKjwvbGFiZWw+PGlucHV0IG5hbWU9Imlkbm8iIG1heGxlbmd0aD0iMTgiIHJlcXVpcmVkIC8+PC9kaXY+JyArCiAgICAgICc8ZGl2IGNsYXNzPSJmaWVsZCI+PGxhYmVsPui0t+asvumHkemine+8iOWFg++8iSo8L2xhYmVsPjxpbnB1dCBuYW1lPSJhbW91bnQiIHR5cGU9Im51bWJlciIgcmVxdWlyZWQgLz48L2Rpdj4nICsKICAgICAgJzxkaXYgY2xhc3M9ImZpZWxkIj48bGFiZWw+5pyf6ZmQPC9sYWJlbD48c2VsZWN0IG5hbWU9InRlcm0iPjxvcHRpb24+MTLmnJ88L29wdGlvbj48b3B0aW9uPjI05pyfPC9vcHRpb24+PG9wdGlvbj4zNuacnzwvb3B0aW9uPjxvcHRpb24+NjDmnJ88L29wdGlvbj48L3NlbGVjdD48L2Rpdj4nICsKICAgICAgJzxkaXYgY2xhc3M9ImZpZWxkIj48bGFiZWw+55So6YCUPC9sYWJlbD48c2VsZWN0IG5hbWU9InB1cnBvc2UiPjxvcHRpb24+5raI6LS5PC9vcHRpb24+PG9wdGlvbj7nu4/okKU8L29wdGlvbj48b3B0aW9uPui0reaIvzwvb3B0aW9uPjxvcHRpb24+5pWZ6IKyPC9vcHRpb24+PC9zZWxlY3Q+PC9kaXY+JyArCiAgICAgICc8ZGl2IGNsYXNzPSJmaWVsZCI+PGxhYmVsPuWkh+azqDwvbGFiZWw+PHRleHRhcmVhIG5hbWU9Im5vdGUiIHJvd3M9IjIiPjwvdGV4dGFyZWE+PC9kaXY+JyArCiAgICAgICc8YnV0dG9uIHR5cGU9InN1Ym1pdCIgY2xhc3M9ImJ0bi1wcmltYXJ5Ij7mj5DkuqTotLfmrL7nlLPor7c8L2J1dHRvbj4nICsKICAgICAgIjwvZm9ybT4iOwogICAgd3JhcC5xdWVyeVNlbGVjdG9yKCIjbG9hbi1mb3JtIikuYWRkRXZlbnRMaXN0ZW5lcigic3VibWl0IiwgZnVuY3Rpb24gKGUpIHsKICAgICAgZS5wcmV2ZW50RGVmYXVsdCgpOwogICAgICB2YXIgZiA9IGUudGFyZ2V0OwogICAgICB2YXIgYXJyID0gbG9hZChMT0FOX0tFWSk7CiAgICAgIGFyci5wdXNoKHsKICAgICAgICBubzogIkxOIiArIERhdGUubm93KCksCiAgICAgICAgY3VzdDogZi5jdXN0LnZhbHVlLnRyaW0oKSwKICAgICAgICBpZG5vOiBmLmlkbm8udmFsdWUudHJpbSgpLAogICAgICAgIGFtb3VudDogZi5hbW91bnQudmFsdWUsCiAgICAgICAgdGVybTogZi50ZXJtLnZhbHVlLAogICAgICAgIHB1cnBvc2U6IGYucHVycG9zZS52YWx1ZSwKICAgICAgICBub3RlOiBmLm5vdGUudmFsdWUudHJpbSgpLAogICAgICAgIGhhbmRsZXI6IGVtcCA/IGVtcC5pZCA6ICIiLAogICAgICAgIHN0YXR1czogInBlbmRpbmciLAogICAgICAgIGNyZWF0ZWRBdDogbmV3IERhdGUoKS50b0lTT1N0cmluZygpCiAgICAgIH0pOwogICAgICBzYXZlKExPQU5fS0VZLCBhcnIpOwogICAgICBhbGVydCgi6LS35qy+55Sz6K+35bey5o+Q5LqkIik7CiAgICAgIHNob3dNb2R1bGUoImxvYW4tYXBwbHkiKTsKICAgIH0pOwogICAgcmV0dXJuIHdyYXA7CiAgfQoKICAvKiDotLfmrL7lrqHmoLggKi8KICBmdW5jdGlvbiByZW5kZXJMb2FuUmV2aWV3KCkgewogICAgdmFyIHdyYXAgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICAgIHZhciBsaXN0ID0gbG9hZChMT0FOX0tFWSk7CiAgICBpZiAoIWxpc3QubGVuZ3RoKSB7IHdyYXAuaW5uZXJIVE1MID0gJzxwIGNsYXNzPSJlbXB0eS10aXAiPuaaguaXoOi0t+asvueUs+ivtzwvcD4nOyByZXR1cm4gd3JhcDsgfQogICAgd3JhcC5pbm5lckhUTUwgPSBsaXN0LnNsaWNlKCkucmV2ZXJzZSgpLm1hcChmdW5jdGlvbiAoYSkgewogICAgICB2YXIgY2xzID0gYS5zdGF0dXMgPT09ICJhcHByb3ZlZCIgPyAiYXBwcm92ZWQiIDogYS5zdGF0dXMgPT09ICJyZWplY3RlZCIgPyAicmVqZWN0ZWQiIDogInBlbmRpbmciOwogICAgICByZXR1cm4gJzxkaXYgY2xhc3M9Iml0ZW0iIGRhdGEtbm89IicgKyBlc2MoYS5ubykgKyAnIj4nICsKICAgICAgICAnPGRpdiBjbGFzcz0iaS1oZWFkIj48c3BhbiBjbGFzcz0iaS1uYW1lIj4nICsgZXNjKGEuY3VzdCkgKyAiIMK3ICIgKyBlc2MoYS5hbW91bnQpICsgIuWFgzwvc3Bhbj4iICsKICAgICAgICAnPHNwYW4gY2xhc3M9Imktc3RhdHVzICcgKyBjbHMgKyAnIj4nICsgc3RhdHVzVGV4dChhLnN0YXR1cykgKyAiPC9zcGFuPjwvZGl2PiIgKwogICAgICAgICc8ZGl2IGNsYXNzPSJpLXJvdyI+57yW5Y+377yaJyArIGVzYyhhLm5vKSArICIgLyDmnJ/pmZAgIiArIGVzYyhhLnRlcm0pICsgIiAvIOeUqOmAlCAiICsgZXNjKGEucHVycG9zZSkgKyAiPC9kaXY+IiArCiAgICAgICAgJzxkaXYgY2xhc3M9Imktcm93Ij7nu4/lip7lt6Xlj7fvvJonICsgZXNjKGEuaGFuZGxlcikgKyAiIC8gIiArIGVzYyhhLmNyZWF0ZWRBdCkgKyAiPC9kaXY+IiArCiAgICAgICAgKGEuc3RhdHVzID09PSAicGVuZGluZyIKICAgICAgICAgID8gJzxkaXYgY2xhc3M9ImktYWN0aW9ucyI+PGJ1dHRvbiBjbGFzcz0iYnRuLW9rIiBkYXRhLWFjdD0iYXBwcm92ZWQiPumAmui/hzwvYnV0dG9uPjxidXR0b24gY2xhc3M9ImJ0bi1ubyIgZGF0YS1hY3Q9InJlamVjdGVkIj7mi5Lnu508L2J1dHRvbj48L2Rpdj4nCiAgICAgICAgICA6ICIiKSArCiAgICAgICAgIjwvZGl2PiI7CiAgICB9KS5qb2luKCIiKTsKICAgIEFycmF5LnByb3RvdHlwZS5mb3JFYWNoLmNhbGwod3JhcC5xdWVyeVNlbGVjdG9yQWxsKCIuYnRuLW9rLCAuYnRuLW5vIiksIGZ1bmN0aW9uIChidG4pIHsKICAgICAgYnRuLmFkZEV2ZW50TGlzdGVuZXIoImNsaWNrIiwgZnVuY3Rpb24gKCkgewogICAgICAgIHZhciBubyA9IGJ0bi5jbG9zZXN0KCIuaXRlbSIpLmdldEF0dHJpYnV0ZSgiZGF0YS1ubyIpOwogICAgICAgIHZhciBhcnIgPSBsb2FkKExPQU5fS0VZKTsKICAgICAgICBhcnIuZm9yRWFjaChmdW5jdGlvbiAoeCkgeyBpZiAoeC5ubyA9PT0gbm8pIHguc3RhdHVzID0gYnRuLmdldEF0dHJpYnV0ZSgiZGF0YS1hY3QiKTsgfSk7CiAgICAgICAgc2F2ZShMT0FOX0tFWSwgYXJyKTsKICAgICAgICBzaG93TW9kdWxlKCJsb2FuLXJldmlldyIpOwogICAgICB9KTsKICAgIH0pOwogICAgcmV0dXJuIHdyYXA7CiAgfQoKICAvKiDmm7TlpJogKi8KICBmdW5jdGlvbiByZW5kZXJNb3JlKCkgewogICAgdmFyIHdyYXAgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICAgIHdyYXAuaW5uZXJIVE1MID0KICAgICAgJzxkaXYgY2xhc3M9InBhbmVsIj48aDI+5aaC5L2V5omp5bGV5qih5Z2XPC9oMj4nICsKICAgICAgJzxwIGNsYXNzPSJoaW50IiBzdHlsZT0ibWFyZ2luOjAiPuWcqCA8Y29kZT5hc3NldHMvanMvYXBwLmpzPC9jb2RlPiDnmoQgPGNvZGU+TU9EVUxFUzwvY29kZT4g5pWw57uE6L+95Yqg5LiA6aG55Y2z5Y+v77yaJyArCiAgICAgICc8YnI+PGNvZGU+eyBpZCwgbmFtZSwgaWNvbiwgZGVzYywgYmFkZ2UsIHJlbmRlciB9PC9jb2RlPjxicj4nICsKICAgICAgJ+aWsOWinuaooeWdl+iHquWKqOWHuueOsOWcqOmmlumhteWuq+agvO+8jOaXoOmcgOaUueWKqOWFtuS7luS7o+eggeOAguS+i+WmguOAjOeQhui0oumUgOWUruOAjeOAjOmjjuaOp+aguOafpeOAjeetieOAgjwvcD48L2Rpdj4nOwogICAgcmV0dXJuIHdyYXA7CiAgfQoKICAvKiBQV0EgKi8KICBpZiAoInNlcnZpY2VXb3JrZXIiIGluIG5hdmlnYXRvcikgewogICAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoImxvYWQiLCBmdW5jdGlvbiAoKSB7IG5hdmlnYXRvci5zZXJ2aWNlV29ya2VyLnJlZ2lzdGVyKCJzdy5qcyIpLmNhdGNoKGZ1bmN0aW9uICgpIHt9KTsgfSk7CiAgfQoKICAvLyDlkK/liqgKICB2YXIgY3VyID0gY3VycmVudEVtcCgpOwogIGlmIChjdXIpIHVubG9jayhjdXIpOwp9KSgpOwo=
+/* JSCCB 员工工作台 (PWA) v3
+ * 登录凭证 = HR 创建的工号（localStorage: jsccb:employees）。
+ * 信用卡申请来自 jsccb-credit-card（jsccb:applications）。
+ * 模块采用注册表模式，新增业务只需往 MODULES 数组追加一项即可扩展。
+ */
+(function () {
+  "use strict";
+
+  var EMP_KEY = "jsccb:employees";
+  var APP_KEY = "jsccb:applications";
+  var LOAN_KEY = "jsccb:loans";
+  var SESSION_KEY = "jsccb:wb_session_v2";
+  var CC_APP_URL = "https://jsccb.github.io/jsccb-credit-card/";
+  var EMP_RAW_URL = "https://raw.githubusercontent.com/JSCCB/jsccb-hr/main/employees.json";
+
+  // 与信用卡APP保持一致的卡种映射（带图片）
+  var CARDS = [
+    { id: "puka", tier: "普卡", cls: "tier-puka", name: "龙卡正青春信用卡数字版",
+      img: "assets/images/card_puka.png",
+      fee: "200元/年", feeNote: "消费5笔免次年年费", limit: "3千-1万",
+      minLimit: 3000, maxLimit: 10000 },
+    { id: "jinka", tier: "金卡", cls: "tier-jinka", name: "龙卡千里行信用卡",
+      img: "assets/images/card_jinka.png",
+      fee: "500元/年", feeNote: "消费7笔免次年年费", limit: "1万-3万",
+      minLimit: 10000, maxLimit: 30000 },
+    { id: "baijin", tier: "白金卡", cls: "tier-baijin", name: "建行生活卡银联版",
+      img: "assets/images/card_baijin.png",
+      fee: "1000元/年", feeNote: "消费12笔免次年年费", limit: "3万-6万",
+      minLimit: 30000, maxLimit: 60000 },
+    { id: "zuanshi", tier: "钻石卡", cls: "tier-zuanshi", name: "龙卡欢享信用卡银联版",
+      img: "assets/images/card_zuanshi.png",
+      fee: "2000元/年", feeNote: "消费20笔免次年年费", limit: "6万-10万",
+      minLimit: 60000, maxLimit: 100000 }
+  ];
+
+  var $ = function (id) { return document.getElementById(id); };
+  function load(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; } }
+  function save(key, v) { localStorage.setItem(key, JSON.stringify(v)); }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function statusText(s) { return { pending: "待审核", approved: "已通过", rejected: "已拒绝" }[s] || "待审核"; }
+
+  /* ---------- 从 GitHub 拉取最新员工列表（多设备同步） ---------- */
+  function fetchEmployeesFromGitHub() {
+    return fetch(EMP_RAW_URL + "?t=" + Date.now())
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (list) {
+        if (Array.isArray(list) && list.length) {
+          save(EMP_KEY, list);
+          return list;
+        }
+        throw new Error("空数据");
+      })
+      .catch(function () { return null; });
+  }
+
+  /* 获取员工列表：优先 GitHub，回退本地缓存 */
+  function employees() { return load(EMP_KEY); }
+  function currentEmp() {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch (e) { return null; }
+  }
+  
+  function unlock(emp) {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(emp));
+    $("login").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    $("who").textContent = emp.name + "（" + emp.id + "）";
+    renderModules();
+    showHome();
+  }
+  
+  function lock() {
+    localStorage.removeItem(SESSION_KEY);
+    $("app").classList.add("hidden");
+    $("login").classList.remove("hidden");
+    $("emp-input").value = "";
+    $("login-error").textContent = "";
+  }
+  
+  $("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var id = $("emp-input").value.trim();
+    var btn = e.target.querySelector("button");
+    btn.disabled = true;
+    $("login-error").textContent = "校验中…";
+    
+    // 先尝试从 GitHub 拉取最新数据
+    fetchEmployeesFromGitHub().then(function (list) {
+      var empList = list || employees();
+      var emp = empList.filter(function (x) { return x.id === id; })[0];
+      if (!emp) { 
+        $("login-error").textContent = "工号不存在，请先由 HR 创建。"; 
+        btn.disabled = false;
+        return; 
+      }
+      if (emp.status !== "在职") { 
+        $("login-error").textContent = "该工号已停用，请联系 HR。"; 
+        btn.disabled = false;
+        return; 
+      }
+      unlock(emp);
+    }).catch(function () {
+      // GitHub 不可用，回退本地缓存
+      var empList = employees();
+      var emp = empList.filter(function (x) { return x.id === id; })[0];
+      if (!emp) { 
+        $("login-error").textContent = "无法连接服务器，工号信息不可用。"; 
+        btn.disabled = false;
+        return; 
+      }
+      if (emp.status !== "在职") { 
+        $("login-error").textContent = "该工号已停用，请联系 HR。"; 
+        btn.disabled = false;
+        return; 
+      }
+      unlock(emp);
+    });
+  });
+  
+  $("logout-btn").addEventListener("click", lock);
+
+  /* ---------- 视图 ---------- */
+  function showHome() {
+    $("module-view").classList.add("hidden");
+    $("home").classList.remove("hidden");
+    renderModules();
+  }
+  
+  function showModule(id) {
+    var m = MODULES.filter(function (x) { return x.id === id; })[0];
+    if (!m) return;
+    $("home").classList.add("hidden");
+    var box = $("module-view");
+    box.classList.remove("hidden");
+    box.innerHTML = '<span class="back-link" id="back-link">← 返回</span><h2 class="sec-title">' + esc(m.name) + "</h2>";
+    box.appendChild(m.render());
+    $("back-link").addEventListener("click", showHome);
+  }
+
+  /* 生成初审额度：千位后百十个分位为0 */
+  function genApprovedLimit(cardId) {
+    var c = CARDS.filter(function (x) { return x.id === cardId; })[0];
+    if (!c) return 0;
+    var ranges = Math.floor((c.maxLimit - c.minLimit) / 1000);
+    var step = Math.floor(Math.random() * (ranges + 1));
+    return c.minLimit + step * 1000;
+  }
+
+  /* ---------- 模块注册表（可扩展） ---------- */
+  var MODULES = [
+    { id: "cc-apply", name: "信用卡办理", icon: "💳", desc: "为客户提交信用卡申请",
+      badge: function () { return load(APP_KEY).length + " 笔申请"; },
+      render: renderCcApply },
+    { id: "cc-review", name: "信用卡审核", icon: "✅", desc: "审批信用卡申请单",
+      badge: function () { return load(APP_KEY).filter(function (a) { return a.status === "pending"; }).length + " 待审"; },
+      render: renderCcReview },
+    { id: "loan-apply", name: "贷款办理", icon: "💰", desc: "录入客户贷款申请",
+      badge: function () { return load(LOAN_KEY).length + " 笔"; },
+      render: renderLoanApply },
+    { id: "loan-review", name: "贷款审核", icon: "📋", desc: "审批贷款申请",
+      badge: function () { return load(LOAN_KEY).filter(function (a) { return a.status === "pending"; }).length + " 待审"; },
+      render: renderLoanReview },
+    { id: "more", name: "更多模块", icon: "➕", desc: "扩展业务（示例）",
+      badge: function () { return "可扩展"; },
+      render: renderMore }
+  ];
+
+  function renderModules() {
+    var grid = $("module-grid");
+    grid.innerHTML = "";
+    MODULES.forEach(function (m) {
+      var d = document.createElement("div");
+      d.className = "module-card";
+      d.innerHTML = '<div class="m-icon">' + m.icon + '</div>' +
+        '<div class="m-name">' + esc(m.name) + "</div>" +
+        '<div class="m-desc">' + esc(m.desc) + "</div>" +
+        '<span class="m-badge">' + esc(m.badge()) + "</span>";
+      d.addEventListener("click", function () { showModule(m.id); });
+      grid.appendChild(d);
+    });
+  }
+
+  /* 信用卡办理 */
+  function renderCcApply() {
+    var wrap = document.createElement("div");
+    var cards = CARDS.map(function (c) {
+      return '<div class="mini-card ' + c.cls + '"><div><div class="mc-tier">' + esc(c.tier) +
+        '</div><div class="mc-name">' + esc(c.name) + "</div></div><span>›</span></div>";
+    }).join("");
+    wrap.innerHTML =
+      '<div class="mini-cards">' + cards + "</div>" +
+      // 卡种年费提示
+      '<div class="fee-table">' + CARDS.map(function (c) {
+        return '<div class="fee-row"><span class="f-tier">' + esc(c.tier) + '</span><span class="f-name">' + esc(c.name) + '</span><span class="f-fee">' + esc(c.fee) + '</span><span class="f-note">' + esc(c.feeNote) + '</span></div>';
+      }).join("") + '</div>' +
+      '<p class="hint">客户申请请使用专用办卡页（含完整身份与资料采集）。</p>' +
+      '<button class="btn-primary" id="go-cc">前往客户办卡页</button>';
+    wrap.querySelector("#go-cc").addEventListener("click", function () { window.open(CC_APP_URL, "_blank"); });
+    return wrap;
+  }
+
+  /* 信用卡审核（含初审额度生成） */
+  function renderCcReview() {
+    var wrap = document.createElement("div");
+    var list = load(APP_KEY);
+    if (!list.length) { wrap.innerHTML = '<p class="empty-tip">暂无信用卡申请</p>'; return wrap; }
+    wrap.innerHTML = list.slice().reverse().map(function (a) {
+      var cls = a.status === "approved" ? "approved" : a.status === "rejected" ? "rejected" : "pending";
+      var limitStr = a.approvedAmount ? "初审额度：" + a.approvedAmount + "元" : "";
+      return '<div class="item" data-no="' + esc(a.no) + '">' +
+        '<div class="i-head"><span class="i-name">' + esc(a.cardName) + '</span>' +
+        '<span class="i-status ' + cls + '">' + statusText(a.status) + "</span></div>" +
+        '<div class="i-row">申请编号：' + esc(a.no) + "</div>" +
+        '<div class="i-row">申请人：' + esc(a.name) + " / " + esc(a.idno) + "</div>" +
+        (limitStr ? '<div class="i-row approved-amount">' + limitStr + "</div>" : "") +
+        '<div class="i-row">提交时间：' + esc(a.createdAt) + "</div>" +
+        (a.status === "pending"
+          ? '<div class="i-actions"><button class="btn-ok" data-act="approved">通过</button><button class="btn-no" data-act="rejected">拒绝</button></div>'
+          : "") +
+        "</div>";
+    }).join("");
+    Array.prototype.forEach.call(wrap.querySelectorAll(".btn-ok, .btn-no"), function (btn) {
+      btn.addEventListener("click", function () {
+        var no = btn.closest(".item").getAttribute("data-no");
+        var arr = load(APP_KEY);
+        arr.forEach(function (x) {
+          if (x.no === no) {
+            x.status = btn.getAttribute("data-act");
+            if (x.status === "approved" && !x.approvedAmount) {
+              x.approvedAmount = genApprovedLimit(x.cardId || "puka");
+            }
+          }
+        });
+        save(APP_KEY, arr);
+        showModule("cc-review");
+      });
+    });
+    return wrap;
+  }
+
+  /* 贷款办理 */
+  function renderLoanApply() {
+    var wrap = document.createElement("div");
+    var emp = currentEmp();
+    wrap.innerHTML =
+      '<form id="loan-form" class="panel">' +
+      '<div class="field"><label>客户姓名 *</label><input name="cust" required /></div>' +
+      '<div class="field"><label>身份证号 *</label><input name="idno" maxlength="18" required /></div>' +
+      '<div class="field"><label>贷款金额（元）*</label><input name="amount" type="number" required /></div>' +
+      '<div class="field"><label>期限</label><select name="term"><option>12期</option><option>24期</option><option>36期</option><option>60期</option></select></div>' +
+      '<div class="field"><label>用途</label><select name="purpose"><option>消费</option><option>经营</option><option>购房</option><option>教育</option></select></div>' +
+      '<div class="field"><label>备注</label><textarea name="note" rows="2"></textarea></div>' +
+      '<button type="submit" class="btn-primary">提交贷款申请</button>' +
+      "</form>";
+    wrap.querySelector("#loan-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var f = e.target;
+      var arr = load(LOAN_KEY);
+      arr.push({
+        no: "LN" + Date.now(),
+        cust: f.cust.value.trim(),
+        idno: f.idno.value.trim(),
+        amount: f.amount.value,
+        term: f.term.value,
+        purpose: f.purpose.value,
+        note: f.note.value.trim(),
+        handler: emp ? emp.id : "",
+        status: "pending",
+        createdAt: new Date().toISOString()
+      });
+      save(LOAN_KEY, arr);
+      alert("贷款申请已提交");
+      showModule("loan-apply");
+    });
+    return wrap;
+  }
+
+  /* 贷款审核 */
+  function renderLoanReview() {
+    var wrap = document.createElement("div");
+    var list = load(LOAN_KEY);
+    if (!list.length) { wrap.innerHTML = '<p class="empty-tip">暂无贷款申请</p>'; return wrap; }
+    wrap.innerHTML = list.slice().reverse().map(function (a) {
+      var cls = a.status === "approved" ? "approved" : a.status === "rejected" ? "rejected" : "pending";
+      return '<div class="item" data-no="' + esc(a.no) + '">' +
+        '<div class="i-head"><span class="i-name">' + esc(a.cust) + " · " + esc(a.amount) + "元</span>" +
+        '<span class="i-status ' + cls + '">' + statusText(a.status) + "</span></div>" +
+        '<div class="i-row">编号：' + esc(a.no) + " / 期限 " + esc(a.term) + " / 用途 " + esc(a.purpose) + "</div>" +
+        '<div class="i-row">经办工号：' + esc(a.handler) + " / " + esc(a.createdAt) + "</div>" +
+        (a.status === "pending"
+          ? '<div class="i-actions"><button class="btn-ok" data-act="approved">通过</button><button class="btn-no" data-act="rejected">拒绝</button></div>'
+          : "") +
+        "</div>";
+    }).join("");
+    Array.prototype.forEach.call(wrap.querySelectorAll(".btn-ok, .btn-no"), function (btn) {
+      btn.addEventListener("click", function () {
+        var no = btn.closest(".item").getAttribute("data-no");
+        var arr = load(LOAN_KEY);
+        arr.forEach(function (x) { if (x.no === no) x.status = btn.getAttribute("data-act"); });
+        save(LOAN_KEY, arr);
+        showModule("loan-review");
+      });
+    });
+    return wrap;
+  }
+
+  /* 更多 */
+  function renderMore() {
+    var wrap = document.createElement("div");
+    wrap.innerHTML =
+      '<div class="panel"><h2>如何扩展模块</h2>' +
+      '<p class="hint" style="margin:0">在 <code>assets/js/app.js</code> 的 <code>MODULES</code> 数组追加一项即可：' +
+      '<br><code>{ id, name, icon, desc, badge, render }</code><br>' +
+      '新增模块自动出现在首页宫格，无需改动其他代码。例如「理财销售」「风控核查」等。</p></div>';
+    return wrap;
+  }
+
+  /* PWA */
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
+
+  // 启动
+  var cur = currentEmp();
+  if (cur) unlock(cur);
+})();
