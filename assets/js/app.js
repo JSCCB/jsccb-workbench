@@ -1,4 +1,4 @@
-/* JSCCB Workbench v4 */
+/* JSCCB Workbench v5 */
 (function(){
 "use strict";
 
@@ -40,7 +40,7 @@ localStorage.setItem(SESSION_KEY,JSON.stringify(emp));
 $("login").classList.add("hidden");
 $("app").classList.remove("hidden");
 $("who").textContent=emp.name+"（"+emp.id+"）";
-var tabs=document.querySelectorAll(".tab-btn");
+var tabs=document.querySelectorAll(".tab-nav-bottom .tab-btn");
 tabs.forEach(function(t){t.classList.remove("active");});
 if(tabs[0])tabs[0].classList.add("active");
 var tb=$("tab-business"),tp=$("tab-profile");
@@ -84,7 +84,7 @@ unlock(emp);
 $("logout-btn").addEventListener("click",lock);
 
 function setupTabs(){
-var tabs=document.querySelectorAll(".tab-btn");
+var tabs=document.querySelectorAll(".tab-nav-bottom .tab-btn");
 tabs.forEach(function(tab){
 tab.addEventListener("click",function(){
 var tabName=tab.getAttribute("data-tab");
@@ -143,11 +143,14 @@ return c.minLimit+step*1000;
 }
 
 var MODULES=[
-{id:"cc-apply",name:"信用卡办理",icon:"💳",desc:"为客户提交信用卡申请",badge:function(){return load(APP_KEY).length+" 笔申请";},render:renderCcApply},
-{id:"cc-review",name:"信用卡审核",icon:"✅",desc:"审批信用卡申请单",badge:function(){return load(APP_KEY).filter(function(a){return a.status==="pending";}).length+" 待审";},render:renderCcReview},
+{id:"cc-apply",name:"信用卡办理",icon:"💳",desc:"扫码办理信用卡",badge:function(){return "点击办理";},render:renderCcApply},
+{id:"cc-review",name:"信用卡审核",icon:"✅",desc:"审批信用卡申请",badge:function(){return load(APP_KEY).filter(function(a){return a.status==="pending";}).length+" 待审";},render:renderCcReview},
 {id:"loan-apply",name:"贷款办理",icon:"💰",desc:"录入客户贷款申请",badge:function(){return load(LOAN_KEY).length+" 笔";},render:renderLoanApply},
 {id:"loan-review",name:"贷款审核",icon:"📋",desc:"审批贷款申请",badge:function(){return load(LOAN_KEY).filter(function(a){return a.status==="pending";}).length+" 待审";},render:renderLoanReview},
-{id:"more",name:"更多模块",icon:"➕",desc:"扩展业务（示例）",badge:function(){return "可扩展";},render:renderMore}
+{id:"deposit",name:"存款业务",icon:"🏦",desc:"定期/活期存款办理",badge:function(){return "可办理";},render:renderDeposit},
+{id:"transfer",name:"转账汇款",icon:"💸",desc:"跨行/同行转账",badge:function(){return "可办理";},render:renderTransfer},
+{id:"query",name:"客户查询",icon:"🔍",desc:"账户信息查询",badge:function(){return "可查询";},render:renderQuery},
+{id:"report",name:"业绩报表",icon:"📊",desc:"个人业绩统计",badge:function(){return "查看";},render:renderReport}
 ];
 
 function renderModules(){
@@ -164,7 +167,7 @@ grid.appendChild(d);
 
 function renderCcApply(){
 var wrap=document.createElement("div");
-wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px 20px;"><h3 style="margin:0 0 20px;color:var(--blue);">扫码办理信用卡</h3><div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);"><div style="width:200px;height:200px;background:linear-gradient(135deg,#0a4ea3,#073a7a);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:80px;margin:0 auto;">💳</div><p style="margin:15px 0 0;font-size:14px;color:var(--muted);">请客户扫码进入办理页面</p></div><p class="hint" style="margin-top:20px;">或点击下方按钮直接访问</p><button class="btn-primary" id="go-cc" style="max-width:280px;margin:0 auto;">前往客户办卡页</button></div>';
+wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px 20px;"><h3 style="margin:0 0 20px;color:var(--blue);">扫码办理信用卡</h3><div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);"><img src="assets/images/icon-192.png" style="width:200px;height:200px;border-radius:8px;object-fit:contain;background:linear-gradient(135deg,#0a4ea3,#073a7a);" alt="二维码"><p style="margin:15px 0 0;font-size:14px;color:var(--muted);">请客户扫码进入办理页面</p></div><p class="hint" style="margin-top:20px;">或点击下方按钮直接访问</p><button class="btn-primary" id="go-cc" style="max-width:280px;margin:0 auto;">前往客户办卡页</button></div>';
 wrap.querySelector("#go-cc").addEventListener("click",function(){window.open(CC_APP_URL,"_blank");});
 return wrap;
 }
@@ -231,9 +234,39 @@ showModule("loan-review");
 return wrap;
 }
 
-function renderMore(){
+function renderDeposit(){
 var wrap=document.createElement("div");
-wrap.innerHTML='<div class="panel"><h2>如何扩展模块</h2><p class="hint" style="margin:0">在 MODULES 数组追加一项即可</p></div>';
+wrap.innerHTML='<div class="panel"><h3>存款业务</h3><div class="field"><label>客户姓名</label><input id="dep-name" /></div><div class="field"><label>存款类型</label><select id="dep-type"><option>活期存款</option><option>定期存款（3个月）</option><option>定期存款（6个月）</option><option>定期存款（1年）</option><option>定期存款（3年）</option></select></div><div class="field"><label>存款金额（元）</label><input id="dep-amount" type="number" /></div><button class="btn-primary" id="dep-submit">提交存款申请</button></div>';
+wrap.querySelector("#dep-submit").addEventListener("click",function(){
+alert("存款申请已提交（演示功能）");
+showHome();
+});
+return wrap;
+}
+
+function renderTransfer(){
+var wrap=document.createElement("div");
+wrap.innerHTML='<div class="panel"><h3>转账汇款</h3><div class="field"><label>付款账户</label><input id="trans-from" placeholder="付款卡号" /></div><div class="field"><label>收款账户</label><input id="trans-to" placeholder="收款卡号" /></div><div class="field"><label>收款人姓名</label><input id="trans-name" /></div><div class="field"><label>转账金额（元）</label><input id="trans-amount" type="number" /></div><button class="btn-primary" id="trans-submit">确认转账</button></div>';
+wrap.querySelector("#trans-submit").addEventListener("click",function(){
+alert("转账申请已提交（演示功能）");
+showHome();
+});
+return wrap;
+}
+
+function renderQuery(){
+var wrap=document.createElement("div");
+wrap.innerHTML='<div class="panel"><h3>客户查询</h3><div class="field"><label>身份证号/卡号</label><input id="query-id" /></div><button class="btn-primary" id="query-submit">查询</button><div id="query-result" style="margin-top:20px;"></div></div>';
+wrap.querySelector("#query-submit").addEventListener("click",function(){
+$("query-result").innerHTML='<div class="item"><div class="i-head"><span class="i-name">查询结果</span></div><div class="i-row">客户姓名：张三</div><div class="i-row">账户状态：正常</div><div class="i-row">活期余额：50,000.00 元</div><div class="i-row">定期余额：100,000.00 元</div></div>';
+});
+return wrap;
+}
+
+function renderReport(){
+var wrap=document.createElement("div");
+var emp=currentEmp();
+wrap.innerHTML='<div class="panel"><h3>业绩报表</h3><div class="stats-grid" style="margin-bottom:20px;"><div class="stat-item"><div class="stat-num">12</div><div class="stat-label">本月办卡</div></div><div class="stat-item"><div class="stat-num">5</div><div class="stat-label">本月贷款</div></div><div class="stat-item"><div class="stat-num">28万</div><div class="stat-label">存款新增</div></div></div><p class="hint">统计周期：本月1日至今<br>员工：'+(emp?emp.name:"--")+'</p></div>';
 return wrap;
 }
 

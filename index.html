@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#0a4ea3" />
-  <title>JSCCB · 员工工作台</title>
+  <title>JSCCB</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="assets/icons/icon.svg" />
-  <link rel="stylesheet" href="assets/css/style.css?v=4" />
+  <link rel="apple-touch-icon" href="assets/images/icon-192.png" />
+  <link rel="stylesheet" href="assets/css/style.css?v=5" />
 </head>
 <body>
-  <!-- 登录：工号作为登录凭证 -->
+  <!-- 登录 -->
   <div id="login" class="lock-screen">
     <div class="lock-card">
-      <div class="brand"><span class="logo">JSCCB</span><span class="brand-sub">银行员工工作台</span></div>
+      <div class="brand"><span class="logo">JSCCB</span></div>
       <h1>员工登录</h1>
       <p class="lock-tip">请输入 HR 分配的工号</p>
       <form id="login-form" autocomplete="off">
@@ -30,7 +30,6 @@
     <header class="topbar">
       <div class="topbar-left">
         <span class="logo">JSCCB</span>
-        <span class="topbar-title">员工工作台</span>
       </div>
       <div class="topbar-right">
         <span id="who" class="who"></span>
@@ -38,28 +37,19 @@
       </div>
     </header>
 
-    <!-- Tab 导航 -->
-    <nav class="tab-nav">
-      <button class="tab-btn active" data-tab="business">业务</button>
-      <button class="tab-btn" data-tab="profile">我的</button>
-    </nav>
-
     <main class="container">
       <!-- 业务 Tab -->
       <section id="tab-business" class="tab-content">
-        <!-- 模块宫格 -->
         <section id="home" class="view">
           <h2 class="sec-title">业务模块</h2>
           <div id="module-grid" class="module-grid"></div>
         </section>
-
-        <!-- 动态模块容器 -->
         <section id="module-view" class="view hidden"></section>
       </section>
 
       <!-- 我的 Tab -->
       <section id="tab-profile" class="tab-content hidden">
-        <div class="profile-card">
+        <div class="profile-header">
           <div class="profile-avatar">
             <div class="avatar-circle" id="profile-avatar">👤</div>
           </div>
@@ -77,42 +67,36 @@
         <div class="profile-section">
           <h3 class="section-title">基本信息</h3>
           <div class="info-list">
-            <div class="info-item">
-              <span class="info-label">入职日期</span>
-              <span class="info-value" id="profile-join">--</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">联系方式</span>
-              <span class="info-value" id="profile-phone">--</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">邮箱</span>
-              <span class="info-value" id="profile-email">--</span>
-            </div>
+            <div class="info-item"><span class="info-label">入职日期</span><span class="info-value" id="profile-join">--</span></div>
+            <div class="info-item"><span class="info-label">联系方式</span><span class="info-value" id="profile-phone">--</span></div>
+            <div class="info-item"><span class="info-label">邮箱</span><span class="info-value" id="profile-email">--</span></div>
           </div>
         </div>
 
         <div class="profile-section">
           <h3 class="section-title">工作统计</h3>
           <div class="stats-grid">
-            <div class="stat-item">
-              <div class="stat-num" id="stat-cc">0</div>
-              <div class="stat-label">信用卡审核</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num" id="stat-loan">0</div>
-              <div class="stat-label">贷款审核</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num" id="stat-pending">0</div>
-              <div class="stat-label">待审任务</div>
-            </div>
+            <div class="stat-item"><div class="stat-num" id="stat-cc">0</div><div class="stat-label">信用卡审核</div></div>
+            <div class="stat-item"><div class="stat-num" id="stat-loan">0</div><div class="stat-label">贷款审核</div></div>
+            <div class="stat-item"><div class="stat-num" id="stat-pending">0</div><div class="stat-label">待审任务</div></div>
           </div>
         </div>
       </section>
     </main>
+
+    <!-- 底部 Tab 导航 -->
+    <nav class="tab-nav-bottom">
+      <button class="tab-btn active" data-tab="business">
+        <span class="tab-icon">📋</span>
+        <span class="tab-label">业务</span>
+      </button>
+      <button class="tab-btn" data-tab="profile">
+        <span class="tab-icon">👤</span>
+        <span class="tab-label">我的</span>
+      </button>
+    </nav>
   </div>
 
-  <script src="assets/js/app.js?v=4"></script>
+  <script src="assets/js/app.js?v=5"></script>
 </body>
 </html>
