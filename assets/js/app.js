@@ -239,17 +239,16 @@
   /* 信用卡办理 */
   function renderCcApply() {
     var wrap = document.createElement("div");
-    var cards = CARDS.map(function (c) {
-      return '<div class="mini-card ' + c.cls + '"><div><div class="mc-tier">' + esc(c.tier) +
-        '</div><div class="mc-name">' + esc(c.name) + "</div></div><span>›</span></div>";
-    }).join("");
     wrap.innerHTML =
-      '<div class="mini-cards">' + cards + "</div>" +
-      '<div class="fee-table">' + CARDS.map(function (c) {
-        return '<div class="fee-row"><span class="f-tier">' + esc(c.tier) + '</span><span class="f-name">' + esc(c.name) + '</span><span class="f-fee">' + esc(c.fee) + '</span><span class="f-note">' + esc(c.feeNote) + '</span></div>';
-      }).join("") + '</div>' +
-      '<p class="hint">客户申请请使用专用办卡页（含完整身份与资料采集）。</p>' +
-      '<button class="btn-primary" id="go-cc">前往客户办卡页</button>';
+      '<div class="panel" style="text-align:center;padding:30px 20px;">' +
+      '<h3 style="margin:0 0 20px;color:var(--blue);">扫码办理信用卡</h3>' +
+      '<div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);">' +
+      '<div style="width:200px;height:200px;background:linear-gradient(135deg,#0a4ea3,#073a7a);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:80px;margin:0 auto;">💳</div>' +
+      '<p style="margin:15px 0 0;font-size:14px;color:var(--muted);">请客户扫码进入办理页面</p>' +
+      '</div>' +
+      '<p class="hint" style="margin-top:20px;">或点击下方按钮直接访问</p>' +
+      '<button class="btn-primary" id="go-cc" style="max-width:280px;margin:0 auto;">前往客户办卡页</button>' +
+      '</div>';
     wrap.querySelector("#go-cc").addEventListener("click", function () { window.open(CC_APP_URL, "_blank"); });
     return wrap;
   }
@@ -375,10 +374,14 @@
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
   }
 
-  // 初始化
-  setupTabs();
-  
   // 启动
   var cur = currentEmp();
-  if (cur) unlock(cur);
+  if (cur) {
+    unlock(cur);
+  }
+  
+  // DOM 加载完成后初始化 Tab
+  document.addEventListener("DOMContentLoaded", function() {
+    setupTabs();
+  });
 })();
