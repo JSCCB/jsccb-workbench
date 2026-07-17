@@ -1,4 +1,4 @@
-/* JSCCB Workbench */
+/* JSCCB Workbench v16 */
 (function(){
 'use strict';
 
@@ -48,19 +48,62 @@ return fetch(EMP_RAW_URL+'?t='+Date.now())
 function employees(){return load(EMP_KEY);}
 function currentEmp(){try{return JSON.parse(localStorage.getItem(SESSION_KEY));}catch(e){return null;}}
 
+// LOGIN LOGIC
+function initLogin(){
+var form=$('login-form');
+if(!form)return;
+form.addEventListener('submit',function(e){
+e.preventDefault();
+var empId=$('emp-input').value.trim().toUpperCase();
+if(!empId){showLoginError('请输入工号');return;}
+var emps=employees();
+var emp=emps.filter(function(e){return e.id===empId;})[0];
+if(!emp){showLoginError('工号不存在');return;}
+var status=emp.status||'';
+if(status.indexOf('在职')===-1&&status.toLowerCase()!=='active'){showLoginError('该员工已离职');return;}
+currentEmployee=emp;
+save(SESSION_KEY,emp);
+showApp();
+});
+}
+
+function showLoginError(msg){
+var errEl=$('login-error');
+if(errEl)errEl.textContent=msg;
+}
+
+function showApp(){
+$('login').classList.add('hidden');
+$('app').classList.remove('hidden');
+var emp=currentEmp();
+if(emp){
+$('who').textContent=emp.name||empId||'';
+}
+renderModules();
+fetchApplicationsFromGitHub();
+setupTabs();
+}
+
+function logout(){
+localStorage.removeItem(SESSION_KEY);
+currentEmployee=null;
+location.reload();
+}
+
+// TABS
 function setupTabs(){
-var tabs=document.querySelectorAll('.tab');
+var tabs=document.querySelectorAll('.tab-btn');
 tabs.forEach(function(tab){
 tab.addEventListener('click',function(){
 var tabName=tab.getAttribute('data-tab');
 tabs.forEach(function(t){t.classList.remove('active');});
 tab.classList.add('active');
-var tb=$('tab-business'),tp=$('tab-profile');
-if(tb)tb.classList.toggle('hidden',tabName!=='business');
-if(tp)tp.classList.toggle('hidden',tabName!=='profile');
+$('tab-business').classList.toggle('hidden',tabName!=='business');
+$('tab-profile').classList.toggle('hidden',tabName!=='profile');
 if(tabName==='profile')renderProfile();
 });
 });
+$('logout-btn').addEventListener('click',logout);
 }
 
 function renderProfile(){
@@ -72,16 +115,19 @@ $('profile-dept').textContent=emp.dept||emp.department||'--';
 $('profile-position').textContent=emp.role||emp.position||'--';
 $('profile-status').textContent=emp.status||'在职';
 $('profile-join').textContent=emp.joinDate||'--';
-var avatarImg=$('profile-avatar-img');
-var avatarDiv=$('profile-avatar');
-if(emp.avatar&&emp.avatar.length>0){
-avatarImg.src=emp.avatar;
-avatarImg.style.display='block';
-avatarDiv.style.display='none';
-}else{
-avatarImg.style.display='none';
-avatarDiv.style.display='flex';
 }
+
+function renderModules(){
+var grid=$('module-grid');
+if(!grid)return;
+grid.innerHTML='';
+MODULES.forEach(function(m){
+var d=document.createElement('div');
+d.className='module-card';
+d.innerHTML='<div class="m-icon">'+m.icon+'</div><div class="m-name">'+esc(m.name)+'</div><div class="m-desc">'+esc(m.desc)+'</div>';
+d.addEventListener('click',function(){showModule(m.id);});
+grid.appendChild(d);
+});
 }
 
 function showHome(){
@@ -112,18 +158,6 @@ var MODULES=[
 {id:'report',name:'统计报表',icon:'📊',desc:'业绩统计',render:renderReport}
 ];
 
-function renderModules(){
-var grid=$('module-grid');
-grid.innerHTML='';
-MODULES.forEach(function(m){
-var d=document.createElement('div');
-d.className='module-card';
-d.innerHTML='<div class="m-icon">'+m.icon+'</div><div class="m-name">'+esc(m.name)+'</div><div class="m-desc">'+esc(m.desc)+'</div>';
-d.addEventListener('click',function(){showModule(m.id);});
-grid.appendChild(d);
-});
-}
-
 function renderCcApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px"><h3 style="margin-bottom:20px;">扫码办理信用卡</h3><div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);"><img src="assets/images/qr-code.png" style="width:200px;height:200px;" alt="扫码申请"><p style="margin:15px 0 0;font-size:14px;color:#666;">客户微信扫码即可申请</p></div></div>';return wrap;}
 function renderCcReview(){var wrap=document.createElement('div');var apps=applicationsCache.filter(function(a){return a.status==='pending';});if(!apps.length){wrap.innerHTML='<div class="panel"><p>暂无待审核申请</p></div>';return wrap;}wrap.innerHTML='<div class="panel"><h3>待审核申请</h3></div>';apps.forEach(function(app){var row=document.createElement('div');row.className='app-row';row.innerHTML='<div class="app-info"><div>'+esc(app.name)+'</div><div>'+esc(app.cardName)+'</div></div><div class="app-actions"><button class="btn-ok" data-id="'+app.id+'">通过</button><button class="btn-no" data-id="'+app.id+'">拒绝</button></div>';wrap.appendChild(row);});wrap.querySelectorAll('.btn-ok').forEach(function(btn){btn.addEventListener('click',function(){var id=btn.getAttribute('data-id');var app=applicationsCache.filter(function(a){return a.id===id;})[0];if(app){app.status='approved';app.approvedAt=new Date().toISOString();saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule('cc-review');});}});});wrap.querySelectorAll('.btn-no').forEach(function(btn){btn.addEventListener('click',function(){var id=btn.getAttribute('data-id');var app=applicationsCache.filter(function(a){return a.id===id;})[0];if(app){app.status='rejected';app.rejectedAt=new Date().toISOString();saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule('cc-review');});}});});return wrap;}
 function renderLoanApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>贷款申请</h3><p>功能即将上线</p></div>';return wrap;}
@@ -133,6 +167,15 @@ function renderTransfer(){var wrap=document.createElement('div');wrap.innerHTML=
 function renderQuery(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>账户查询</h3><p>功能即将上线</p></div>';return wrap;}
 function renderReport(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>统计报表</h3><p>功能即将上线</p></div>';return wrap;}
 
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setupTabs);}else{setupTabs();}
+// INIT
+if(document.readyState==='loading'){
+document.addEventListener('DOMContentLoaded',function(){
+initLogin();
+if(currentEmp())showApp();
+});
+}else{
+initLogin();
+if(currentEmp())showApp();
+}
 
 })();
