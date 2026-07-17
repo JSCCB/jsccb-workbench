@@ -1,4 +1,4 @@
-/* JSCCB Workbench v16 */
+/* JSCCB Workbench v17 */
 (function(){
 'use strict';
 
@@ -19,6 +19,7 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 var currentEmployee=null;
 var applicationsCache=[];
 var githubSha=null;
+var employeesLoaded=false;
 
 function fetchApplicationsFromGitHub(){
 var url='https://api.github.com/repos/'+GITHUB_OWNER+'/'+GITHUB_REPO+'/contents/'+GITHUB_FILE+'?t='+Date.now();
@@ -39,10 +40,12 @@ return fetch(url,{method:'PUT',headers:{'Authorization':'token '+GITHUB_TOKEN,'C
 }
 
 function fetchEmployeesFromGitHub(){
+var btn=document.querySelector('#login-form button');
+if(btn)btn.disabled=true;
 return fetch(EMP_RAW_URL+'?t='+Date.now())
 .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-.then(function(list){if(Array.isArray(list)&&list.length){save(EMP_KEY,list);return list;}throw new Error('empty');})
-.catch(function(){return null;});
+.then(function(list){if(Array.isArray(list)&&list.length){save(EMP_KEY,list);employeesLoaded=true;return list;}throw new Error('empty');})
+.catch(function(e){console.log('Employee fetch failed:',e);employeesLoaded=true;return null;});
 }
 
 function employees(){return load(EMP_KEY);}
@@ -58,7 +61,7 @@ var empId=$('emp-input').value.trim().toUpperCase();
 if(!empId){showLoginError('请输入工号');return;}
 var emps=employees();
 var emp=emps.filter(function(e){return e.id===empId;})[0];
-if(!emp){showLoginError('工号不存在');return;}
+if(!emp){showLoginError('工号不存在,请先在HR系统创建');return;}
 var status=emp.status||'';
 if(status.indexOf('在职')===-1&&status.toLowerCase()!=='active'){showLoginError('该员工已离职');return;}
 currentEmployee=emp;
@@ -77,7 +80,7 @@ $('login').classList.add('hidden');
 $('app').classList.remove('hidden');
 var emp=currentEmp();
 if(emp){
-$('who').textContent=emp.name||empId||'';
+$('who').textContent=emp.name||emp.id||'';
 }
 renderModules();
 fetchApplicationsFromGitHub();
@@ -168,14 +171,30 @@ function renderQuery(){var wrap=document.createElement('div');wrap.innerHTML='<d
 function renderReport(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>统计报表</h3><p>功能即将上线</p></div>';return wrap;}
 
 // INIT
-if(document.readyState==='loading'){
-document.addEventListener('DOMContentLoaded',function(){
+function bootstrap(){
 initLogin();
-if(currentEmp())showApp();
+// Always try to fetch latest employees from HR before login
+fetchEmployeesFromGitHub().then(function(){
+var btn=document.querySelector('#login-form button');
+if(btn)btn.disabled=false;
+employeesLoaded=true;
+console.log('Employees loaded, count:', employees().length);
 });
+// If already logged in, go to app
+var session=currentEmp();
+if(session){
+// Verify employee still exists
+var emps=employees();
+var emp=emps.filter(function(e){return e.id===session.id;})[0];
+if(emp){currentEmployee=emp;showApp();}
+else{localStorage.removeItem(SESSION_KEY);}
+}
+}
+
+if(document.readyState==='loading'){
+document.addEventListener('DOMContentLoaded',bootstrap);
 }else{
-initLogin();
-if(currentEmp())showApp();
+bootstrap();
 }
 
 })();
