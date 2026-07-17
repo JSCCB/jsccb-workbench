@@ -123,3 +123,10 @@ button { font-family: inherit; }
 .mini-card.tier-zuanshi { background: linear-gradient(135deg,#1c1c22,#3a3a44); }
 .mini-card .mc-name { font-weight: 600; font-size: 14px; }
 .mini-card .mc-tier { font-size: 11px; opacity: .9; }
+
+
+/* Modal/Popup */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+.modal-content { background: #fff; border-radius: 16px; padding: 24px; max-width: 340px; width: 100%; position: relative; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.modal-close { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; padding: 4px 8px; line-height: 1; }
+.modal-close:hover { color: #333; }

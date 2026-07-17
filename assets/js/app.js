@@ -1,4 +1,4 @@
-/* JSCCB Workbench */
+/* JSCCB Workbench v18 - Fixed: Modal for QR, Tab switching */
 (function(){
 'use strict';
 
@@ -48,6 +48,33 @@ return fetch(EMP_RAW_URL+'?t='+Date.now())
 function employees(){return load(EMP_KEY);}
 function currentEmp(){try{return JSON.parse(localStorage.getItem(SESSION_KEY));}catch(e){return null;}}
 
+// MODAL FUNCTIONS
+function showModal(content){
+var overlay=document.createElement('div');
+overlay.className='modal-overlay';
+overlay.id='modal-overlay';
+overlay.innerHTML='<div class="modal-content">'+content+'</div>';
+document.body.appendChild(overlay);
+overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+var closeBtn=overlay.querySelector('.modal-close');
+if(closeBtn)closeBtn.addEventListener('click',closeModal);
+}
+
+function closeModal(){
+var overlay=$('modal-overlay');
+if(overlay)overlay.remove();
+}
+
+function showCcApplyModal(){
+var content='<button class="modal-close">&times;</button>'+
+'<h3 style="margin:0 0 16px;font-size:18px;color:#0a4ea3;">扫码办理信用卡</h3>'+
+'<div style="background:#fff;padding:16px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);">'+
+'<img src="assets/images/qr-code.png?v=3" style="width:240px;height:240px;display:block;" alt="扫码申请">'+
+'</div>'+
+'<p style="margin:14px 0 0;font-size:14px;color:#666;">客户微信扫码即可申请</p>';
+showModal(content);
+}
+
 function unlock(emp){
 currentEmployee=emp;
 localStorage.setItem(SESSION_KEY,JSON.stringify(emp));
@@ -57,9 +84,10 @@ $('who').textContent=emp.name+' ('+emp.id+')';
 var tabs=document.querySelectorAll('.tab-nav-bottom .tab-btn');
 tabs.forEach(function(t){t.classList.remove('active');});
 if(tabs[0])tabs[0].classList.add('active');
-var tb=$('tab-business'),tp=$('tab-profile');
+var tb=$('tab-business'),tp=$('tab-profile'),mv=$('module-view');
 if(tb)tb.classList.remove('hidden');
 if(tp)tp.classList.add('hidden');
+if(mv)mv.classList.add('hidden');
 fetchApplicationsFromGitHub().then(function(){renderModules();showHome();renderProfile();});
 }
 
@@ -102,9 +130,11 @@ tab.addEventListener('click',function(){
 var tabName=tab.getAttribute('data-tab');
 tabs.forEach(function(t){t.classList.remove('active');});
 tab.classList.add('active');
-var tb=$('tab-business'),tp=$('tab-profile');
+var tb=$('tab-business'),tp=$('tab-profile'),mv=$('module-view');
+// FIX: Always hide module-view when switching tabs
 if(tb)tb.classList.toggle('hidden',tabName!=='business');
 if(tp)tp.classList.toggle('hidden',tabName!=='profile');
+if(mv)mv.classList.add('hidden');
 if(tabName==='profile')renderProfile();
 });
 });
@@ -132,7 +162,8 @@ avatarDiv.style.display='flex';
 }
 
 function showHome(){
-$('module-view').classList.add('hidden');
+var mv=$('module-view');
+if(mv)mv.classList.add('hidden');
 $('tab-business').classList.remove('hidden');
 renderModules();
 }
@@ -140,6 +171,8 @@ renderModules();
 function showModule(id){
 var m=MODULES.filter(function(x){return x.id===id;})[0];
 if(!m)return;
+// FIX: cc-apply shows modal instead of page
+if(id==='cc-apply'){showCcApplyModal();return;}
 $('tab-business').classList.add('hidden');
 var box=$('module-view');
 box.classList.remove('hidden');
@@ -171,7 +204,7 @@ grid.appendChild(d);
 });
 }
 
-function renderCcApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px"><h3 style="margin-bottom:20px;">扫码办理信用卡</h3><div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);"><img src="assets/images/qr-code.png" style="width:200px;height:200px;" alt="扫码申请"><p style="margin:15px 0 0;font-size:14px;color:#666;">客户微信扫码即可申请</p></div></div>';return wrap;}
+function renderCcApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px"><h3 style="margin-bottom:20px;">扫码办理信用卡</h3><div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);"><img src="assets/images/qr-code.png?v=3" style="width:200px;height:200px;" alt="扫码申请"><p style="margin:15px 0 0;font-size:14px;color:#666;">客户微信扫码即可申请</p></div></div>';return wrap;}
 function renderCcReview(){var wrap=document.createElement('div');var apps=applicationsCache.filter(function(a){return a.status==='pending';});if(!apps.length){wrap.innerHTML='<div class="panel"><p>暂无待审核申请</p></div>';return wrap;}wrap.innerHTML='<div class="panel"><h3>待审核申请</h3></div>';apps.forEach(function(app){var row=document.createElement('div');row.className='app-row';row.innerHTML='<div class="app-info"><div>'+esc(app.name)+'</div><div>'+esc(app.cardName)+'</div></div><div class="app-actions"><button class="btn-ok" data-id="'+app.id+'">通过</button><button class="btn-no" data-id="'+app.id+'">拒绝</button></div>';wrap.appendChild(row);});wrap.querySelectorAll('.btn-ok').forEach(function(btn){btn.addEventListener('click',function(){var id=btn.getAttribute('data-id');var app=applicationsCache.filter(function(a){return a.id===id;})[0];if(app){app.status='approved';app.approvedAt=new Date().toISOString();saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule('cc-review');});}});});wrap.querySelectorAll('.btn-no').forEach(function(btn){btn.addEventListener('click',function(){var id=btn.getAttribute('data-id');var app=applicationsCache.filter(function(a){return a.id===id;})[0];if(app){app.status='rejected';app.rejectedAt=new Date().toISOString();saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule('cc-review');});}});});return wrap;}
 function renderLoanApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>贷款申请</h3><p>功能即将上线</p></div>';return wrap;}
 function renderLoanReview(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>贷款审核</h3><p>功能即将上线</p></div>';return wrap;}
