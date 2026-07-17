@@ -149,14 +149,14 @@ $('back-link').addEventListener('click',showHome);
 }
 
 var MODULES=[
-{id:'cc-apply',name:'信用卡申请',icon:'<img src="assets/images/icon-cc.png" style="width:40px;height:40px;">',desc:'扫码办理信用卡',render:renderCcApply},
-{id:'cc-review',name:'信用卡审核',icon:'<img src="assets/images/icon-review.png" style="width:40px;height:40px;">',desc:'审核客户申请',render:renderCcReview},
-{id:'loan-apply',name:'贷款申请',icon:'<img src="assets/images/icon-loan.png" style="width:40px;height:40px;">',desc:'新贷款申请',render:renderLoanApply},
-{id:'loan-review',name:'贷款审核',icon:'<img src="assets/images/icon-review.png" style="width:40px;height:40px;">',desc:'审核贷款申请',render:renderLoanReview},
-{id:'deposit',name:'存款业务',icon:'<img src="assets/images/icon-deposit.png" style="width:40px;height:40px;">',desc:'存款服务',render:renderDeposit},
-{id:'transfer',name:'转账汇款',icon:'<img src="assets/images/icon-transfer.png" style="width:40px;height:40px;">',desc:'转账服务',render:renderTransfer},
-{id:'query',name:'账户查询',icon:'<img src="assets/images/icon-query.png" style="width:40px;height:40px;">',desc:'查询账户信息',render:renderQuery},
-{id:'report',name:'统计报表',icon:'<img src="assets/images/icon-report.png" style="width:40px;height:40px;">',desc:'业绩统计',render:renderReport}
+{id:'cc-apply',name:'信用卡申请',icon:'💳',desc:'扫码办理信用卡',render:renderCcApply},
+{id:'cc-review',name:'信用卡审核',icon:'✅',desc:'审核客户申请',render:renderCcReview},
+{id:'loan-apply',name:'贷款申请',icon:'💰',desc:'新贷款申请',render:renderLoanApply},
+{id:'loan-review',name:'贷款审核',icon:'✅',desc:'审核贷款申请',render:renderLoanReview},
+{id:'deposit',name:'存款业务',icon:'🏦',desc:'存款服务',render:renderDeposit},
+{id:'transfer',name:'转账汇款',icon:'💸',desc:'转账服务',render:renderTransfer},
+{id:'query',name:'账户查询',icon:'🔍',desc:'查询账户信息',render:renderQuery},
+{id:'report',name:'统计报表',icon:'📊',desc:'业绩统计',render:renderReport}
 ];
 
 function renderModules(){
