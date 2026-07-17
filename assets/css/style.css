@@ -130,3 +130,10 @@ button { font-family: inherit; }
 .modal-content { background: #fff; border-radius: 16px; padding: 24px; max-width: 340px; width: 100%; position: relative; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
 .modal-close { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; padding: 4px 8px; line-height: 1; }
 .modal-close:hover { color: #333; }
+
+
+/* Login input row (label + input) */
+.input-row { display: flex; align-items: center; gap: 10px; margin: 4px 0 12px; }
+.input-row .input-label { font-size: 14px; color: var(--muted); white-space: nowrap; min-width: 36px; text-align: left; }
+.input-row input { flex: 1; padding: 13px 14px; border: 1px solid var(--line); border-radius: 10px; font-size: 16px; outline: none; }
+.input-row input:focus { border-color: var(--blue); }
