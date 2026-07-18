@@ -292,7 +292,7 @@ button { font-family: inherit; }
 .rf-done-icon { font-size: 56px; margin-bottom: 16px; }
 .rf-done-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
 .rf-done-sub { font-size: 14px; color: var(--muted); }
-.rf-nav { display: none; }
+.rf-nav { display: block; }
 .rf-nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
 .rf-btn-left { width: auto; min-width: 90px; padding: 10px 18px; font-size: 14px; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
 .rf-btn-right { width: auto; min-width: 90px; padding: 10px 18px; font-size: 14px; background: var(--blue); color: #fff; border: none; border-radius: 10px; cursor: pointer; }
