@@ -339,3 +339,8 @@ button { font-family: inherit; }
 .sc-row { font-size: 13px; line-height: 1.6; }
 .sc-label { color: var(--muted); display: inline-block; min-width: 70px; }
 .sc-val { color: var(--text); }
+
+.stat-tabs { display: flex; gap: 6px; margin: 14px 0 10px; border-bottom: 1px solid var(--line); }
+.stat-tabs .stat-tab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+#stat-content { min-height: 120px; }
+.stat-num { font-size: 28px; font-weight: 700; color: var(--blue); }
