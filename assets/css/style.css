@@ -297,3 +297,11 @@ button { font-family: inherit; }
 .btn-primary { background: var(--blue); color: #fff; }
 .btn-primary:active { opacity: .85; }
 .btn-secondary { background: var(--bg); color: var(--text); }
+
+.rf-form { display: flex; flex-direction: column; gap: 14px; }
+.rf-field { display: flex; flex-direction: column; gap: 6px; }
+.rf-field label { font-size: 13px; color: var(--muted); }
+.rf-field input, .rf-field select { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; background: #fff; box-sizing: border-box; width: 100%; }
+.rf-field input:focus, .rf-field select:focus { outline: 2px solid var(--blue-light); border-color: var(--blue); }
+.rf-sup-row { padding: 12px 14px; background: var(--bg); border-radius: 10px; }
+.rf-sup-row label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
