@@ -85,6 +85,16 @@ var content='<button class="modal-close">&times;</button>'+
 showModal(content);
 }
 
+function showMerchantModal(){
+var content='<button class="modal-close">&times;</button>'+
+'<h3 style="margin:0 0 16px;font-size:18px;color:#0a4ea3;">扫码申请定存业务</h3>'+
+'<div style="background:#fff;padding:16px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);">'+
+'<img src="assets/images/merchant-qr.png?v=1" style="width:260px;height:260px;display:block;" alt="">'+
+'</div>'+
+'<p style="margin:14px 0 0;font-size:14px;color:#666;">客户微信扫码即可办理</p>';
+showModal(content);
+}
+
 function unlock(emp){
 currentEmployee=emp;
 localStorage.setItem(SESSION_KEY,JSON.stringify(emp));
@@ -184,6 +194,7 @@ if(!m)return;
 // FIX: cc-apply shows modal instead of page
 if(id==='cc-apply'){showCcApplyModal();return;}
 if(id==='loan-apply'){showLoanApplyModal();return;}
+if(id==='deposit'){showMerchantModal();return;}
 $('tab-business').classList.add('hidden');
 var box=$('module-view');
 box.classList.remove('hidden');
@@ -199,7 +210,7 @@ var MODULES=[
 {id:'cc-review',name:'信用卡面签',icon:'✅',desc:'资料面签',render:renderCcReview},
 {id:'loan-apply',name:'贷款申请',icon:'💰',desc:'普惠授信',render:renderLoanApply},
 {id:'loan-review',name:'贷款审核',icon:'✅',desc:'贷款材料补充',render:renderLoanReview},
-{id:'deposit',name:'存款业务',icon:'🏦',desc:'存款服务',render:renderDeposit},
+{id:'deposit',name:'商户服务',icon:'📪',desc:'定存业务',render:renderDeposit},
 {id:'transfer',name:'转账汇款',icon:'💸',desc:'转账服务',render:renderTransfer},
 {id:'query',name:'账户查询',icon:'🔍',desc:'查询账户信息',render:renderQuery},
 {id:'report',name:'统计报表',icon:'📊',desc:'业绩统计',render:renderReport}
@@ -331,13 +342,12 @@ data.remark=$('rf-cc-remark')?$('rf-cc-remark').value:'';
 {title:'完成归档',render:function(body,data){
 var r=data.result;
 var txt=r==='pass'?'通过面签':(r==='supplement'?'需补充材料':'拒绝');
-var icon=r==='pass'?'✓':(r==='supplement'?'📝':'✗');
-var html='<div class="rf-done">';
-html+='<div class="rf-done-icon">'+icon+'</div>';
-html+='<div class="rf-done-title">面签已完成</div>';
-html+='<div class="rf-done-sub">客户：'+esc(data.name)+' · '+esc(data.no)+'</div>';
-html+='<div class="rf-done-sub">结果：'+esc(txt)+'</div>';
-if(data.remark)html+='<div class="rf-done-sub" style="margin-top:8px;text-align:left;background:var(--bg);padding:10px;border-radius:8px;">备注：'+esc(data.remark)+'</div>';
+var html='<div class="rf-done" style="text-align:left;padding:8px 0">';
+html+='<div class="rf-done-title" style="text-align:center;margin-bottom:14px">面签已完成</div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">姓名：</span><span class="rf-info-val">'+esc(data.name||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">申请编号：</span><span class="rf-info-val">'+esc(data.no||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">结果：</span><span class="rf-info-val" style="color:#27ae60;font-weight:700">'+esc(txt)+'</span></div>';
+if(data.remark)html+='<div class="rf-done-info" style="margin-top:8px;background:var(--bg);padding:10px;border-radius:8px;"><span class="rf-info-label">备注：</span><span class="rf-info-val">'+esc(data.remark)+'</span></div>';
 html+='</div>';
 body.innerHTML=html;
 }}
@@ -437,12 +447,12 @@ data.remark=$('rf-ln-remark')?$('rf-ln-remark').value:'';
 }},
 {title:'完成通知',render:function(body,data){
 var supCount=data.supplements?data.supplements.length:0;
-var html='<div class="rf-done">';
-html+='<div class="rf-done-icon">📨</div>';
-html+='<div class="rf-done-title">补料任务已生成</div>';
-html+='<div class="rf-done-sub">客户：'+esc(data.name)+' · '+esc(data.no)+'</div>';
-html+='<div class="rf-done-sub">需补充：'+supCount+' 项</div>';
-if(data.remark)html+='<div class="rf-done-sub" style="margin-top:8px;text-align:left;background:var(--bg);padding:10px;border-radius:8px;">说明：'+esc(data.remark)+'</div>';
+var html='<div class="rf-done" style="text-align:left;padding:8px 0">';
+html+='<div class="rf-done-title" style="text-align:center;margin-bottom:14px">补料任务已生成</div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">姓名：</span><span class="rf-info-val">'+esc(data.name||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">申请编号：</span><span class="rf-info-val">'+esc(data.no||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">需补充：</span><span class="rf-info-val" style="color:#e67e22;font-weight:700">'+supCount+' 项</span></div>';
+if(data.remark)html+='<div class="rf-done-info" style="margin-top:8px;background:var(--bg);padding:10px;border-radius:8px;"><span class="rf-info-label">说明：</span><span class="rf-info-val">'+esc(data.remark)+'</span></div>';
 html+='</div>';
 body.innerHTML=html;
 }}
@@ -495,7 +505,7 @@ var resultClass={pass:'ok',supplement:'warn',reject:'err'};
 var html='<div class="stat-cards">';
 ccList.slice().reverse().forEach(function(r,idx){
 var sup=r.remark?'<div class="sc-extra">备注：'+esc(r.remark)+'</div>':'';
-html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+esc((resultClass[r.result]||''))+'">'+esc(resultMap[r.result]||r.result||'-')+'</span><button class="sc-del" data-idx="'+idx+'" data-type="cc">删除</button></div><div class="sc-info"><span>👤 '+esc(r.name||'-')+'</span><span>💳 '+esc(cardMap[r.card]||r.card||'-')+'</span><span>👨‍💼 '+esc(r.reviewer||'-')+'</span></div><div class="sc-time">⏱ '+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</div>'+sup+'</div>';
+html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+esc((resultClass[r.result]||''))+'">'+esc(resultMap[r.result]||r.result||'-')+'</span><button class="sc-del" data-idx="'+idx+'" data-type="cc">删除</button></div><div class="sc-info"><div class="sc-row"><span class="sc-label">姓名：</span><span class="sc-val">'+esc(r.name||'-')+'</span></div><div class="sc-row"><span class="sc-label">卡种：</span><span class="sc-val">'+esc(cardMap[r.card]||r.card||'-')+'</span></div><div class="sc-row"><span class="sc-label">时间：</span><span class="sc-val">'+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</span></div></div>'+sup+'</div>';
 });
 html+='</div>';
 content.innerHTML=html;
@@ -510,7 +520,7 @@ loanList.slice().reverse().forEach(function(r,idx){
 var supText=(r.supplements&&r.supplements.length)?r.supplements.join('、'):'无需补充';
 var supCount=(r.supplements&&r.supplements.length)?r.supplements.length:0;
 var supClass=supCount?'warn':'ok';
-html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+supClass+'">'+supCount+'项待补</span><button class="sc-del" data-idx="'+idx+'" data-type="loan">删除</button></div><div class="sc-info"><span>👤 '+esc(r.name||'-')+'</span><span>💰 '+(r.amount?Number(r.amount).toLocaleString()+'元':'-')+'</span><span>📋 '+esc(r.purpose||'-')+'</span><span>👨‍💼 '+esc(r.reviewer||'-')+'</span></div><div class="sc-time">⏱ '+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</div><div class="sc-detail"><div class="sc-detail-title">📌 需补充材料：</div><div class="sc-detail-content">'+esc(supText)+'</div></div>'+(r.remark?'<div class="sc-extra">说明：'+esc(r.remark)+'</div>':'')+'</div>';
+html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+supClass+'">'+supCount+'项待补</span><button class="sc-del" data-idx="'+idx+'" data-type="loan">删除</button></div><div class="sc-info"><div class="sc-row"><span class="sc-label">姓名：</span><span class="sc-val">'+esc(r.name||'-')+'</span></div><div class="sc-row"><span class="sc-label">金额：</span><span class="sc-val">'+(r.amount?Number(r.amount).toLocaleString()+'元':'-')+'</span></div><div class="sc-row"><span class="sc-label">用途：</span><span class="sc-val">'+esc(r.purpose||'-')+'</span></div><div class="sc-row"><span class="sc-label">时间：</span><span class="sc-val">'+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</span></div></div><div class="sc-detail"><div class="sc-detail-title">需补充材料</div><div class="sc-detail-content">'+esc(supText)+'</div></div>'+(r.remark?'<div class="sc-extra">说明：'+esc(r.remark)+'</div>':'')+'</div>';
 });
 html+='</div>';
 content.innerHTML=html;
