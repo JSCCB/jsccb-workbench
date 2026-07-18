@@ -194,9 +194,9 @@ $('back-link').addEventListener('click',showHome);
 
 var MODULES=[
 {id:'cc-apply',name:'信用卡申请',icon:'💳',desc:'扫码办理信用卡',render:renderCcApply},
-{id:'cc-review',name:'信用卡审核',icon:'✅',desc:'审核客户申请',render:renderCcReview},
-{id:'loan-apply',name:'贷款申请',icon:'💰',desc:'新贷款申请',render:renderLoanApply},
-{id:'loan-review',name:'贷款审核',icon:'✅',desc:'审核贷款申请',render:renderLoanReview},
+{id:'cc-review',name:'信用卡面签',icon:'✅',desc:'资料面签',render:renderCcReview},
+{id:'loan-apply',name:'贷款申请',icon:'💰',desc:'普惠授信',render:renderLoanApply},
+{id:'loan-review',name:'贷款审核',icon:'✅',desc:'贷款材料补充',render:renderLoanReview},
 {id:'deposit',name:'存款业务',icon:'🏦',desc:'存款服务',render:renderDeposit},
 {id:'transfer',name:'转账汇款',icon:'💸',desc:'转账服务',render:renderTransfer},
 {id:'query',name:'账户查询',icon:'🔍',desc:'查询账户信息',render:renderQuery},

@@ -47,7 +47,7 @@ button { font-family: inherit; }
 .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 .module-card { background: #fff; border-radius: 16px; padding: 18px; box-shadow: 0 2px 10px rgba(0,0,0,.05); cursor: pointer; transition: .15s; border: 1px solid transparent; }
 .module-card:active { transform: scale(.98); border-color: var(--blue); }
-.module-card .m-icon { font-size: 30px; }
+.module-card .m-icon { font-size: 30px; text-align: center; line-height: 1; display: block; width: 100%; }
 .module-card .m-name { font-weight: 700; margin-top: 10px; font-size: 16px; }
 .module-card .m-desc { color: var(--muted); font-size: 12px; margin-top: 4px; line-height: 1.5; }
 .module-card .m-badge { display: inline-block; margin-top: 10px; background: var(--blue-light); color: var(--blue); font-size: 12px; padding: 2px 9px; border-radius: 20px; }
@@ -123,17 +123,3 @@ button { font-family: inherit; }
 .mini-card.tier-zuanshi { background: linear-gradient(135deg,#1c1c22,#3a3a44); }
 .mini-card .mc-name { font-weight: 600; font-size: 14px; }
 .mini-card .mc-tier { font-size: 11px; opacity: .9; }
-
-
-/* Modal/Popup */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
-.modal-content { background: #fff; border-radius: 16px; padding: 24px; max-width: 340px; width: 100%; position: relative; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.modal-close { position: absolute; top: 8px; right: 12px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; padding: 4px 8px; line-height: 1; }
-.modal-close:hover { color: #333; }
-
-
-/* Login input row (label + input) */
-.input-row { display: flex; align-items: center; gap: 10px; margin: 4px 0 12px; }
-.input-row .input-label { font-size: 14px; color: var(--muted); white-space: nowrap; min-width: 36px; text-align: left; }
-.input-row input { flex: 1; padding: 13px 14px; border: 1px solid var(--line); border-radius: 10px; font-size: 16px; outline: none; }
-.input-row input:focus { border-color: var(--blue); }
