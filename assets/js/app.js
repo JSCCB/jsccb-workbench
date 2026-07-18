@@ -85,6 +85,16 @@ var content='<button class="modal-close">&times;</button>'+
 showModal(content);
 }
 
+function showMerchantModal(){
+var content='<button class="modal-close">&times;</button>'+
+'<h3 style="margin:0 0 16px;font-size:18px;color:#0a4ea3;">扫码申请定存业务</h3>'+
+'<div style="background:#fff;padding:16px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);">'+
+'<img src="assets/images/merchant-qr.png?v=1" style="width:260px;height:260px;display:block;" alt="">'+
+'</div>'+
+'<p style="margin:14px 0 0;font-size:14px;color:#666;">客户微信扫码即可办理</p>';
+showModal(content);
+}
+
 function unlock(emp){
 currentEmployee=emp;
 localStorage.setItem(SESSION_KEY,JSON.stringify(emp));
@@ -184,20 +194,23 @@ if(!m)return;
 // FIX: cc-apply shows modal instead of page
 if(id==='cc-apply'){showCcApplyModal();return;}
 if(id==='loan-apply'){showLoanApplyModal();return;}
+if(id==='deposit'){showMerchantModal();return;}
 $('tab-business').classList.add('hidden');
 var box=$('module-view');
 box.classList.remove('hidden');
 box.innerHTML='<span class="back-link" id="back-link">返回</span><h2 class="sec-title">'+esc(m.name)+'</h2>';
-box.appendChild(m.render());
+var el=m.render();
+if(!el){box.innerHTML+='<div style="padding:20px;color:var(--muted)">加载异常，请返回重试</div>';}
+else{box.appendChild(el);}
 $('back-link').addEventListener('click',showHome);
 }
 
 var MODULES=[
 {id:'cc-apply',name:'信用卡申请',icon:'💳',desc:'扫码办理信用卡',render:renderCcApply},
-{id:'cc-review',name:'信用卡审核',icon:'✅',desc:'审核客户申请',render:renderCcReview},
-{id:'loan-apply',name:'贷款申请',icon:'💰',desc:'新贷款申请',render:renderLoanApply},
-{id:'loan-review',name:'贷款审核',icon:'✅',desc:'审核贷款申请',render:renderLoanReview},
-{id:'deposit',name:'存款业务',icon:'🏦',desc:'存款服务',render:renderDeposit},
+{id:'cc-review',name:'信用卡面签',icon:'✅',desc:'资料面签',render:renderCcReview},
+{id:'loan-apply',name:'贷款申请',icon:'💰',desc:'普惠授信',render:renderLoanApply},
+{id:'loan-review',name:'贷款审核',icon:'✅',desc:'贷款材料补充',render:renderLoanReview},
+{id:'deposit',name:'商户服务',icon:'📪',desc:'定存业务',render:renderDeposit},
 {id:'transfer',name:'转账汇款',icon:'💸',desc:'转账服务',render:renderTransfer},
 {id:'query',name:'账户查询',icon:'🔍',desc:'查询账户信息',render:renderQuery},
 {id:'report',name:'统计报表',icon:'📊',desc:'业绩统计',render:renderReport}
@@ -216,13 +229,316 @@ grid.appendChild(d);
 }
 
 function renderCcApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel" style="text-align:center;padding:30px"><h3 style="margin-bottom:20px;">扫码办理信用卡</h3><div style="background:#fff;padding:20px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);"><img src="assets/images/qr-code.png?v=3" style="width:200px;height:200px;" alt="扫码申请"><p style="margin:15px 0 0;font-size:14px;color:#666;">客户微信扫码即可申请</p></div></div>';return wrap;}
-function renderCcReview(){var wrap=document.createElement('div');var apps=applicationsCache.filter(function(a){return a.status==='pending';});if(!apps.length){wrap.innerHTML='<div class="panel"><p>暂无待审核申请</p></div>';return wrap;}wrap.innerHTML='<div class="panel"><h3>待审核申请</h3></div>';apps.forEach(function(app){var row=document.createElement('div');row.className='app-row';row.innerHTML='<div class="app-info"><div>'+esc(app.name)+'</div><div>'+esc(app.cardName)+'</div></div><div class="app-actions"><button class="btn-ok" data-id="'+app.id+'">通过</button><button class="btn-no" data-id="'+app.id+'">拒绝</button></div>';wrap.appendChild(row);});wrap.querySelectorAll('.btn-ok').forEach(function(btn){btn.addEventListener('click',function(){var id=btn.getAttribute('data-id');var app=applicationsCache.filter(function(a){return a.id===id;})[0];if(app){app.status='approved';app.approvedAt=new Date().toISOString();saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule('cc-review');});}});});wrap.querySelectorAll('.btn-no').forEach(function(btn){btn.addEventListener('click',function(){var id=btn.getAttribute('data-id');var app=applicationsCache.filter(function(a){return a.id===id;})[0];if(app){app.status='rejected';app.rejectedAt=new Date().toISOString();saveApplicationsToGitHub(applicationsCache).then(function(){renderModules();showModule('cc-review');});}});});return wrap;}
+function makeReviewFlow(opts){
+// opts: {title, type:'cc'|'loan', onSubmit}
+var steps=opts.steps;
+var stepIdx=0;
+var data={};
+var root=document.createElement('div');
+root.className='review-flow';root.style.display='block';
+
+function paint(){
+var s=steps[stepIdx];
+if(!s){console.error('No step at idx',stepIdx);return;}
+var pct=Math.round((stepIdx+1)/steps.length*100);
+var html='';
+try{
+html+='<div class="rf-head"><h3>'+esc(opts.title)+'</h3>';
+html+='<div class="rf-progress"><div class="rf-bar"><div class="rf-fill" style="width:'+pct+'%"></div></div>';
+html+='<div class="rf-step">第 '+(stepIdx+1)+' / '+steps.length+' 步 · '+esc(s.title)+'</div></div></div>';
+html+='<div class="rf-body" id="rf-body"></div>';
+html+='<div class="rf-nav">';
+if(stepIdx>0)html+='<button class="btn-secondary" id="rf-back">上一步</button>';
+else html+='<button class="btn-secondary" id="rf-back" style="visibility:hidden">上一步</button>';
+if(stepIdx<steps.length-1)html+='<button class="btn-primary" id="rf-next">下一步</button>';
+else html+='<button class="btn-primary" id="rf-next">提交</button>';
+html+='</div>';
+root.innerHTML=html;
+var body=root.querySelector('#rf-body');
+if(body){
+try{s.render(body,data,function(){paint();});}catch(e){console.error('render error:',e);body.innerHTML='<div style=\\"padding:20px;color:red\\">步骤渲染失败:'+e.message+'</div>';}
+}
+} catch(e){console.error('paint error:',e);root.innerHTML='<div style=\\"padding:20px;color:red\\">页面错误:'+e.message+'</div>';return;}
+var back=root.querySelector('#rf-back');
+if(back)back.addEventListener('click',function(){if(stepIdx>0){stepIdx--;paint();}});
+var next=root.querySelector('#rf-next');
+if(next)next.addEventListener('click',function(){
+if(s.collect){s.collect(data);}
+var valid=s.validate?s.validate(data):true;
+if(valid!==true){alert(valid);return;}
+if(stepIdx<steps.length-1){stepIdx++;paint();}else{
+if(opts.onSubmit){opts.onSubmit(data,function(){stepIdx=0;Object.keys(data).forEach(function(k){delete data[k];});paint();});}
+}
+});
+}
+paint();
+return root;
+}
+
+function renderCcReview(){
+return makeReviewFlow({
+title:'信用卡面签',
+steps:[
+{title:'客户信息录入',render:function(body,data){
+var html='<div class="rf-form">';
+html+='<div class="rf-field"><label>申请编号</label><input type="text" id="rf-cc-no" placeholder="CC-2026-XXXX" value="'+(data.no||'')+'"></div>';
+html+='<div class="rf-field"><label>客户姓名</label><input type="text" id="rf-cc-name" placeholder="请输入" value="'+(data.name||'')+'"></div>';
+html+='<div class="rf-field"><label>身份证号</label><input type="text" id="rf-cc-idno" placeholder="18位" maxlength="18" value="'+(data.idno||'')+'"></div>';
+html+='<div class="rf-field"><label>手机号</label><input type="tel" id="rf-cc-phone" placeholder="11位" maxlength="11" value="'+(data.phone||'')+'"></div>';
+html+='<div class="rf-field"><label>申请卡种</label><select id="rf-cc-card"><option value="">请选择</option><option value="puka">普卡</option><option value="jinka">金卡</option><option value="baijin">白金卡</option><option value="zuanshi">钻石卡</option></select></div>';
+html+='<div class="rf-field"><label>申请额度（元）</label><input type="number" id="rf-cc-amount" placeholder="0" value="'+(data.amount||'')+'"></div>';
+html+='</div>';
+body.innerHTML=html;
+},validate:function(data){
+if(!data.no)return '请输入申请编号';
+if(!data.name)return '请输入客户姓名';
+if(!data.idno||data.idno.length!==18)return '身份证号必须18位';
+if(!data.phone||data.phone.length!==11)return '手机号必须11位';
+if(!data.card)return '请选择申请卡种';
+return true;
+},collect:function(data){
+data.no=$('rf-cc-no').value.trim();
+data.name=$('rf-cc-name').value.trim();
+data.idno=$('rf-cc-idno').value.trim();
+data.phone=$('rf-cc-phone').value.trim();
+data.card=$('rf-cc-card').value;
+data.amount=$('rf-cc-amount').value;
+}},
+{title:'资料完整性核对',render:function(body,data){
+var items=[
+{name:'身份证原件',note:'核对身份证与本人一致'},
+{name:'工作证明 / 收入证明',note:'近3个月内有效'},
+{name:'征信查询授权书',note:'客户本人签字'},
+{name:'面签现场照片',note:'需采集客户正面照'}
+];
+var html='<div class="rf-checks">';
+items.forEach(function(it,i){
+html+='<div class="rf-check-row"><label><input type="checkbox" data-c="'+i+'"> '+esc(it.name)+'</label><span class="rf-note">'+esc(it.note)+'</span></div>';
+});
+html+='</div>';
+body.innerHTML=html;
+data.checked=[false,false,false,false];
+body.querySelectorAll('input[data-c]').forEach(function(cb){
+cb.addEventListener('change',function(){
+var idx=parseInt(this.getAttribute('data-c'));
+data.checked[idx]=this.checked;
+data.allChecked=data.checked.every(function(v){return v;});
+});
+});
+},validate:function(data){if(!data.allChecked)return '请勾选所有已核对的资料';return true;}},
+{title:'录入面签结果',render:function(body,data){
+var html='<div class="rf-result">';
+html+='<div class="rf-result-row"><label><input type="radio" name="rf-cc-result" value="pass" checked> 通过面签</label></div>';
+html+='<div class="rf-result-row"><label><input type="radio" name="rf-cc-result" value="supplement"> 需补充材料</label></div>';
+html+='<div class="rf-result-row"><label><input type="radio" name="rf-cc-result" value="reject"> 拒绝</label></div>';
+html+='<div class="rf-remark"><label>面签备注（选填）</label><textarea id="rf-cc-remark" rows="3" placeholder="面签情况、客户表现、风控要点等..."></textarea></div>';
+html+='</div>';
+body.innerHTML=html;
+},collect:function(data){
+var r=document.querySelector('input[name="rf-cc-result"]:checked');
+data.result=r?r.value:'pass';
+data.remark=$('rf-cc-remark')?$('rf-cc-remark').value:'';
+}},
+{title:'完成归档',render:function(body,data){
+var r=data.result;
+var txt=r==='pass'?'通过面签':(r==='supplement'?'需补充材料':'拒绝');
+var html='<div class="rf-done" style="text-align:left;padding:8px 0">';
+html+='<div class="rf-done-title" style="text-align:center;margin-bottom:14px">面签已完成</div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">姓名：</span><span class="rf-info-val">'+esc(data.name||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">申请编号：</span><span class="rf-info-val">'+esc(data.no||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">结果：</span><span class="rf-info-val" style="color:#27ae60;font-weight:700">'+esc(txt)+'</span></div>';
+if(data.remark)html+='<div class="rf-done-info" style="margin-top:8px;background:var(--bg);padding:10px;border-radius:8px;"><span class="rf-info-label">备注：</span><span class="rf-info-val">'+esc(data.remark)+'</span></div>';
+html+='</div>';
+body.innerHTML=html;
+}}
+],
+onSubmit:function(data,done){
+var record={
+type:'cc-review',
+no:data.no,name:data.name,idno:data.idno,phone:data.phone,
+card:data.card,amount:data.amount,
+result:data.result,remark:data.remark,
+reviewer:(typeof currentEmployee!=='undefined'&&currentEmployee)?currentEmployee.name:'',
+reviewedAt:new Date().toISOString()
+};
+var arr=load('jsccb:cc_reviews');
+// Dedup: if same no+name+result within last 5 sec, skip
+var now=Date.now();
+var isDup=arr.some(function(x){
+return x.no===record.no&&x.name===record.name&&x.result===record.result&&(now-new Date(x.reviewedAt).getTime()<5000);
+});
+if(!isDup){arr.push(record);save('jsccb:cc_reviews',arr);}
+done();
+setTimeout(function(){showModule('cc-review');},2000);
+}
+});
+}
+
 function renderLoanApply(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>贷款申请</h3><p>功能即将上线</p></div>';return wrap;}
-function renderLoanReview(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>贷款审核</h3><p>功能即将上线</p></div>';return wrap;}
-function renderDeposit(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>存款业务</h3><p>功能即将上线</p></div>';return wrap;}
+
+function renderLoanReview(){
+return makeReviewFlow({
+title:'贷款材料补充审核',
+steps:[
+{title:'客户信息录入',render:function(body,data){
+var html='<div class="rf-form">';
+html+='<div class="rf-field"><label>申请编号</label><input type="text" id="rf-ln-no" placeholder="LN-2026-XXXX" value="'+(data.no||'')+'"></div>';
+html+='<div class="rf-field"><label>客户姓名</label><input type="text" id="rf-ln-name" placeholder="请输入" value="'+(data.name||'')+'"></div>';
+html+='<div class="rf-field"><label>身份证号</label><input type="text" id="rf-ln-idno" placeholder="18位" maxlength="18" value="'+(data.idno||'')+'"></div>';
+html+='<div class="rf-field"><label>手机号</label><input type="tel" id="rf-ln-phone" placeholder="11位" maxlength="11" value="'+(data.phone||'')+'"></div>';
+html+='<div class="rf-field"><label>申请金额（元）</label><input type="number" id="rf-ln-amount" placeholder="0" value="'+(data.amount||'')+'"></div>';
+html+='<div class="rf-field"><label>贷款用途</label><select id="rf-ln-purpose"><option value="">请选择</option><option value="购房">购房</option><option value="购车">购车</option><option value="装修">装修</option><option value="经营">经营周转</option><option value="消费">消费</option><option value="其他">其他</option></select></div>';
+html+='</div>';
+body.innerHTML=html;
+},validate:function(data){
+if(!data.no)return '请输入申请编号';
+if(!data.name)return '请输入客户姓名';
+if(!data.idno||data.idno.length!==18)return '身份证号必须18位';
+if(!data.phone||data.phone.length!==11)return '手机号必须11位';
+if(!data.amount)return '请输入申请金额';
+if(!data.purpose)return '请选择贷款用途';
+return true;
+},collect:function(data){
+data.no=$('rf-ln-no').value.trim();
+data.name=$('rf-ln-name').value.trim();
+data.idno=$('rf-ln-idno').value.trim();
+data.phone=$('rf-ln-phone').value.trim();
+data.amount=$('rf-ln-amount').value;
+data.purpose=$('rf-ln-purpose').value;
+}},
+{title:'已有材料核对',render:function(body,data){
+var items=[
+{name:'身份证',note:'原件已核'},
+{name:'收入证明',note:'近3个月'},
+{name:'征信授权',note:'已签'},
+{name:'工作证明',note:'在职证明'},
+{name:'住址证明',note:'水电气/物业'}
+];
+var html='<div class="rf-checks">';
+items.forEach(function(it,i){
+html+='<div class="rf-check-row"><label><input type="checkbox" data-c="'+i+'" checked> '+esc(it.name)+'</label><span class="rf-note" id="rf-ln-note-'+i+'" style="color:var(--ok)">'+esc(it.note)+'</span></div>';
+});
+html+='</div>';
+body.innerHTML=html;
+data.checked=[true,true,true,true,true];
+data.allChecked=true;
+body.querySelectorAll('input[data-c]').forEach(function(cb){
+cb.addEventListener('change',function(){
+var idx=parseInt(this.getAttribute('data-c'));
+data.checked[idx]=this.checked;
+data.allChecked=data.checked.every(function(v){return v;});
+var note=document.getElementById('rf-ln-note-'+idx);
+if(note){note.style.color=this.checked?'var(--ok)':'var(--red)';note.textContent=this.checked?'已核':'缺失';}
+});
+});
+},validate:function(data){return true;}},
+{title:'补充材料清单',render:function(body,data){
+var supplements=['银行流水（近6个月）','资产证明（房产/车辆/存款）','担保人资料','经营执照（个体/企业）','其他补充材料'];
+var html='<div class="rf-sup-list">';
+supplements.forEach(function(s,i){
+html+='<div class="rf-sup-row"><label><input type="checkbox" data-s="'+i+'"> '+esc(s)+'</label></div>';
+});
+html+='<div class="rf-remark"><label>补充说明（选填）</label><textarea id="rf-ln-remark" rows="3" placeholder="告知客户需补充哪些材料，原因..."></textarea></div>';
+html+='</div>';
+body.innerHTML=html;
+},collect:function(data){
+data.supplements=Array.from(document.querySelectorAll('input[data-s]')).filter(function(c){return c.checked;}).map(function(c){return c.parentNode.textContent.trim();});
+data.remark=$('rf-ln-remark')?$('rf-ln-remark').value:'';
+}},
+{title:'完成通知',render:function(body,data){
+var supCount=data.supplements?data.supplements.length:0;
+var html='<div class="rf-done" style="text-align:left;padding:8px 0">';
+html+='<div class="rf-done-title" style="text-align:center;margin-bottom:14px">补料任务已生成</div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">姓名：</span><span class="rf-info-val">'+esc(data.name||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">申请编号：</span><span class="rf-info-val">'+esc(data.no||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">需补充：</span><span class="rf-info-val" style="color:#e67e22;font-weight:700">'+supCount+' 项</span></div>';
+if(data.remark)html+='<div class="rf-done-info" style="margin-top:8px;background:var(--bg);padding:10px;border-radius:8px;"><span class="rf-info-label">说明：</span><span class="rf-info-val">'+esc(data.remark)+'</span></div>';
+html+='</div>';
+body.innerHTML=html;
+}}
+],
+onSubmit:function(data,done){
+var record={
+type:'loan-review',
+no:data.no,name:data.name,idno:data.idno,phone:data.phone,
+amount:data.amount,purpose:data.purpose,
+supplements:data.supplements||[],
+remark:data.remark||'',
+reviewer:(typeof currentEmployee!=='undefined'&&currentEmployee)?currentEmployee.name:'',
+reviewedAt:new Date().toISOString()
+};
+var arr=load('jsccb:loan_reviews');
+var now=Date.now();
+var isDup=arr.some(function(x){
+return x.no===record.no&&x.name===record.name&&(now-new Date(x.reviewedAt).getTime()<5000);
+});
+if(!isDup){arr.push(record);save('jsccb:loan_reviews',arr);}
+done();
+setTimeout(function(){showModule('loan-review');},2000);
+}
+});
+}function renderDeposit(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>存款业务</h3><p>功能即将上线</p></div>';return wrap;}
 function renderTransfer(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>转账汇款</h3><p>功能即将上线</p></div>';return wrap;}
 function renderQuery(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>账户查询</h3><p>功能即将上线</p></div>';return wrap;}
-function renderReport(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>统计报表</h3><p>功能即将上线</p></div>';return wrap;}
+function renderReport(){
+var wrap=document.createElement('div');
+wrap.innerHTML='<div class="panel"><h3>业绩统计</h3><div id="stats-summary" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;"></div><div id="stats-tabs" style="display:flex;gap:8px;margin-bottom:14px;border-bottom:1px solid var(--line);"></div><div id="stats-content"></div></div>';
+var summary=wrap.querySelector('#stats-summary');
+var tabs=wrap.querySelector('#stats-tabs');
+var content=wrap.querySelector('#stats-content');
+var ccList=load('jsccb:cc_reviews')||[];
+var loanList=load('jsccb:loan_reviews')||[];
+summary.innerHTML='<div class="stat-card"><div class="stat-num">'+ccList.length+'</div><div class="stat-label">信用卡面签</div></div><div class="stat-card"><div class="stat-num" style="color:#e67e22">'+loanList.length+'</div><div class="stat-label">贷款审核</div></div>';
+function deleteRecord(type,idx){
+if(!confirm('确定删除此记录？'))return;
+var key=type==='cc'?'jsccb:cc_reviews':'jsccb:loan_reviews';
+var arr=load(key);
+arr.splice(idx,1);
+save(key,arr);
+renderReport();
+}
+function renderCcTable(){
+if(!ccList.length){content.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted)">暂无面签记录</div>';return;}
+var cardMap={puka:'普卡',jinka:'金卡',baijin:'白金卡',zuanshi:'钻石卡'};
+var resultMap={pass:'通过',supplement:'需补材料',reject:'拒绝'};
+var resultClass={pass:'ok',supplement:'warn',reject:'err'};
+var html='<div class="stat-cards">';
+ccList.slice().reverse().forEach(function(r,idx){
+var sup=r.remark?'<div class="sc-extra">备注：'+esc(r.remark)+'</div>':'';
+html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+esc((resultClass[r.result]||''))+'">'+esc(resultMap[r.result]||r.result||'-')+'</span><button class="sc-del" data-idx="'+idx+'" data-type="cc">删除</button></div><div class="sc-info"><div class="sc-row"><span class="sc-label">姓名：</span><span class="sc-val">'+esc(r.name||'-')+'</span></div><div class="sc-row"><span class="sc-label">卡种：</span><span class="sc-val">'+esc(cardMap[r.card]||r.card||'-')+'</span></div><div class="sc-row"><span class="sc-label">时间：</span><span class="sc-val">'+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</span></div></div>'+sup+'</div>';
+});
+html+='</div>';
+content.innerHTML=html;
+content.querySelectorAll('.sc-del').forEach(function(btn){
+btn.addEventListener('click',function(e){e.stopPropagation();deleteRecord(this.getAttribute('data-type'),parseInt(this.getAttribute('data-idx')));});
+});
+}
+function renderLoanTable(){
+if(!loanList.length){content.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted)">暂无审核记录</div>';return;}
+var html='<div class="stat-cards">';
+loanList.slice().reverse().forEach(function(r,idx){
+var supText=(r.supplements&&r.supplements.length)?r.supplements.join('、'):'无需补充';
+var supCount=(r.supplements&&r.supplements.length)?r.supplements.length:0;
+var supClass=supCount?'warn':'ok';
+html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+supClass+'">'+supCount+'项待补</span><button class="sc-del" data-idx="'+idx+'" data-type="loan">删除</button></div><div class="sc-info"><div class="sc-row"><span class="sc-label">姓名：</span><span class="sc-val">'+esc(r.name||'-')+'</span></div><div class="sc-row"><span class="sc-label">金额：</span><span class="sc-val">'+(r.amount?Number(r.amount).toLocaleString()+'元':'-')+'</span></div><div class="sc-row"><span class="sc-label">用途：</span><span class="sc-val">'+esc(r.purpose||'-')+'</span></div><div class="sc-row"><span class="sc-label">时间：</span><span class="sc-val">'+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</span></div></div><div class="sc-detail"><div class="sc-detail-title">需补充材料</div><div class="sc-detail-content">'+esc(supText)+'</div></div>'+(r.remark?'<div class="sc-extra">说明：'+esc(r.remark)+'</div>':'')+'</div>';
+});
+html+='</div>';
+content.innerHTML=html;
+content.querySelectorAll('.sc-del').forEach(function(btn){
+btn.addEventListener('click',function(e){e.stopPropagation();deleteRecord(this.getAttribute('data-type'),parseInt(this.getAttribute('data-idx')));});
+});
+}
+function switchTab(tab){
+tabs.querySelectorAll('.stat-tab').forEach(function(t){t.classList.remove('active');});
+var btn=tabs.querySelector('[data-tab="'+tab+'"]');
+if(btn)btn.classList.add('active');
+if(tab==='cc')renderCcTable();else renderLoanTable();
+}
+tabs.innerHTML='<button class="stat-tab active" data-tab="cc">信用卡面签 ('+ccList.length+')</button><button class="stat-tab" data-tab="loan">贷款审核 ('+loanList.length+')</button>';
+tabs.querySelectorAll('.stat-tab').forEach(function(btn){btn.addEventListener('click',function(){switchTab(this.getAttribute('data-tab'));});});
+renderCcTable();
+return wrap;
+}
 
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setupTabs);}else{setupTabs();}
 
