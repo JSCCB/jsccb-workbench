@@ -75,6 +75,16 @@ var content='<button class="modal-close">&times;</button>'+
 showModal(content);
 }
 
+function showLoanApplyModal(){
+var content='<button class="modal-close">&times;</button>'+
+'<h3 style="margin:0 0 16px;font-size:18px;color:#0a4ea3;">扫码申请贷款</h3>'+
+'<div style="background:#fff;padding:16px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);">'+
+'<img src="assets/images/loan-qr.png?v=1" style="width:240px;height:240px;display:block;" alt="扫码申请贷款">'+
+'</div>'+
+'<p style="margin:14px 0 0;font-size:14px;color:#666;">客户微信扫码提交材料</p>';
+showModal(content);
+}
+
 function unlock(emp){
 currentEmployee=emp;
 localStorage.setItem(SESSION_KEY,JSON.stringify(emp));
@@ -173,6 +183,7 @@ var m=MODULES.filter(function(x){return x.id===id;})[0];
 if(!m)return;
 // FIX: cc-apply shows modal instead of page
 if(id==='cc-apply'){showCcApplyModal();return;}
+if(id==='loan-apply'){showLoanApplyModal();return;}
 $('tab-business').classList.add('hidden');
 var box=$('module-view');
 box.classList.remove('hidden');
