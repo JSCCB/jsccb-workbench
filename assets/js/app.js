@@ -87,11 +87,10 @@ showModal(content);
 
 function showMerchantModal(){
 var content='<button class="modal-close">&times;</button>'+
-'<h3 style="margin:0 0 16px;font-size:18px;color:#0a4ea3;">扫码申请定存业务</h3>'+
+'<h3 style="margin:0 0 16px;font-size:18px;color:#0a4ea3;">商户服务</h3>'+
 '<div style="background:#fff;padding:16px;border-radius:12px;display:inline-block;box-shadow:0 4px 20px rgba(0,0,0,.1);">'+
 '<img src="assets/images/merchant-qr.png?v=1" style="width:260px;height:260px;display:block;" alt="">'+
-'</div>'+
-'<p style="margin:14px 0 0;font-size:14px;color:#666;">客户微信扫码即可办理</p>';
+'</div>';
 showModal(content);
 }
 
@@ -211,9 +210,9 @@ var MODULES=[
 {id:'loan-apply',name:'贷款申请',icon:'💰',desc:'普惠授信',render:renderLoanApply},
 {id:'loan-review',name:'贷款审核',icon:'✅',desc:'贷款材料补充',render:renderLoanReview},
 {id:'deposit',name:'商户服务',icon:'📪',desc:'定存业务',render:renderDeposit},
-{id:'transfer',name:'转账汇款',icon:'💸',desc:'转账服务',render:renderTransfer},
+{id:'transfer',name:'综合评分',icon:'💸',desc:'客户综合评分评估',render:renderTransfer},
 {id:'query',name:'账户查询',icon:'🔍',desc:'查询账户信息',render:renderQuery},
-{id:'report',name:'统计报表',icon:'📊',desc:'业绩统计',render:renderReport}
+{id:'report',name:'业绩统计',icon:'📊',desc:'KPI进度',render:renderReport}
 ];
 
 function renderModules(){
@@ -248,10 +247,12 @@ html+='<div class="rf-progress"><div class="rf-bar"><div class="rf-fill" style="
 html+='<div class="rf-step">第 '+(stepIdx+1)+' / '+steps.length+' 步 · '+esc(s.title)+'</div></div></div>';
 html+='<div class="rf-body" id="rf-body"></div>';
 html+='<div class="rf-nav">';
-if(stepIdx>0)html+='<button class="btn-secondary" id="rf-back">上一步</button>';
-else html+='<button class="btn-secondary" id="rf-back" style="visibility:hidden">上一步</button>';
-if(stepIdx<steps.length-1)html+='<button class="btn-primary" id="rf-next">下一步</button>';
-else html+='<button class="btn-primary" id="rf-next">提交</button>';
+html+='<div class="rf-nav-row">';
+if(stepIdx>0)html+='<button class="btn-secondary rf-btn-left" id="rf-back">上一步</button>';
+else html+='<span></span>';
+if(stepIdx<steps.length-1)html+='<button class="btn-primary rf-btn-right" id="rf-next">下一步</button>';
+else html+='<button class="btn-primary rf-btn-right" id="rf-next">提交</button>';
+html+='</div>';
 html+='</div>';
 root.innerHTML=html;
 var body=root.querySelector('#rf-body');
@@ -478,7 +479,108 @@ setTimeout(function(){showModule('loan-review');},2000);
 }
 });
 }function renderDeposit(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>存款业务</h3><p>功能即将上线</p></div>';return wrap;}
-function renderTransfer(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>转账汇款</h3><p>功能即将上线</p></div>';return wrap;}
+function renderTransfer(){
+return makeReviewFlow({
+title:'客户综合评分评估',
+steps:[
+{title:'基础信息核验',render:function(body,data){
+var html='<div class="rf-form">';
+html+='<div class="rf-field"><label>客户姓名</label><input type="text" id="rf-score-name" placeholder="请输入" value="'+(data.name||'')+'"></div>';
+html+='<div class="rf-field"><label>身份证号</label><input type="text" id="rf-score-idno" placeholder="18位" maxlength="18" value="'+(data.idno||'')+'"></div>';
+html+='<div class="rf-field"><label>手机号</label><input type="tel" id="rf-score-phone" placeholder="11位" maxlength="11" value="'+(data.phone||'')+'"></div>';
+html+='<div class="rf-field"><label>职业类型</label><select id="rf-score-job"><option value="">请选择</option><option value="公务员">公务员/事业单位</option><option value="国企">国企员工</option><option value="私企">私企员工</option><option value="个体">个体工商户</option><option value="自由">自由职业</option></select></div>';
+html+='<div class="rf-field"><label>月收入（元）</label><input type="number" id="rf-score-income" placeholder="0" value="'+(data.income||'')+'"></div>';
+html+='</div>';
+body.innerHTML=html;
+},validate:function(data){
+if(!data.name)return '请输入客户姓名';
+if(!data.idno||data.idno.length!==18)return '身份证号必须18位';
+if(!data.phone||data.phone.length!==11)return '手机号必须11位';
+if(!data.job)return '请选择职业类型';
+if(!data.income)return '请输入月收入';
+return true;
+},collect:function(data){
+data.name=$('rf-score-name').value.trim();
+data.idno=$('rf-score-idno').value.trim();
+data.phone=$('rf-score-phone').value.trim();
+data.job=$('rf-score-job').value;
+data.income=$('rf-score-income').value;
+}},
+{title:'信用状况评估',render:function(body,data){
+var html='<div class="rf-form">';
+html+='<div class="rf-field"><label>征信查询结果</label><select id="rf-score-credit"><option value="">请选择</option><option value="优秀">优秀（无逾期）</option><option value="良好">良好（少量逾期）</option><option value="一般">一般（多次逾期）</option><option value="较差">较差（严重逾期）</option></select></div>';
+html+='<div class="rf-field"><label>负债情况</label><select id="rf-score-debt"><option value="">请选择</option><option value="无">无负债</option><option value="低">低负债（<30%）</option><option value="中">中负债（30%-60%）</option><option value="高">高负债（>60%）</option></select></div>';
+html+='<div class="rf-field"><label>信用卡持有数</label><input type="number" id="rf-score-cards" placeholder="0" value="'+(data.cards||'')+'"></div>';
+html+='<div class="rf-field"><label>历史贷款记录</label><select id="rf-score-history"><option value="">请选择</option><option value="无">无贷款记录</option><option value="正常">有贷款且还款正常</option><option value="逾期">有贷款且有逾期</option></select></div>';
+html+='</div>';
+body.innerHTML=html;
+},validate:function(data){
+if(!data.credit)return '请选择征信查询结果';
+if(!data.debt)return '请选择负债情况';
+if(!data.cards)return '请输入信用卡持有数';
+if(!data.history)return '请选择历史贷款记录';
+return true;
+},collect:function(data){
+data.credit=$('rf-score-credit').value;
+data.debt=$('rf-score-debt').value;
+data.cards=$('rf-score-cards').value;
+data.history=$('rf-score-history').value;
+}},
+{title:'综合评分计算',render:function(body,data){
+var score=0;
+if(data.job==='公务员')score+=30;else if(data.job==='国企')score+=25;else if(data.job==='私企')score+=20;else if(data.job==='个体')score+=15;else score+=10;
+var income=parseInt(data.income)||0;
+if(income>=20000)score+=25;else if(income>=10000)score+=20;else if(income>=5000)score+=15;else score+=10;
+if(data.credit==='优秀')score+=20;else if(data.credit==='良好')score+=15;else if(data.credit==='一般')score+=10;else score+=5;
+if(data.debt==='无')score+=15;else if(data.debt==='低')score+=10;else if(data.debt==='中')score+=5;else score+=0;
+if(data.history==='无')score+=10;else if(data.history==='正常')score+=10;else score+=0;
+data.totalScore=score;
+var level=score>=85?'A级（优秀）':score>=70?'B级（良好）':score>=55?'C级（一般）':'D级（较差）';
+data.level=level;
+var html='<div class="rf-score-result">';
+html+='<div class="rf-score-num">'+score+'</div>';
+html+='<div class="rf-score-level">'+level+'</div>';
+html+='<div class="rf-score-detail">';
+html+='<div class="rf-score-row"><span>职业得分：</span><span>'+(data.job==='公务员'?30:data.job==='国企'?25:data.job==='私企'?20:data.job==='个体'?15:10)+'</span></div>';
+html+='<div class="rf-score-row"><span>收入得分：</span><span>'+(income>=20000?25:income>=10000?20:income>=5000?15:10)+'</span></div>';
+html+='<div class="rf-score-row"><span>征信得分：</span><span>'+(data.credit==='优秀'?20:data.credit==='良好'?15:data.credit==='一般'?10:5)+'</span></div>';
+html+='<div class="rf-score-row"><span>负债得分：</span><span>'+(data.debt==='无'?15:data.debt==='低'?10:data.debt==='中'?5:0)+'</span></div>';
+html+='</div>';
+html+='</div>';
+body.innerHTML=html;
+},collect:function(data){}},
+{title:'评估结果',render:function(body,data){
+var html='<div class="rf-done" style="text-align:left;padding:8px 0">';
+html+='<div class="rf-done-title" style="text-align:center;margin-bottom:14px">评估完成</div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">客户姓名：</span><span class="rf-info-val">'+esc(data.name||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">身份证号：</span><span class="rf-info-val">'+esc(data.idno||'-')+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">综合评分：</span><span class="rf-info-val" style="color:#0a4ea3;font-weight:700;font-size:18px">'+data.totalScore+'</span></div>';
+html+='<div class="rf-done-info"><span class="rf-info-label">信用等级：</span><span class="rf-info-val" style="color:#27ae60;font-weight:700">'+esc(data.level)+'</span></div>';
+html+='</div>';
+body.innerHTML=html;
+}}
+],
+onSubmit:function(data,done){
+var record={
+type:'score',
+name:data.name,idno:data.idno,phone:data.phone,
+job:data.job,income:data.income,
+credit:data.credit,debt:data.debt,cards:data.cards,history:data.history,
+totalScore:data.totalScore,level:data.level,
+evaluator:(typeof currentEmployee!=='undefined'&&currentEmployee)?currentEmployee.name:'',
+evaluatedAt:new Date().toISOString()
+};
+var arr=load('jsccb:score_records')||[];
+var now=Date.now();
+var isDup=arr.some(function(x){
+return x.name===record.name&&x.idno===record.idno&&(now-new Date(x.evaluatedAt).getTime()<5000);
+});
+if(!isDup){arr.push(record);save('jsccb:score_records',arr);}
+done();
+setTimeout(function(){showModule('transfer');},2000);
+}
+});
+}
 function renderQuery(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>账户查询</h3><p>功能即将上线</p></div>';return wrap;}
 function renderReport(){
 var wrap=document.createElement('div');
@@ -505,7 +607,7 @@ var resultClass={pass:'ok',supplement:'warn',reject:'err'};
 var html='<div class="stat-cards">';
 ccList.slice().reverse().forEach(function(r,idx){
 var sup=r.remark?'<div class="sc-extra">备注：'+esc(r.remark)+'</div>':'';
-html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+esc((resultClass[r.result]||''))+'">'+esc(resultMap[r.result]||r.result||'-')+'</span><button class="sc-del" data-idx="'+idx+'" data-type="cc">删除</button></div><div class="sc-info"><div class="sc-row"><span class="sc-label">姓名：</span><span class="sc-val">'+esc(r.name||'-')+'</span></div><div class="sc-row"><span class="sc-label">卡种：</span><span class="sc-val">'+esc(cardMap[r.card]||r.card||'-')+'</span></div><div class="sc-row"><span class="sc-label">时间：</span><span class="sc-val">'+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</span></div></div>'+sup+'</div>';
+html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+esc((resultClass[r.result]||''))+'">'+esc(resultMap[r.result]||r.result||'-')+'</span><button class="sc-del" data-idx="'+idx+'" data-type="cc">删除</button></div><div class="sc-info"><div class="sc-row"><span class="sc-label">姓名：</span><span class="sc-val">'+esc(r.name||'-')+'</span></div><div class="sc-row"><span class="sc-label">卡种：</span><span class="sc-val">'+esc(cardMap[r.card]||r.card||'-')+'</span></div></div>'+sup+'</div>';
 });
 html+='</div>';
 content.innerHTML=html;
@@ -520,7 +622,7 @@ loanList.slice().reverse().forEach(function(r,idx){
 var supText=(r.supplements&&r.supplements.length)?r.supplements.join('、'):'无需补充';
 var supCount=(r.supplements&&r.supplements.length)?r.supplements.length:0;
 var supClass=supCount?'warn':'ok';
-html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+supClass+'">'+supCount+'项待补</span><button class="sc-del" data-idx="'+idx+'" data-type="loan">删除</button></div><div class="sc-info"><div class="sc-row"><span class="sc-label">姓名：</span><span class="sc-val">'+esc(r.name||'-')+'</span></div><div class="sc-row"><span class="sc-label">金额：</span><span class="sc-val">'+(r.amount?Number(r.amount).toLocaleString()+'元':'-')+'</span></div><div class="sc-row"><span class="sc-label">用途：</span><span class="sc-val">'+esc(r.purpose||'-')+'</span></div><div class="sc-row"><span class="sc-label">时间：</span><span class="sc-val">'+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</span></div></div><div class="sc-detail"><div class="sc-detail-title">需补充材料</div><div class="sc-detail-content">'+esc(supText)+'</div></div>'+(r.remark?'<div class="sc-extra">说明：'+esc(r.remark)+'</div>':'')+'</div>';
+html+='<div class="stat-card-row" data-idx="'+idx+'"><div class="sc-head"><div class="sc-no">'+esc(r.no||'-')+'</div><span class="stat-badge '+supClass+'">'+supCount+'项待补</span><button class="sc-del" data-idx="'+idx+'" data-type="loan">删除</button></div><div class="sc-info"><div class="sc-row"><span class="sc-label">姓名：</span><span class="sc-val">'+esc(r.name||'-')+'</span></div><div class="sc-row"><span class="sc-label">金额：</span><span class="sc-val">'+(r.amount?Number(r.amount).toLocaleString()+'元':'-')+'</span></div><div class="sc-row"><span class="sc-label">用途：</span><span class="sc-val">'+esc(r.purpose||'-')+'</span></div></div><div class="sc-detail"><div class="sc-detail-title">需补充材料</div><div class="sc-detail-content">'+esc(supText)+'</div></div>'+(r.remark?'<div class="sc-extra">说明：'+esc(r.remark)+'</div>':'')+'</div>';
 });
 html+='</div>';
 content.innerHTML=html;
