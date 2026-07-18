@@ -472,7 +472,47 @@ setTimeout(function(){showModule('loan-review');},2000);
 }function renderDeposit(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>存款业务</h3><p>功能即将上线</p></div>';return wrap;}
 function renderTransfer(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>转账汇款</h3><p>功能即将上线</p></div>';return wrap;}
 function renderQuery(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>账户查询</h3><p>功能即将上线</p></div>';return wrap;}
-function renderReport(){var wrap=document.createElement('div');wrap.innerHTML='<div class="panel"><h3>统计报表</h3><p>功能即将上线</p></div>';return wrap;}
+function renderReport(){
+var wrap=document.createElement('div');
+wrap.innerHTML='<div class="panel"><h3>业绩统计</h3><div id="stats-summary" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;"></div><div id="stats-tabs" style="display:flex;gap:8px;margin-bottom:14px;border-bottom:1px solid var(--line);"></div><div id="stats-content"></div></div>';
+var summary=$('stats-summary');
+var tabs=$('stats-tabs');
+var content=$('stats-content');
+var ccList=load('jsccb:cc_reviews')||[];
+var loanList=load('jsccb:loan_reviews')||[];
+summary.innerHTML='<div class="stat-card"><div class="stat-num">'+ccList.length+'</div><div class="stat-label">信用卡面签</div></div><div class="stat-card"><div class="stat-num" style="color:#e67e22">'+loanList.length+'</div><div class="stat-label">贷款补充</div></div>';
+function renderCcTable(){
+if(!ccList.length){content.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted)">暂无面签记录</div>';return;}
+var html='<table class="stat-table"><thead><tr><th>申请编号</th><th>姓名</th><th>卡种</th><th>结果</th><th>面签时间</th><th>客户经理</th></tr></thead><tbody>';
+ccList.slice().reverse().forEach(function(r){
+var cardMap={puka:'普卡',jinka:'金卡',baijin:'白金卡',zuanshi:'钻石卡'};
+var resultMap={pass:'通过',supplement:'补材料',reject:'拒绝'};
+var resultClass={pass:'ok',supplement:'warn',reject:'err'}[r.result]||'';
+html+='<tr><td>'+esc(r.no||'-')+'</td><td>'+esc(r.name||'-')+'</td><td>'+esc(cardMap[r.card]||r.card||'-')+'</td><td><span class="stat-badge '+esc(resultClass)+'">'+esc(resultMap[r.result]||r.result||'-')+'</span></td><td>'+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</td><td>'+esc(r.reviewer||'-')+'</td></tr>';
+});
+html+='</tbody></table>';
+content.innerHTML=html;
+}
+function renderLoanTable(){
+if(!loanList.length){content.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted)">暂无补充材料记录</div>';return;}
+var html='<table class="stat-table"><thead><tr><th>申请编号</th><th>姓名</th><th>金额</th><th>用途</th><th>需补充</th><th>处理时间</th><th>客户经理</th></tr></thead><tbody>';
+loanList.slice().reverse().forEach(function(r){
+html+='<tr><td>'+esc(r.no||'-')+'</td><td>'+esc(r.name||'-')+'</td><td>'+(r.amount?Number(r.amount).toLocaleString()+'元':'-')+'</td><td>'+esc(r.purpose||'-')+'</td><td>'+(r.supplements&&r.supplements.length?'<span style="color:#e67e22">'+r.supplements.length+'项</span>':'<span style="color:#27ae60">无需补充</span>')+'</td><td>'+esc((r.reviewedAt||'').replace('T',' ').slice(0,16))+'</td><td>'+esc(r.reviewer||'-')+'</td></tr>';
+});
+html+='</tbody></table>';
+content.innerHTML=html;
+}
+function switchTab(tab){
+tabs.querySelectorAll('.stat-tab').forEach(function(t){t.classList.remove('active');});
+var btn=tabs.querySelector('[data-tab="'+tab+'"]');
+if(btn)btn.classList.add('active');
+if(tab==='cc')renderCcTable();else renderLoanTable();
+}
+tabs.innerHTML='<button class="stat-tab active" data-tab="cc">信用卡面签 ('+ccList.length+')</button><button class="stat-tab" data-tab="loan">贷款补充 ('+loanList.length+')</button>';
+tabs.querySelectorAll('.stat-tab').forEach(function(btn){btn.addEventListener('click',function(){switchTab(this.getAttribute('data-tab'));});});
+renderCcTable();
+return wrap;
+}
 
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setupTabs);}else{setupTabs();}
 
