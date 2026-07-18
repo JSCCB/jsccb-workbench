@@ -99,7 +99,7 @@ currentEmployee=emp;
 localStorage.setItem(SESSION_KEY,JSON.stringify(emp));
 $('login').classList.add('hidden');
 $('app').classList.remove('hidden');
-$('who').textContent=emp.name+' ('+emp.id+')';
+$('who').textContent=emp.name;
 var tabs=document.querySelectorAll('.tab-nav-bottom .tab-btn');
 tabs.forEach(function(t){t.classList.remove('active');});
 if(tabs[0])tabs[0].classList.add('active');
@@ -221,7 +221,7 @@ grid.innerHTML='';
 MODULES.forEach(function(m){
 var d=document.createElement('div');
 d.className='module-card';
-d.innerHTML='<div class="m-icon">'+m.icon+'</div><div class="m-name">'+esc(m.name)+'</div><div class="m-desc">'+esc(m.desc)+'</div>';
+d.innerHTML='<div class="m-name">'+esc(m.name)+'</div><div class="m-desc">'+esc(m.desc)+'</div>';
 d.addEventListener('click',function(){showModule(m.id);});
 grid.appendChild(d);
 });
