@@ -418,11 +418,18 @@ var items=[
 ];
 var html='<div class="rf-checks">';
 items.forEach(function(it,i){
-html+='<div class="rf-check-row"><label><input type="checkbox" data-i="'+i+'" '+(it.checked?'checked':'')+' onchange="this.parentNode.parentNode.querySelector('.rf-note').style.color=this.checked?'var(--ok)':'var(--red)'"> '+esc(it.name)+'</label><span class="rf-note" style="color:'+(it.checked?'var(--ok)':'var(--red)')+'">'+esc(it.note)+'</span></div>';
+html+='<div class="rf-check-row"><label><input type="checkbox" data-i="'+i+'" '+(it.checked?'checked':'')+' data-w="rf-cb-'+i+'"> '+esc(it.name)+'</label><span class="rf-note" id="rf-cb-'+i+'-note" style="color:'+(it.checked?'var(--ok)':'var(--red)')+'">'+esc(it.note)+'</span></div>';
 });
 html+='</div>';
 data.checkOk=items.every(function(it){return it.checked;});
 body.innerHTML=html;
+body.querySelectorAll('input[data-w]').forEach(function(cb){
+  cb.addEventListener('change',function(){
+    var idx=this.getAttribute('data-w');
+    var note=document.getElementById(idx+'-note');
+    if(note){note.style.color=this.checked?'var(--ok)':'var(--red)';}
+  });
+});
 },validate:function(data){if(!data.checkOk)return '请先核对所有已有材料';return true;}},
 {title:'补充材料清单',render:function(body,data){
 var supplements=['银行流水（近6个月）','资产证明','担保资料','经营执照（个体/企业）','其他补充材料'];
