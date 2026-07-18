@@ -261,3 +261,39 @@ button { font-family: inherit; }
 .modal-content { position: relative; background: #fff; border-radius: 16px; padding: 28px 28px 24px; max-width: 360px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,.25); text-align: center; }
 .modal-close { position: absolute; top: 8px; right: 10px; background: transparent; border: 0; font-size: 24px; line-height: 1; color: #999; cursor: pointer; padding: 4px 8px; }
 .modal-close:hover { color: #333; }
+
+
+/* 资料审核步骤流 */
+.review-flow { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+.rf-head h3 { margin: 0 0 16px; font-size: 18px; color: var(--text); }
+.rf-progress { margin-bottom: 20px; }
+.rf-bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.rf-fill { height: 100%; background: linear-gradient(90deg,var(--blue),#1773c9); transition: width .3s; }
+.rf-step { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.rf-body { min-height: 280px; padding: 10px 0 20px; }
+.rf-info { background: var(--bg); border-radius: 12px; padding: 16px; }
+.rf-row { display: flex; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.rf-row:last-child { border-bottom: 0; }
+.rf-label { width: 100px; color: var(--muted); font-size: 14px; }
+.rf-val { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; }
+.rf-confirm { margin-top: 18px; padding: 12px; background: var(--blue-light); border-radius: 10px; }
+.rf-confirm label { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+.rf-checks { display: flex; flex-direction: column; gap: 12px; }
+.rf-check-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: var(--bg); border-radius: 10px; }
+.rf-check-row label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
+.rf-note { font-size: 12px; color: var(--muted); }
+.rf-result, .rf-sup-list { display: flex; flex-direction: column; gap: 10px; }
+.rf-result-row { padding: 14px; background: var(--bg); border-radius: 10px; }
+.rf-result-row label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
+.rf-remark { margin-top: 8px; }
+.rf-remark label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.rf-remark textarea { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 10px; font-size: 14px; resize: vertical; box-sizing: border-box; font-family: inherit; }
+.rf-done { text-align: center; padding: 40px 20px; }
+.rf-done-icon { font-size: 56px; margin-bottom: 16px; }
+.rf-done-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.rf-done-sub { font-size: 14px; color: var(--muted); }
+.rf-nav { display: flex; gap: 10px; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+.btn-primary, .btn-secondary { padding: 11px 22px; border-radius: 10px; font-size: 15px; font-weight: 600; border: 0; cursor: pointer; }
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:active { opacity: .85; }
+.btn-secondary { background: var(--bg); color: var(--text); }
