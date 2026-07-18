@@ -188,7 +188,9 @@ $('tab-business').classList.add('hidden');
 var box=$('module-view');
 box.classList.remove('hidden');
 box.innerHTML='<span class="back-link" id="back-link">返回</span><h2 class="sec-title">'+esc(m.name)+'</h2>';
-box.appendChild(m.render());
+var el=m.render();
+if(!el){box.innerHTML+='<div style="padding:20px;color:var(--muted)">加载异常，请返回重试</div>';}
+else{box.appendChild(el);}
 $('back-link').addEventListener('click',showHome);
 }
 
@@ -222,12 +224,14 @@ var steps=opts.steps;
 var stepIdx=0;
 var data={};
 var root=document.createElement('div');
-root.className='review-flow';
+root.className='review-flow';root.style.display='block';
 
 function paint(){
 var s=steps[stepIdx];
+if(!s){console.error('No step at idx',stepIdx);return;}
 var pct=Math.round((stepIdx+1)/steps.length*100);
 var html='';
+try{
 html+='<div class="rf-head"><h3>'+esc(opts.title)+'</h3>';
 html+='<div class="rf-progress"><div class="rf-bar"><div class="rf-fill" style="width:'+pct+'%"></div></div>';
 html+='<div class="rf-step">第 '+(stepIdx+1)+' / '+steps.length+' 步 · '+esc(s.title)+'</div></div></div>';
@@ -241,8 +245,9 @@ html+='</div>';
 root.innerHTML=html;
 var body=$('rf-body');
 if(body){
-s.render(body,data,function(){paint();});
+try{s.render(body,data,function(){paint();});}catch(e){console.error('render error:',e);body.innerHTML='<div style=\\"padding:20px;color:red\\">步骤渲染失败:'+e.message+'</div>';}
 }
+} catch(e){console.error('paint error:',e);root.innerHTML='<div style=\\"padding:20px;color:red\\">页面错误:'+e.message+'</div>';return;}
 var back=$('rf-back');
 if(back)back.addEventListener('click',function(){if(stepIdx>0){stepIdx--;paint();}});
 var next=$('rf-next');
