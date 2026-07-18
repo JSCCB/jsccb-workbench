@@ -187,6 +187,19 @@ $('tab-business').classList.remove('hidden');
 renderModules();
 }
 
+function renderModules(){
+var grid=$('module-grid');
+if(!grid)return;
+grid.innerHTML='';
+MODULES.forEach(function(m){
+var d=document.createElement('div');
+d.className='module-card';
+d.innerHTML='<div class="m-icon">'+m.icon+'</div><div class="m-name">'+esc(m.name)+'</div><div class="m-desc">'+esc(m.desc)+'</div>';
+d.addEventListener('click',function(){showModule(m.id);});
+grid.appendChild(d);
+});
+}
+
 function showModule(id){
 var m=MODULES.filter(function(x){return x.id===id;})[0];
 if(!m)return;
