@@ -243,14 +243,14 @@ if(stepIdx<steps.length-1)html+='<button class="btn-primary" id="rf-next">下一
 else html+='<button class="btn-primary" id="rf-next">提交</button>';
 html+='</div>';
 root.innerHTML=html;
-var body=$('rf-body');
+var body=root.querySelector('#rf-body');
 if(body){
 try{s.render(body,data,function(){paint();});}catch(e){console.error('render error:',e);body.innerHTML='<div style=\\"padding:20px;color:red\\">步骤渲染失败:'+e.message+'</div>';}
 }
 } catch(e){console.error('paint error:',e);root.innerHTML='<div style=\\"padding:20px;color:red\\">页面错误:'+e.message+'</div>';return;}
-var back=$('rf-back');
+var back=root.querySelector('#rf-back');
 if(back)back.addEventListener('click',function(){if(stepIdx>0){stepIdx--;paint();}});
-var next=$('rf-next');
+var next=root.querySelector('#rf-next');
 if(next)next.addEventListener('click',function(){
 if(s.collect){s.collect(data);}
 var valid=s.validate?s.validate(data):true;
@@ -475,9 +475,9 @@ function renderQuery(){var wrap=document.createElement('div');wrap.innerHTML='<d
 function renderReport(){
 var wrap=document.createElement('div');
 wrap.innerHTML='<div class="panel"><h3>业绩统计</h3><div id="stats-summary" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;"></div><div id="stats-tabs" style="display:flex;gap:8px;margin-bottom:14px;border-bottom:1px solid var(--line);"></div><div id="stats-content"></div></div>';
-var summary=$('stats-summary');
-var tabs=$('stats-tabs');
-var content=$('stats-content');
+var summary=wrap.querySelector('#stats-summary');
+var tabs=wrap.querySelector('#stats-tabs');
+var content=wrap.querySelector('#stats-content');
 var ccList=load('jsccb:cc_reviews')||[];
 var loanList=load('jsccb:loan_reviews')||[];
 summary.innerHTML='<div class="stat-card"><div class="stat-num">'+ccList.length+'</div><div class="stat-label">信用卡面签</div></div><div class="stat-card"><div class="stat-num" style="color:#e67e22">'+loanList.length+'</div><div class="stat-label">贷款补充</div></div>';
